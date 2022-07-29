@@ -1,5 +1,8 @@
+import 'package:exampleapplication/loginpage.dart';
 import 'package:flutter/material.dart';
+
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Onboardingscreens extends StatefulWidget {
   Onboardingscreens({Key? key}) : super(key: key);
@@ -42,7 +45,14 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                           0xff006C67,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Loginpage(),
+                          ),
+                        );
+                      },
                       child: Text(
                         'Get started',
                         style: TextStyle(
@@ -66,7 +76,9 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                             ),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          launch("https://wa.me/+918303823055");
+                        },
                         icon: Icon(
                           Icons.whatsapp_rounded,
                           color: Colors.green,
@@ -107,7 +119,14 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                           0xff006C67,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Loginpage(),
+                          ),
+                        );
+                      },
                       child: Text(
                         'Get started',
                         style: TextStyle(
@@ -131,7 +150,9 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                             ),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          launch("https://wa.me/+918303823055");
+                        },
                         icon: Icon(
                           Icons.whatsapp_rounded,
                           color: Colors.green,
@@ -172,7 +193,14 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                           0xff006C67,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Loginpage(),
+                          ),
+                        );
+                      },
                       child: Text(
                         'Get started',
                         style: TextStyle(
@@ -196,7 +224,9 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                             ),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          launch("https://wa.me/+918303823055");
+                        },
                         icon: Icon(
                           Icons.whatsapp_rounded,
                           color: Colors.green,

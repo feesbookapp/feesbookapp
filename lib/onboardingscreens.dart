@@ -85,9 +85,9 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
               ),
             ),
             PageViewModel(
-              title: 'Welcome to Feesbook',
+              title: 'Track collected, pending fees',
               body:
-                  'Digital fees management solution specialy build for coaching teachers',
+                  'Keep a track of pending and collected fees of your students digitally',
               image: Image.asset(
                 'assets/onboarding.png',
               ),
@@ -150,9 +150,9 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
               ),
             ),
             PageViewModel(
-              title: 'Welcome to Feesbook',
+              title: 'Send reminders to collect fees',
               body:
-                  'Digital fees management solution specialy build for coaching teachers',
+                  'Send reminders through whatsapp to collect fees from every students',
               image: Image.asset(
                 'assets/onboarding.png',
               ),

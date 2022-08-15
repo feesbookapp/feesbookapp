@@ -1,4 +1,5 @@
-import 'package:exampleapplication/loginpage.dart';
+// import 'package:exampleapplication/loginpage.dart';
+import 'package:exampleapplication/home.dart/button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
@@ -49,7 +50,7 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Loginpage(),
+                            builder: (context) => Signin(),
                           ),
                         );
                       },
@@ -123,7 +124,7 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Loginpage(),
+                            builder: (context) => Signin(),
                           ),
                         );
                       },
@@ -197,7 +198,7 @@ class _OnboardingscreensState extends State<Onboardingscreens> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Loginpage(),
+                            builder: (context) => Signin(),
                           ),
                         );
                       },

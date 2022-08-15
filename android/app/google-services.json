@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "836539594817",
+    "project_id": "feesbooktesting",
+    "storage_bucket": "feesbooktesting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836539594817:android:e7cfa6794555f5ed9eaec0",
+        "android_client_info": {
+          "package_name": "com.feesbook.feesbooksapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836539594817-13l835vt14qvmtmoj3bgjnrnmca6avce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.feesbook.feesbooksapplication",
+            "certificate_hash": "fade05b5efba7f794fd5c13762f23d80927fe202"
+          }
+        },
+        {
+          "client_id": "836539594817-7sj2urrun7t8qipsiibcv6j0fd7db9t2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4rFp0qJVKohgakB606DOd8H51TQ0V9as"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836539594817-7sj2urrun7t8qipsiibcv6j0fd7db9t2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

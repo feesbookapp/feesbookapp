@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exampleapplication/bottomsheet/bottomsheet.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'homepage.dart';
+import 'bottomsheet/homepage.dart';
 import 'models/user.dart';
 
 class Registration extends StatefulWidget {
@@ -101,7 +103,9 @@ class _RegistrationState extends State<Registration> {
       prefs.setString('uid', user.uid);
       Navigator.pushAndRemoveUntil(
           (context),
-          MaterialPageRoute(builder: (context) => Homepage()),
+          MaterialPageRoute(
+            builder: (context) => Bottompage(),
+          ),
           (route) => false);
     });
     Fluttertoast.showToast(msg: "Account created successfully :) ");

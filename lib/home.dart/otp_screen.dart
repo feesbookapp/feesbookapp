@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Helper/dimensions.dart';
 import '../Registration.dart';
-import '../homepage.dart';
+import '../bottomsheet/homepage.dart';
 import 'button.dart';
 import 'login_screen.dart';
 

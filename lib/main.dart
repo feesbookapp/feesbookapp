@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exampleapplication/bottomsheet/bottomsheet.dart';
 import 'package:exampleapplication/onboardingscreens.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'helper/utils.dart';
 import 'home.dart/button.dart';
 // import 'home.dart/login_screen.dart';
-import 'homepage.dart';
+import 'bottomsheet/homepage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +101,7 @@ class _MyAppState extends State<MyApp> {
                               return Loading();
                             } else {
                               if (snapshot.hasData) {
-                                return Homepage();
+                                return Bottompage();
                               }
                               log('Has no data');
                               return Onboardingscreens();

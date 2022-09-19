@@ -1,265 +1,99 @@
-// import 'package:exampleapplication/loginpage.dart';
-import 'package:exampleapplication/home.dart/button.dart';
+import 'package:exampleapplication/Registration.dart';
+import 'package:exampleapplication/bottomsheet/homepage.dart';
+import 'package:exampleapplication/bottomsheet/profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pinput/pinput.dart';
 
-import 'package:introduction_screen/introduction_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-class Onboardingscreens extends StatefulWidget {
-  Onboardingscreens({Key? key}) : super(key: key);
+class onBoardingScreen extends StatefulWidget {
+  const onBoardingScreen({Key? key}) : super(key: key);
 
   @override
-  State<Onboardingscreens> createState() => _OnboardingscreensState();
+  State<onBoardingScreen> createState() => _onBoardingScreenState();
 }
 
-class _OnboardingscreensState extends State<Onboardingscreens> {
+class _onBoardingScreenState extends State<onBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: IntroductionScreen(
-          showBackButton: false,
-          showNextButton: false,
-          showDoneButton: false,
-          showSkipButton: false,
-          pages: [
-            PageViewModel(
-              title: 'Welcome to Feesbook',
-              body:
-                  'Digital fees management solution specialy build for coaching teachers',
-              image: Image.asset(
-                'assets/onboarding.png',
-              ),
-              footer: Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 330,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ),
-                        ),
-                        primary: Color(
-                          0xff006C67,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Signin(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Get started',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 30,
-                    ),
-                    child: SizedBox(
-                      height: 50,
-                      width: 330,
-                      child: OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          launch("https://wa.me/+918303823055");
-                        },
-                        icon: Icon(
-                          Icons.whatsapp_rounded,
-                          color: Colors.green,
-                        ),
-                        label: Text(
-                          'Need help?',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+      body: SingleChildScrollView(child: onBoardingBody(),)
+    );
+  }
+  Widget onBoardingBody() {
+
+
+    //Variables
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
+
+    //Theme
+
+
+    return SafeArea(child: Column(
+      children: [
+        SizedBox(height: h*0.1,),
+
+        //illustration
+        Container(width: w, child: Center(child: Container(
+          width: w*0.8,
+          height: w*0.8,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/onboarding.png')),
+          ),
+        ),),),
+
+        SizedBox(height: h*0.1,),
+
+        //Title
+        Container(margin: EdgeInsets.only(left: 24, right: 24),alignment: Alignment.centerLeft ,child: Text('Enter your name', style: GoogleFonts.poppins(textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),),),
+
+        //SubTitle
+        Container(
+              margin: EdgeInsets.only(left: 24, right: 24, top: 5),
+              child: Text('We would love to hear your name to serve you better', style: TextStyle(color: Colors.grey, fontSize: 16, ),)),
+
+
+        const SizedBox(height: 20,),
+
+        //Name
+        Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(left: 10),
+          margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
+          height: 64,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey),
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              counterText: '',
+              border: InputBorder.none,
+              prefixIcon: Icon(Icons.person,color: Color(0xff006C67),),
+              hintText: 'Name',
             ),
-            PageViewModel(
-              title: 'Track collected, pending fees',
-              body:
-                  'Keep a track of pending and collected fees of your students digitally',
-              image: Image.asset(
-                'assets/onboarding.png',
-              ),
-              footer: Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 330,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ),
-                        ),
-                        primary: Color(
-                          0xff006C67,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Signin(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Get started',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 30,
-                    ),
-                    child: SizedBox(
-                      height: 50,
-                      width: 330,
-                      child: OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          launch("https://wa.me/+918303823055");
-                        },
-                        icon: Icon(
-                          Icons.whatsapp_rounded,
-                          color: Colors.green,
-                        ),
-                        label: Text(
-                          'Need help?',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            PageViewModel(
-              title: 'Send reminders to collect fees',
-              body:
-                  'Send reminders through whatsapp to collect fees from every students',
-              image: Image.asset(
-                'assets/onboarding.png',
-              ),
-              footer: Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 330,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            10,
-                          ),
-                        ),
-                        primary: Color(
-                          0xff006C67,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Signin(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Get started',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 30,
-                    ),
-                    child: SizedBox(
-                      height: 50,
-                      width: 330,
-                      child: OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          launch("https://wa.me/+918303823055");
-                        },
-                        icon: Icon(
-                          Icons.whatsapp_rounded,
-                          color: Colors.green,
-                        ),
-                        label: Text(
-                          'Need help?',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-          dotsDecorator: DotsDecorator(
-            size: const Size.square(10.0),
-            activeSize: const Size(12.0, 12.0),
-            activeColor: Colors.black,
-            color: Colors.black26,
-            spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-            activeShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                10.0,
-              ),
+            keyboardType: TextInputType.name,
+          ),
+        ),
+
+        //Button
+        Container(
+          width: w,
+          height: 60,
+          margin: EdgeInsets.all(25),
+          child: ElevatedButton(
+            onPressed: () {
+              //Send OTP
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>  Homepage()));
+            },
+            child: Text('Submit', style: TextStyle(color: Colors.white),),
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll<Color>(Color(0xff006C67)),
             ),
           ),
         ),
-      ),
-    );
+      ],
+    ));
   }
 }

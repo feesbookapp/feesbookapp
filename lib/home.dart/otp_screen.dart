@@ -1,480 +1,101 @@
-import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:exampleapplication/home.dart/login_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pinput/pinput.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../Helper/dimensions.dart';
-import '../Registration.dart';
-import '../bottomsheet/homepage.dart';
-import 'button.dart';
-import 'login_screen.dart';
-
-bool owner = false;
-var vpH, vpW;
+import '../onboardingscreens.dart';
 
 class OTPScreen extends StatefulWidget {
-  final phone = LoginScreen.phone;
+  final String phone;
+  OTPScreen(this.phone);
 
-  OTPScreen({Key? key}) : super(key: key);
   @override
-  _OTPScreenState createState() => _OTPScreenState();
+  State<OTPScreen> createState() => _OTPScreenState();
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  final snackBar = SnackBar(
-    content: Text(
-      'Invalid OTP! Try again',
-      style: TextStyle(
-        fontFamily: 'Montserrat',
-      ),
-    ),
-    backgroundColor: Colors.red,
-    duration: Duration(seconds: 2),
-  );
-
-  late String _verificationCode, userCode;
-  bool codeSent = false, verifying = false;
-
-  void showSnackBar(String msg, Color color) {
-    var snackBar = SnackBar(
-      content: Text(msg),
-      backgroundColor: color,
-      duration: Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  Future<void> checkRole() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    owner = (pref.getBool('doctorRole') ?? false);
-  }
-
-  _phoneVerified() async {
-    if (owner == true) {
-      await FirebaseFirestore.instance
-          .collection("doctors")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get()
-          .then(
-        (value) {
-          if (value.exists) {
-            Navigator.pushAndRemoveUntil(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => Homepage(),
-                ),
-                ((route) => false));
-          } else {
-            FirebaseFirestore.instance.collection("doctors").doc(
-                  FirebaseAuth.instance.currentUser!.uid,
-                );
-            Navigator.pushAndRemoveUntil(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => Homepage(),
-                ),
-                ((route) => false));
-          }
-        },
-      );
-    } else {
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get()
-          .then(
-        (value) {
-          if (value.exists) {
-            Navigator.pushAndRemoveUntil(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => Homepage(),
-                ),
-                ((route) => false));
-          } else {
-            FirebaseFirestore.instance.collection("users").doc(
-                  FirebaseAuth.instance.currentUser!.uid,
-                );
-            Navigator.pushAndRemoveUntil(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => Registration(),
-                ),
-                ((route) => false));
-          }
-        },
-      );
-    }
-  }
-
-  _verifyPhone(phone) async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+91$phone',
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await FirebaseAuth.instance
-            .signInWithCredential(credential)
-            .then((value) async {
-          if (value.user != null) {
-            log('-------------# Created #------------');
-            _phoneVerified();
-          }
-        });
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        log(e.message!);
-        showSnackBar('Something went wrong !', Colors.red);
-        Navigator.pushAndRemoveUntil(
-            context,
-            new MaterialPageRoute(
-              builder: (context) => Signin(),
-            ),
-            ((route) => false));
-        // Navigator.pushReplacementNamed(context, '/loginScreen');
-      },
-      codeSent: (String? verficationID, int? resendToken) {
-        setState(() {
-          _verificationCode = verficationID!;
-          codeSent = true;
-        });
-      },
-      codeAutoRetrievalTimeout: (String verificationID) {
-        showSnackBar('OTP verification timed out !', Colors.red);
-
-        // Navigator.pushReplacementNamed(context, '/loginScreen');
-      },
-      timeout: Duration(seconds: 60),
-    );
-  }
-
-  _verifyOTP() async {
-    _formkey.currentState!.validate();
-    if (userCode.isNotEmpty && userCode.length == 6) {
-      try {
-        await FirebaseAuth.instance
-            .signInWithCredential(PhoneAuthProvider.credential(
-                verificationId: _verificationCode, smsCode: userCode))
-            .then((value) async {
-          if (value.user != null) {
-            _phoneVerified();
-          }
-        });
-      } catch (e) {
-        log(e.toString());
-        FocusScope.of(context).unfocus();
-        showSnackBar('Invalid OTP! Try again', Colors.red);
-        setState(() {
-          verifying = false;
-        });
-      }
-    } else {
-      showSnackBar('Invalid OTP! Try again', Colors.red);
-      setState(() {
-        verifying = false;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // checkRole();
-    _verifyPhone(widget.phone);
-    log(widget.phone!);
-  }
-
   @override
   Widget build(BuildContext context) {
-    checkRole();
-    vpH = getViewportHeight(context);
-    vpW = getViewportWidth(context);
-    return WillPopScope(
-      onWillPop: () {
-        showSnackBar(
-            'You cannot go back at this stage ', Colors.redAccent.shade100);
-        return Future.value(false);
-      },
-      child: Scaffold(
-          // resizeToAvoidBottomInset: false,
-          // backgroundColor: owner ? Colors.blue[200] : Colors.purple[300],
-          body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: Stack(
-          children: [
-            // Image.asset(
-            //   "images/1.jpg",
-            //   fit: BoxFit.cover,
-            //   height: double.infinity,
-            //   width: double.infinity,
-            //   scale: 1,
-            // ),
-            SafeArea(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: !codeSent
-                    ? Center(
-                        child: SpinKitFadingCircle(
-                          color: Colors.white,
-                          size: 60,
-                        ),
-                      )
-                    : SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "OTP sent.",
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      color: Colors.white,
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    child: Text(
-                                      "Enter the OTP sent to  +91 ${widget.phone}  to continue...",
-                                      style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            _formModule(),
-                            Container(
-                              margin: EdgeInsets.all(25),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.black.withOpacity(.6),
-                              ),
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Entered Phone Number Wrong ?',
-                                        style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          // backgroundColor:
-                                          //     Colors.black.withOpacity(.7),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () async {
-                                          SharedPreferences prefs =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          prefs.remove('uid');
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Signin()));
-                                        },
-                                        child: Text(
-                                          'Click Here',
-                                          style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            color: Colors.redAccent,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Resend OTP',
-                                        style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          'Click Here',
-                                          style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            color: Colors.redAccent,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-              ),
-            ),
-          ],
-        ),
-      )),
+    return Scaffold(
+      body: SingleChildScrollView(child: OTPBody(),)
     );
   }
+  Widget OTPBody() {
 
-  Widget _formModule() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(30, 100, 30, 0),
-      child: Form(
-        key: _formkey,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  color: Colors.black.withOpacity(.4),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Enter OTP",
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white12),
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white.withOpacity(.05),
-                          ),
-                          padding: EdgeInsets.fromLTRB(20, 5, 15, 5),
-                          child: TextFormField(
-                            maxLength: 6,
-                            textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.phone,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                            decoration: InputDecoration(
-                              counterText: "",
-                              border: InputBorder.none,
-                              hintText: 'Enter OTP',
-                              hintStyle: TextStyle(
-                                fontFamily: 'Montserrat',
-                                color: Colors.white60.withOpacity(.5),
-                              ),
-                            ),
-                            obscureText: false,
-                            validator: (val) {
-                              setState(() {
-                                userCode = val!;
-                              });
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 35,
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 10,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  //shadowColor: Colors.white38,
-                  primary: Colors.white,
+    //Variables
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
 
-                  elevation: 10,
-                  padding: EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                onPressed: () {
-                  if (!verifying) {
-                    FocusScope.of(context).unfocus();
-                    setState(() {
-                      verifying = true;
-                    });
-                    _verifyOTP();
-                  }
-                },
-                child: Container(
-                  width: 120,
-                  height: 18,
-                  child: Center(
-                    child: verifying
-                        ? SpinKitFadingCircle(
-                            color: Colors.black54,
-                            size: 20,
-                          )
-                        : Text(
-                            "Log in",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Montserrat',
-                            ),
-                          ),
-                  ),
-                ),
+    //Theme
+
+
+    return SafeArea(child: Column(
+      children: [
+        SizedBox(height: h*0.1,),
+
+        //illustration
+        Container(width: w, child: Center(child: Container(
+          width: w*0.8,
+          height: w*0.8,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/onboarding.png')),
+          ),
+        ),),),
+
+        SizedBox(height: h*0.1,),
+
+        //Title
+        Container(margin: EdgeInsets.only(left: 24, right: 24),alignment: Alignment.centerLeft ,child: Text('Enter OTP', style: GoogleFonts.poppins(textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),),),
+
+        //SubTitle
+        GestureDetector(
+          child: Container(
+            margin: EdgeInsets.only(left: 24, right: 24, top: 10),
+            child: RichText(
+              text: TextSpan(
+                text: 'A 6 digit one time password has been sent to your phone number ',
+                style: TextStyle(color: Colors.grey, fontSize: 18,  wordSpacing: 1),
+                children: <TextSpan>[
+                  TextSpan(text: widget.phone , style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff006C67),fontSize: 16)),
+                  TextSpan(text: '. Edit', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff006C67),fontSize: 16)),
+                ],
               ),
-            ),
-          ],
+            )),
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>  LoginScreen()));
+          },
         ),
-      ),
-    );
+
+        const SizedBox(height: 20,),
+
+        //OTP
+        Container(
+          padding: EdgeInsets.all(10),
+          child: Pinput(
+            length: 4,
+
+          ),
+        ),
+
+        //Button
+        Container(
+          width: w,
+          height: 60,
+          margin: EdgeInsets.all(25),
+          child: ElevatedButton(
+            onPressed: () {
+              //Send OTP
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>  onBoardingScreen()));
+            },
+            child: Text('Submit', style: TextStyle(color: Colors.white),),
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll<Color>(Color(0xff006C67)),
+            ),
+          ),
+        ),
+      ],
+    ));
   }
 }

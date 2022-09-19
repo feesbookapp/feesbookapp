@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'helper/utils.dart';
-import 'home.dart/button.dart';
+import 'home.dart/sign_in.dart';
 // import 'home.dart/login_screen.dart';
 import 'bottomsheet/homepage.dart';
 
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
                                 return Bottompage();
                               }
                               log('Has no data');
-                              return Onboardingscreens();
+                              return onBoardingScreen();
                             }
                           },
                         );

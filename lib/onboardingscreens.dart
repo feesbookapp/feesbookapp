@@ -120,6 +120,8 @@ class SuccessfulPopup extends StatelessWidget {
             height: h*0.5 ,
             padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //Congrats
                 Center(child: Text('Congratulations!', style: GoogleFonts.poppins(
@@ -130,11 +132,49 @@ class SuccessfulPopup extends StatelessWidget {
                 ),),),
 
                 //Sized box
-                SizedBox(height: 50,),
+                SizedBox(height: 20,),
 
                 //SVG
-                Center()
+                Center(child: Container(
+                  margin: EdgeInsets.only(left: 20, right: 20),
+                  height: h*0.2,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                ),),
 
+                SizedBox(height: 20,),
+
+                //Registered successfully
+                Text('Registered successfully', style: GoogleFonts.poppins(fontWeight: FontWeight.w400, fontSize: 20),),
+
+
+                //Your account has been created
+                // Container(
+                //   padding: EdgeInsets.only(left: 20, right: 20),
+                //   child: Text('Your account has been created, start managing and collecting your fees digitally', style: GoogleFonts.inter(
+                //     textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.grey,),),
+                //     textAlign: TextAlign.center,
+                //   ),
+                // ),
+
+
+                //Button
+                Container(
+                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  height: 60, width: w,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>  Homepage()));
+                    },
+                    child: Text('Home'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(Colors.black),
+                    ),
+                  ),
+                )
               ],
             ),
           )

@@ -3,6 +3,7 @@ import 'package:exampleapplication/bottomsheet/homepage.dart';
 import 'package:exampleapplication/bottomsheet/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
@@ -85,8 +86,13 @@ class _onBoardingScreenState extends State<onBoardingScreen> {
           child: ElevatedButton(
             onPressed: () {
               //Send OTP
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>  Homepage()));
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=>  Homepage()));
+              showDialog(context: context, builder: (BuildContext context){
+
+                return SuccessfulPopup();
+              });
             },
+
             child: Text('Submit', style: TextStyle(color: Colors.white),),
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll<Color>(Color(0xff006C67)),
@@ -95,5 +101,45 @@ class _onBoardingScreenState extends State<onBoardingScreen> {
         ),
       ],
     ));
+  }
+}
+class SuccessfulPopup extends StatelessWidget {
+  const SuccessfulPopup({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5)
+      ),
+      child: Stack(
+        children: [
+          Container(
+            height: h*0.5 ,
+            padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
+            child: Column(
+              children: [
+                //Congrats
+                Center(child: Text('Congratulations!', style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  )
+                ),),),
+
+                //Sized box
+                SizedBox(height: 50,),
+
+                //SVG
+                Center()
+
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

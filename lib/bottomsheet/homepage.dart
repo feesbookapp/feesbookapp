@@ -1,3 +1,5 @@
+import 'package:exampleapplication/bottomsheet/classes.dart';
+import 'package:exampleapplication/bottomsheet/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,25 +15,33 @@ class _HomepageState extends State<Homepage> {
   var currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    List screens = [
+      getBody(),
+      classes(),
+      Profile(),
+    ];
 
     return Scaffold(
-      body: getBody(),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: const Color(0xff0D5F5A),
-        unselectedItemColor: Colors.grey,
-        currentIndex: currentIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart_outlined),label: 'Dashboard'),
-          BottomNavigationBarItem(icon: Icon(Icons.monitor),label: 'Classes'),
-          BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Profile'),
-        ],
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
+      body: screens[currentIndex],
+      bottomNavigationBar: Container(
+        height: 70,
+        child: BottomNavigationBar(
+          selectedItemColor: const Color(0xff0D5F5A),
+          unselectedItemColor: Colors.grey,
+          currentIndex: currentIndex,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.bar_chart_outlined),label: 'Dashboard'),
+            BottomNavigationBarItem(icon: Icon(Icons.monitor),label: 'Classes'),
+            BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Profile'),
+          ],
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
 
-      ),
+        ),
+      )
     );
   }
 
@@ -123,8 +133,8 @@ class FeesInfo extends StatelessWidget {
 
   Color backgroundColor, textColor;
   var title;
-  var pendingAmount;
-  FeesInfo(this.backgroundColor, this.title, this.pendingAmount, this.textColor);
+  var amount;
+  FeesInfo(this.backgroundColor, this.title, this.amount, this.textColor);
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +151,7 @@ class FeesInfo extends StatelessWidget {
         children: [
           Text(title.toString(), style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w500),),
           SizedBox(height: 6,),
-          Text(pendingAmount.toString(), style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 24),)
+          Text(amount.toString(), style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 24),)
         ],),
     );
   }

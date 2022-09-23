@@ -13,7 +13,7 @@ class Bottompage extends StatefulWidget {
 
 class _BottompageState extends State<Bottompage> {
   int currentIndex = 0;
-  final screens = [Homepage(), classes(), profile()];
+  final screens = [Homepage(), classes(), Profile()];
 
   @override
   Widget build(BuildContext context) {

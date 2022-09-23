@@ -168,7 +168,7 @@ class _ProfileState extends State<Profile> {
                             onTap: () {
                               if(updatePh.length==0){
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter your phone number'), duration: Duration(milliseconds: 500), backgroundColor: Colors.red.withOpacity(0.5),));
-                                phoneClr = Colors.red;
+                                // phoneClr = Colors.red;
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Changed phone number'),duration: Duration(milliseconds: 200), backgroundColor: Color(0xff006C67)));
                               }

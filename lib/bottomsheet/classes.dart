@@ -10,6 +10,11 @@ class classes extends StatefulWidget {
 class _classesState extends State<classes> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Classes'),
+        backgroundColor: Color(0xff),
+      ),
+    );
   }
 }

@@ -80,7 +80,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   text:
                       'A 6 digit one time password has been sent to your phone number ',
                   style: TextStyle(
-                      color: Colors.grey, fontSize: 18, wordSpacing: 1),
+                      color: Colors.grey, fontSize: 16, wordSpacing: 1),
                   children: <TextSpan>[
                     TextSpan(
                         text: widget.phone,

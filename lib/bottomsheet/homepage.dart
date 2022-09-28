@@ -163,9 +163,6 @@ class _HomepageState extends State<Homepage> {
             child: Center(
           child: Column(
             children: [
-              SizedBox(
-                height: 80,
-              ),
               SvgPicture.asset('assets/no_batch.svg'),
               //Add your class
               Container(
@@ -195,7 +192,7 @@ class _HomepageState extends State<Homepage> {
                 child: Container(
                   width: w,
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(22),
+                  padding: EdgeInsets.all(18),
                   margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
                   decoration: BoxDecoration(
                       color: Color(0xff006C67),
@@ -220,8 +217,8 @@ class _HomepageState extends State<Homepage> {
               //WhatsApp need help?
               GestureDetector(
                 child: Container(
-                  height: 65,
                   width: w,
+                  padding: EdgeInsets.all(18),
                   margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
                   decoration: BoxDecoration(
                       color: Colors.white,

@@ -43,11 +43,6 @@ class _SigninState extends State<Signin> {
               child: Column(
             children: [
               //GetStarted
-              Container(
-                height: 1,
-                margin: EdgeInsets.only(bottom: 35),
-                color: Colors.grey,
-              ),
               GestureDetector(
                 child: Container(
                   height: 65,
@@ -142,10 +137,6 @@ class Swipe1 extends StatelessWidget {
     return Center(
         child: Column(
       children: [
-        SizedBox(
-          height: 50,
-        ),
-
         //Illustration
         Container(
           height: 400,
@@ -194,10 +185,6 @@ class Swipe2 extends StatelessWidget {
     return Center(
         child: Column(
       children: [
-        SizedBox(
-          height: 50,
-        ),
-
         //Illustration
         Container(
           height: 400,
@@ -246,10 +233,6 @@ class Swipe3 extends StatelessWidget {
     return Center(
         child: Column(
       children: [
-        SizedBox(
-          height: 50,
-        ),
-
         //Illustration
         Container(
           height: 400,

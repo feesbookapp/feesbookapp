@@ -16,12 +16,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(child: getBody(),)
-    );
+        body: SingleChildScrollView(
+      child: getBody(),
+    ));
   }
+
   Widget getBody() {
     //Controllers
-
 
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
@@ -29,36 +30,62 @@ class _LoginScreenState extends State<LoginScreen> {
     //Theme
     var gre = Colors.grey;
 
-
-    return SafeArea(child: Column(
+    return SafeArea(
+        child: Column(
       children: [
-        SizedBox(height: h*0.1,),
+        SizedBox(
+          height: h * 0.1,
+        ),
 
         //illustration
-        Container(width: w, child: Center(child: Container(
-          width: w*0.8,
-          height: w*0.8,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/onboarding.png')),
+        Container(
+          width: w,
+          child: Center(
+            child: Container(
+              width: w * 0.8,
+              height: w * 0.8,
+              decoration: BoxDecoration(
+                image:
+                    DecorationImage(image: AssetImage('assets/onboarding.png')),
+              ),
+            ),
           ),
-        ),),),
+        ),
 
-        SizedBox(height: h*0.1,),
+        SizedBox(
+          height: h * 0.1,
+        ),
 
         //Title
-        Container(margin: EdgeInsets.only(left: 24, right: 24),alignment: Alignment.centerLeft ,child: Text('Enter your phone number', style: GoogleFonts.poppins(textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),),),
+        Container(
+          margin: EdgeInsets.only(left: 24, right: 24),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Enter your phone number',
+            style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.black)),
+          ),
+        ),
 
         //SubTitle
         Container(
-          margin: EdgeInsets.only(left: 24, right: 24, top: 10),
-          child: Text('We will verify your phone number to keep your data secure', style: TextStyle(color: Colors.grey, fontSize: 16,  wordSpacing: 1),)
-        ),
+            margin: EdgeInsets.only(left: 24, right: 24, top: 10),
+            child: Text(
+              'We will verify your phone number to keep your data secure',
+              style:
+                  TextStyle(color: Colors.grey, fontSize: 16, wordSpacing: 1),
+            )),
 
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
 
         //Phone number
         Container(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           padding: EdgeInsets.only(left: 10),
           margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
           height: 64,
@@ -70,9 +97,13 @@ class _LoginScreenState extends State<LoginScreen> {
             maxLength: 10,
             controller: phoneNumber,
             decoration: InputDecoration(
+              alignLabelWithHint: false,
               counterText: '',
               border: InputBorder.none,
-              prefixIcon: Icon(Icons.phone,color: Color(0xff006C67),),
+              prefixIcon: Icon(
+                Icons.phone,
+                color: Color(0xff006C67),
+              ),
               hintText: 'Phone number',
             ),
             keyboardType: TextInputType.phone,
@@ -87,19 +118,26 @@ class _LoginScreenState extends State<LoginScreen> {
           child: ElevatedButton(
             onPressed: () {
               //if empty
-              if(phoneNumber.length < 10) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Phone number not correct')));
+              if (phoneNumber.length < 10) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Phone number not correct')));
                 setState(() {
                   gre = Colors.red;
                 });
               } else {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>  OTPScreen(phoneNumber.text)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OTPScreen(phoneNumber.text)));
               }
-
             },
-            child: Text('Submit', style: TextStyle(color: Colors.white),),
+            child: Text(
+              'Submit',
+              style: TextStyle(color: Colors.white),
+            ),
             style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color>(Color(0xff006C67)),
+              backgroundColor:
+                  MaterialStatePropertyAll<Color>(Color(0xff006C67)),
             ),
           ),
         ),

@@ -74,7 +74,7 @@ class _OTPScreenState extends State<OTPScreen> {
         Container(
           padding: EdgeInsets.all(10),
           child: Pinput(
-            length: 4,
+            length: 6,
 
           ),
         ),

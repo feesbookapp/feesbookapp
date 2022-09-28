@@ -85,10 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
         //Phone number
         Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 10),
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
           margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
-          height: 64,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: gre),

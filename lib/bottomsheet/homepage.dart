@@ -1,6 +1,5 @@
 import 'package:exampleapplication/bottomsheet/classes.dart';
 import 'package:exampleapplication/bottomsheet/profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -119,8 +118,6 @@ class _HomepageState extends State<Homepage> {
 
               //Students info
 
-
-
             ],
           ),
         )
@@ -131,9 +128,9 @@ class _HomepageState extends State<Homepage> {
 }
 class FeesInfo extends StatelessWidget {
 
-  Color backgroundColor, textColor;
-  var title;
-  var amount;
+  final Color backgroundColor, textColor;
+  final title;
+  final amount;
   FeesInfo(this.backgroundColor, this.title, this.amount, this.textColor);
 
   @override

@@ -1,3 +1,4 @@
+import 'package:exampleapplication/home.dart/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -10,7 +11,7 @@ class Signin extends StatefulWidget {
   State<Signin> createState() => _SigninState();
 }
 
-class _SigninState extends State<Signin> { 
+class _SigninState extends State<Signin> {
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -65,10 +66,12 @@ class _SigninState extends State<Signin> {
                   ),
                 ),
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Get Started'),
-                    duration: Duration(microseconds: 200),
-                  ));
+                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //   content: Text('Get Started'),
+                  //   duration: Duration(microseconds: 200),
+                  // ));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
               ),
 

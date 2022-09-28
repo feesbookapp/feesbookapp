@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:exampleapplication/bottomsheet/classes.dart';
 import 'package:exampleapplication/bottomsheet/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -18,21 +22,6 @@ class _HomepageState extends State<Homepage> {
       getBody(),
       classes(),
       Profile(),
-    ];
-
-    List batch = [
-      {
-        'name': '12th',
-        'subject': 'Physics',
-        'number of students': '10',
-        'feesPaid': '6'
-      },
-      {
-        'name': '11th',
-        'subject': 'Chemistry',
-        'number of students': '12',
-        'feesPaid': '3'
-      }
     ];
 
     return Scaffold(
@@ -66,6 +55,23 @@ class _HomepageState extends State<Homepage> {
     var collectedFees = '10,000';
     var tuitionName = 'Balaji tutorials';
     var city = 'Manglore';
+
+    //List
+    List kBatch = [
+      {
+        'name': '12th',
+        'subject': 'Physics',
+        'number of students': '10',
+        'feesPaid': '6'
+      },
+      {
+        'name': '11th',
+        'subject': 'Chemistry',
+        'number of students': '12',
+        'feesPaid': '3'
+      }
+    ];
+
     // var h = MediaQuery.of(context).size.height;
     return Column(
       children: [
@@ -152,54 +158,109 @@ class _HomepageState extends State<Homepage> {
             ],
           ),
         ),
-
-        //Students
-        Container(
-          width: w,
-          color: Colors.white,
+        //All classes or empty SVG
+        Expanded(
+            child: Center(
           child: Column(
             children: [
-              const SizedBox(
-                height: 24,
+              SizedBox(
+                height: 80,
+              ),
+              SvgPicture.asset('assets/no_batch.svg'),
+              //Add your class
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Text(
+                  'Add your class',
+                  style: GoogleFonts.inter(
+                      fontSize: 20, fontWeight: FontWeight.w600),
+                ),
               ),
 
-              //Students + add class
+              //subtitle
               Container(
-                  margin: EdgeInsets.only(left: 16, right: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Students',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400),
+                margin: EdgeInsets.only(top: 10),
+                child: Text(
+                  'Start managing your fees collection\nby adding a class',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
+              ),
+
+              //Add a batch
+              GestureDetector(
+                child: Container(
+                  width: w,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(22),
+                  margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                  decoration: BoxDecoration(
+                      color: Color(0xff006C67),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Text(
+                    'Add a batch >>>',
+                    style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Add a batch'),
+                    duration: Duration(microseconds: 200),
+                  ));
+                },
+              ),
+
+              //WhatsApp need help?
+              GestureDetector(
+                child: Container(
+                  height: 65,
+                  width: w,
+                  margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey)),
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.whatsapp_outlined,
+                        color: Color(0xff006C67),
+                      ),
+                      SizedBox(
+                        width: 5,
                       ),
                       Text(
-                        '+ Add class',
-                        style: TextStyle(
-                            color: Color(0xff006C67),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        'Need help setting up?',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        )),
                       ),
                     ],
                   )),
-              const SizedBox(
-                height: 24,
+                ),
+                onTap: () {
+                  launch('https://wa.me/+918303823055');
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Need help?'),
+                    duration: Duration(microseconds: 200),
+                  ));
+                },
               ),
-
-              //Students info
             ],
           ),
-        ),
-
-        //All classes or empty SVG
-        Expanded(
-          child: Center(
-            child: Text(),
-          ),
-        )
+        ))
       ],
     );
   }

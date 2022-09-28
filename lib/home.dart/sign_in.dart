@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -24,7 +25,7 @@ class _SigninState extends State<Signin> {
             height: 20,
           ),
           Container(
-            height: h * 0.75,
+            height: h * 0.7,
             width: w,
             child: PageView(
               controller: PageController(keepPage: false),
@@ -41,11 +42,12 @@ class _SigninState extends State<Signin> {
           Expanded(
               child: Column(
             children: [
-              SizedBox(
-                height: 10,
-              ),
-
               //GetStarted
+              Container(
+                height: 1,
+                margin: EdgeInsets.only(bottom: 35),
+                color: Colors.grey,
+              ),
               GestureDetector(
                 child: Container(
                   height: 65,
@@ -117,6 +119,7 @@ class _SigninState extends State<Signin> {
                     content: Text('Need help?'),
                     duration: Duration(microseconds: 200),
                   ));
+                  launch('https://wa.me/+918303823055');
                 },
               ),
             ],
@@ -174,7 +177,7 @@ class Swipe1 extends StatelessWidget {
             style: GoogleFonts.inter(textStyle: TextStyle(color: Colors.grey)),
             textAlign: TextAlign.center,
           ),
-        )
+        ),
       ],
     ));
   }

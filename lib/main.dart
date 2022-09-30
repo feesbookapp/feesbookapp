@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> {
                               return Loading();
                             } else {
                               if (snapshot.hasData) {
-                                return Bottompage();
+                                return Homepage();
                               }
                               log('Has no data');
                               return Homepage();

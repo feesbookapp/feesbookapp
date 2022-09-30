@@ -67,7 +67,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 textStyle: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
-                    color: Colors.black)),
+                    color: Color.fromARGB(255, 0, 59, 56))),
           ),
         ),
 

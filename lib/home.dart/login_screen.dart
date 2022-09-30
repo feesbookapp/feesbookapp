@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
           margin: EdgeInsets.all(25),
           child: ElevatedButton(
             onPressed: () {
-              //if empty
+              //if less than 10 digits
               if (phoneNumber.length < 10) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Phone number not correct')));

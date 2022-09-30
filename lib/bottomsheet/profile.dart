@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
@@ -276,19 +277,21 @@ class _ProfileState extends State<Profile> {
 
                 //About us 3 sections
                 Container(
-                  height: 200,
+                  height: 150,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       //FAQ
                       GestureDetector(
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.person,
-                              size: 30,
-                              color: Color(0xff006C67),
+                            SvgPicture.asset(
+                              'assets/faq.svg',
+                              height: 25,
+                              width: 25,
                             ),
                             Text(
                               '  FAQ',
@@ -297,17 +300,22 @@ class _ProfileState extends State<Profile> {
                             )
                           ],
                         ),
-                        onTap: () => ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text('FAQ'))),
+                        onTap: () =>
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('FAQ'),
+                          duration: Duration(microseconds: 200),
+                        )),
                       ),
 
                       //Privacy Policy
                       GestureDetector(
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.lock,
-                              size: 30,
+                              size: 25,
                               color: Color(0xff006C67),
                             ),
                             Text(
@@ -318,16 +326,20 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                         onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Privacy Policy'))),
+                            SnackBar(
+                                content: Text('Privacy Policy'),
+                                duration: Duration(microseconds: 200))),
                       ),
 
                       //Contact us
                       GestureDetector(
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.phone,
-                              size: 30,
+                              size: 25,
                               color: Color(0xff006C67),
                             ),
                             Text(
@@ -338,7 +350,9 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                         onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Contact us'))),
+                            SnackBar(
+                                content: Text('Contact us'),
+                                duration: Duration(microseconds: 200))),
                       ),
                     ],
                   ),

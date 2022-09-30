@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
                                 return Bottompage();
                               }
                               log('Has no data');
-                              return Signin();
+                              return Homepage();
                             }
                           },
                         );

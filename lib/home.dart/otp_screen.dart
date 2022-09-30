@@ -83,7 +83,25 @@ class _OTPScreenState extends State<OTPScreen> {
                       color: Colors.grey, fontSize: 16, wordSpacing: 1),
                   children: <TextSpan>[
                     TextSpan(
-                        text: widget.phone,
+                        text: '*******',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff006C67),
+                            fontSize: 16)),
+                    TextSpan(
+                        text: widget.phone[8],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff006C67),
+                            fontSize: 16)),
+                    TextSpan(
+                        text: widget.phone[9],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff006C67),
+                            fontSize: 16)),
+                    TextSpan(
+                        text: widget.phone[8],
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff006C67),
@@ -112,6 +130,23 @@ class _OTPScreenState extends State<OTPScreen> {
           padding: EdgeInsets.all(10),
           child: Pinput(
             length: 6,
+            defaultPinTheme: PinTheme(
+                height: 58,
+                width: 52,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xffF8F9FB),
+                    // color: Colors.black,
+                    border:
+                        Border.all(color: Color(0xff006C67).withOpacity(0.3)))),
+            focusedPinTheme: PinTheme(
+                height: 58,
+                width: 52,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xffF8F9FB),
+                    // color: Colors.black,
+                    border: Border.all(color: Color(0xff006C67)))),
           ),
         ),
 
@@ -119,7 +154,7 @@ class _OTPScreenState extends State<OTPScreen> {
         Container(
           width: w,
           height: 60,
-          margin: EdgeInsets.all(25),
+          margin: EdgeInsets.fromLTRB(25, 25, 25, 10),
           child: ElevatedButton(
             onPressed: () {
               //Send OTP
@@ -136,6 +171,32 @@ class _OTPScreenState extends State<OTPScreen> {
             ),
           ),
         ),
+
+        //Didn’t receive the code? Resend
+        Padding(
+            padding: EdgeInsets.all(2),
+            child: GestureDetector(
+              child: RichText(
+                text: TextSpan(
+                    text: 'Didn’t receive the code?',
+                    style: TextStyle(color: Color(0xffA7A9B7)),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: ' Resend.',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ))
+                    ]),
+              ),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                    'Resending code',
+                  ),
+                  duration: Duration(microseconds: 500),
+                ));
+              },
+            ))
       ],
     ));
   }

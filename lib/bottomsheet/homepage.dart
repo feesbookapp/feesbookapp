@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:exampleapplication/Widgets/batches.dart';
 import 'package:exampleapplication/bottomsheet/classes.dart';
 import 'package:exampleapplication/bottomsheet/profile.dart';
 import 'package:flutter/material.dart';
@@ -59,13 +60,13 @@ class _HomepageState extends State<Homepage> {
     //List
     List kBatch = [
       {
-        'name': '12th',
+        'name': 'Class 12th(6AM)',
         'subject': 'Physics',
-        'number of students': '10',
+        'students no': '10',
         'feesPaid': '6'
       },
       {
-        'name': '11th',
+        'name': 'Class 11th(6AM)',
         'subject': 'Chemistry',
         'number of students': '12',
         'feesPaid': '3'
@@ -222,11 +223,6 @@ class _HomepageState extends State<Homepage> {
                             ),
                           ),
                           onTap: () {
-                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            //   content: Text('Add a batch'),
-                            //   duration: Duration(microseconds: 200),
-                            // ));
-
                             showModalBottomSheet(
                                 isScrollControlled: true,
                                 shape: RoundedRectangleBorder(
@@ -509,7 +505,8 @@ class _HomepageState extends State<Homepage> {
                                                                         .w600,
                                                                 fontSize: 16)),
                                                         keyboardType:
-                                                            TextInputType.text,
+                                                            TextInputType
+                                                                .number,
                                                       ),
                                                     ),
 
@@ -603,7 +600,7 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ],
                     ),
-                  ))
+                  )),
                 ],
               )),
             ],

@@ -312,10 +312,10 @@ class _ProfileState extends State<Profile> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.lock,
-                              size: 25,
-                              color: Color(0xff006C67),
+                            SvgPicture.asset(
+                              'assets/privacy_policy.svg',
+                              height: 25,
+                              width: 25,
                             ),
                             Text(
                               '  Privacy Policy',
@@ -336,11 +336,7 @@ class _ProfileState extends State<Profile> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.phone,
-                              size: 25,
-                              color: Color(0xff006C67),
-                            ),
+                            SvgPicture.asset('assets/contact_us.svg'),
                             Text(
                               '  Contact us',
                               style:

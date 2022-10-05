@@ -94,7 +94,7 @@ class Batches extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                            text: "View",
+                            text: "View ",
                             style: TextStyle(
                               color: Color(0xff09635E),
                               fontSize: 16,

@@ -1,4 +1,6 @@
-import 'package:exampleapplication/home.dart/otp_screen.dart';
+import 'package:exampleapplication/views/home/otp_screen.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +15,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController phoneNumber = new TextEditingController();
+  bool _loading = false;
+
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,25 +121,31 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 60,
           margin: EdgeInsets.all(25),
           child: ElevatedButton(
-            onPressed: () {
-              //if less than 10 digits
-              if (phoneNumber.length < 10) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Phone number not correct')));
-                setState(() {
-                  gre = Colors.red;
-                });
-              } else {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OTPScreen(phoneNumber.text)));
-              }
-            },
-            child: Text(
-              'Submit',
-              style: TextStyle(color: Colors.white),
-            ),
+            onPressed: _loading
+                ? null
+                : () async {
+                    //if less than 10 digits
+                    if (phoneNumber.length < 10) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Phone number not correct')));
+                      setState(() {
+                        gre = Colors.red;
+                      });
+                      return;
+                    }
+
+                    setState(() {
+                      _loading = true;
+                    });
+
+                    await sendOneTimeCode();
+                  },
+            child: _loading
+                ? const CircularProgressIndicator()
+                : Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
+                  ),
             style: ButtonStyle(
               backgroundColor:
                   MaterialStatePropertyAll<Color>(Color(0xff006C67)),
@@ -142,5 +154,75 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ],
     ));
+  }
+
+  Future<void> sendOneTimeCode() async {
+    await _auth.verifyPhoneNumber(
+      timeout: const Duration(seconds: 60),
+      phoneNumber: '+91${phoneNumber.text}',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Sign in successful')));
+
+        try {
+          await _auth.signInWithCredential(credential);
+
+          setState(() {
+            _loading = false;
+          });
+
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Homepage()));
+        } catch (e) {
+          setState(() {
+            _loading = false;
+          });
+
+          if (e is FirebaseAuthException) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(e.message ?? e.code)),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Something went wrong. Please try again later.'),
+              ),
+            );
+          }
+        }
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        setState(() {
+          _loading = false;
+        });
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Phone number not correct')));
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        setState(() {
+          _loading = false;
+        });
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OTPScreen(
+              phone: phoneNumber.text,
+              verificationId: verificationId,
+              resendToken: resendToken,
+            ),
+          ),
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          _loading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Your network connect is slow. Please try again.')));
+      },
+    );
   }
 }

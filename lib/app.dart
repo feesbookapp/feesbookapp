@@ -4,16 +4,15 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampleapplication/env/app_env.dart';
 import 'package:exampleapplication/env/dev_env.dart';
+import 'package:exampleapplication/views/home/sign_in.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// import 'home.dart/login_screen.dart';
-import 'bottomsheet/homepage.dart';
 import 'helper/utils.dart';
-import 'home.dart/sign_in.dart';
 
 void main({AppEnvironment? environment}) async {
   final env = environment ?? DevEnvironment();
@@ -53,6 +52,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool doctor = false;
+  final _stream = FirebaseAuth.instance.authStateChanges();
 
   @override
   void initState() {
@@ -66,78 +66,66 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget build(BuildContext context) {
-    final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-    return FutureBuilder(
-      future: _initialization,
-      builder: (context, snapshot) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Appointment Booking',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: snapshot.connectionState != ConnectionState.done
-              ? Loading()
-              : StreamBuilder(
-                  stream: FirebaseAuth.instance.authStateChanges(),
-                  builder: (context, userSnapshot) {
-                    if (userSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      log('Loading');
-                      return Loading();
-                    } else if (doctor) {
-                      if (userSnapshot.data != null) {
-                        log('Logged in');
-                        return StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection("doctors")
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .snapshots(),
-                          builder: (context, snapShot) {
-                            if (snapShot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Loading();
-                            } else {
-                              if (snapShot.hasData) {
-                                return Homepage();
-                              }
-                              log('Has no data');
-                              return Homepage();
-                            }
-                          },
-                        );
-                      }
-                    } else if (!doctor) {
-                      if (userSnapshot.data != null) {
-                        log('Logged in');
-                        return StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .snapshots(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            var data = snapshot.data;
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Loading();
-                            } else {
-                              if (snapshot.hasData) {
-                                return Homepage();
-                              }
-                              log('Has no data');
-                              return Homepage();
-                            }
-                          },
-                        );
-                      }
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Appointment Booking',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: StreamBuilder(
+        stream: _stream,
+        builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
+            log('Loading');
+            return Loading();
+          } else if (doctor) {
+            if (userSnapshot.data != null) {
+              log('Logged in');
+              return StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("doctors")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .snapshots(),
+                builder: (context, snapShot) {
+                  if (snapShot.connectionState == ConnectionState.waiting) {
+                    return Loading();
+                  } else {
+                    if (snapShot.hasData) {
+                      return Homepage();
                     }
-                    log('UserSnapshot = null');
-                    return Signin();
-                  },
-                ),
-        );
-      },
+                    log('Has no data');
+                    return Homepage();
+                  }
+                },
+              );
+            }
+          } else if (!doctor) {
+            if (userSnapshot.data != null) {
+              log('Logged in');
+              return StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  var data = snapshot.data;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Loading();
+                  } else {
+                    if (snapshot.hasData) {
+                      return Homepage();
+                    }
+                    log('Has no data');
+                    return Homepage();
+                  }
+                },
+              );
+            }
+          }
+          log('UserSnapshot = null');
+          return Signin();
+        },
+      ),
     );
   }
 }

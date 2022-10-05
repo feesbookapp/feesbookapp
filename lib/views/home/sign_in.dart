@@ -1,4 +1,4 @@
-import 'package:exampleapplication/home.dart/login_screen.dart';
+import 'package:exampleapplication/views/home/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';

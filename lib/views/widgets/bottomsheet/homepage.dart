@@ -1,7 +1,5 @@
-import 'dart:async';
-
-import 'package:exampleapplication/bottomsheet/classes.dart';
-import 'package:exampleapplication/bottomsheet/profile.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/classes.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';

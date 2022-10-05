@@ -1,21 +1,31 @@
-import 'package:exampleapplication/bottomsheet/homepage.dart';
-import 'package:exampleapplication/home.dart/login_screen.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
-import '../onboardingscreens.dart';
-
 class OTPScreen extends StatefulWidget {
   final String phone;
-  OTPScreen(this.phone);
+  final String verificationId;
+  final int? resendToken;
+
+  OTPScreen({
+    required this.phone,
+    required this.verificationId,
+    required this.resendToken,
+  });
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
 }
 
 class _OTPScreenState extends State<OTPScreen> {
+  String? otpCode;
+  bool _loading = false;
+
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +44,7 @@ class _OTPScreenState extends State<OTPScreen> {
     return SafeArea(
         child: Column(
       children: [
-        SizedBox(
-          height: h * 0.1,
-        ),
+        SizedBox(height: h * 0.1),
 
         //illustration
         Container(
@@ -83,29 +91,12 @@ class _OTPScreenState extends State<OTPScreen> {
                       color: Colors.grey, fontSize: 16, wordSpacing: 1),
                   children: <TextSpan>[
                     TextSpan(
-                        text: '*******',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff006C67),
-                            fontSize: 16)),
-                    TextSpan(
-                        text: widget.phone[8],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff006C67),
-                            fontSize: 16)),
-                    TextSpan(
-                        text: widget.phone[9],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff006C67),
-                            fontSize: 16)),
-                    TextSpan(
-                        text: widget.phone[8],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff006C67),
-                            fontSize: 16)),
+                      text: '*******${widget.phone.substring(7)}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff006C67),
+                          fontSize: 16),
+                    ),
                     TextSpan(
                         text: '. Edit',
                         style: TextStyle(
@@ -116,8 +107,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 ),
               )),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginScreen()));
+            Navigator.of(context).pop();
           },
         ),
 
@@ -129,6 +119,9 @@ class _OTPScreenState extends State<OTPScreen> {
         Container(
           padding: EdgeInsets.all(10),
           child: Pinput(
+            onChanged: (value) {
+              otpCode = value;
+            },
             length: 6,
             defaultPinTheme: PinTheme(
                 height: 58,
@@ -156,15 +149,68 @@ class _OTPScreenState extends State<OTPScreen> {
           height: 60,
           margin: EdgeInsets.fromLTRB(25, 25, 25, 10),
           child: ElevatedButton(
-            onPressed: () {
-              //Send OTP
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Homepage()));
-            },
-            child: Text(
-              'Submit',
-              style: TextStyle(color: Colors.white),
-            ),
+            onPressed: _loading
+                ? null
+                : () async {
+                    if (otpCode?.length != 6) {
+                      return;
+                    }
+
+                    setState(() {
+                      _loading = true;
+                    });
+
+                    final credential = PhoneAuthProvider.credential(
+                      verificationId: widget.verificationId,
+                      smsCode: otpCode!,
+                    );
+
+                    try {
+                      await _auth.signInWithCredential(credential);
+
+                      setState(() {
+                        _loading = false;
+                      });
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Homepage()));
+                    } catch (e) {
+                      setState(() {
+                        _loading = false;
+                      });
+
+                      if (e is FirebaseAuthException) {
+                        switch (e.code) {
+                          case 'invalid-verification-code':
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'OTP is wrong. Please enter the correct OTP.'),
+                              ),
+                            );
+                            break;
+
+                          default:
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(e.message ?? e.code)),
+                            );
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Something went wrong. Please try again later.'),
+                          ),
+                        );
+                      }
+                    }
+                  },
+            child: _loading
+                ? CircularProgressIndicator()
+                : Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
+                  ),
             style: ButtonStyle(
               backgroundColor:
                   MaterialStatePropertyAll<Color>(Color(0xff006C67)),

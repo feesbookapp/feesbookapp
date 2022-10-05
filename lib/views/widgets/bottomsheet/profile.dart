@@ -1,3 +1,5 @@
+import 'package:exampleapplication/views/home/sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +14,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   TextEditingController updatePh = new TextEditingController();
   TextEditingController updateName = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -353,6 +356,31 @@ class _ProfileState extends State<Profile> {
                             SnackBar(
                                 content: Text('Contact us'),
                                 duration: Duration(microseconds: 200))),
+                      ),
+                      GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.logout,
+                              size: 25,
+                              color: Color(0xff006C67),
+                            ),
+                            Text(
+                              '  Logout',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 16),
+                            )
+                          ],
+                        ),
+                        onTap: () async {
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => Signin()),
+                            (route) => false,
+                          );
+                        },
                       ),
                     ],
                   ),

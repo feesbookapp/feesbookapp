@@ -1,3 +1,5 @@
+import 'package:exampleapplication/Widgets/fees_history.dart';
+import 'package:exampleapplication/Widgets/pending_fees.dart';
 import 'package:flutter/material.dart';
 
 class classes extends StatefulWidget {
@@ -13,7 +15,16 @@ class _classesState extends State<classes> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Classes'),
-        backgroundColor: Color(0xff),
+        backgroundColor: Color(0xff303030),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 70,
+          ),
+          PendingFees(startMonth: 'May', endMonth: 'June', fees: 500),
+          FeesHistory(month: 'June', fees: 450)
+        ],
       ),
     );
   }

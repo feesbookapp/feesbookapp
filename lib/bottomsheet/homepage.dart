@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:exampleapplication/Widgets/batches.dart';
 import 'package:exampleapplication/bottomsheet/classes.dart';
 import 'package:exampleapplication/bottomsheet/profile.dart';
@@ -28,18 +26,38 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
         body: screens[currentIndex],
         bottomNavigationBar: Container(
-          height: 70,
+          height: 85,
           child: BottomNavigationBar(
             selectedItemColor: const Color(0xff0D5F5A),
             unselectedItemColor: Colors.grey,
+            selectedFontSize: 16,
+            unselectedFontSize: 14,
             currentIndex: currentIndex,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.bar_chart_outlined), label: 'Dashboard'),
+                  icon: SvgPicture.asset(
+                    currentIndex == 0
+                        ? 'assets/dashboard_selected.svg'
+                        : 'assets/dashboard_default.svg',
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: 'Dashboard'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.monitor), label: 'Classes'),
+                  icon: SvgPicture.asset(
+                    currentIndex == 1
+                        ? 'assets/classes_selected.svg'
+                        : 'assets/classes_default.svg',
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: 'Classes'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: 'Profile'),
+                  icon: Icon(
+                    Icons.person,
+                    size: 30,
+                  ),
+                  label: 'Profile'),
             ],
             onTap: (index) {
               setState(() {
@@ -62,13 +80,13 @@ class _HomepageState extends State<Homepage> {
       {
         'name': 'Class 12th(6AM)',
         'subject': 'Physics',
-        'students no': '10',
+        'totalStu': '10',
         'feesPaid': '6'
       },
       {
         'name': 'Class 11th(6AM)',
         'subject': 'Chemistry',
-        'number of students': '12',
+        'totalStu': '12',
         'feesPaid': '3'
       }
     ];
@@ -601,6 +619,14 @@ class _HomepageState extends State<Homepage> {
                       ],
                     ),
                   )),
+
+                  //if not empty
+                  Batches(
+                      name: kBatch[0]['name'],
+                      subject: kBatch[0]['subject'],
+                      paidNum: kBatch[0]['feesPaid'],
+                      link: classes(),
+                      studentNum: kBatch[0]['totalStu']),
                 ],
               )),
             ],

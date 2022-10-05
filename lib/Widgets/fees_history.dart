@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PendingFees extends StatelessWidget {
-  final startMonth;
-  final endMonth;
-  final fees;
+class FeesHistory extends StatelessWidget {
+  final String month;
 
-  const PendingFees(
-      {super.key,
-      required this.startMonth,
-      required this.endMonth,
-      required this.fees});
+  final int fees;
+  const FeesHistory({super.key, required this.month, required this.fees});
 
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
-    // var h = MediaQuery.of(context).size.height;
     return Container(
       margin: EdgeInsets.fromLTRB(15, 6, 15, 6),
       padding: EdgeInsets.all(10),
@@ -35,7 +29,8 @@ class PendingFees extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Color(0xffF2F4F9),
                   borderRadius: BorderRadius.circular(10)),
-              child: Center(child: SvgPicture.asset('assets/tick_mark.svg')),
+              child: Center(
+                  child: SvgPicture.asset('assets/arrow_bottom_left.svg')),
             ),
             Spacer(
               flex: 1,
@@ -45,12 +40,12 @@ class PendingFees extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Monthly fees',
+                  'Paid',
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(color: Colors.black, fontSize: 16)),
                 ),
                 Text(
-                  '$startMonth - $endMonth',
+                  '$month',
                   style: GoogleFonts.inter(
                       textStyle: TextStyle(color: Colors.grey, fontSize: 12)),
                 )

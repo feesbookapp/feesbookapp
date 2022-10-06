@@ -19,7 +19,10 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     List screens = [
       getBody(),
-      classes(),
+      classes(
+          batchName: 'Class 12th(6am)',
+          pendingFees: 2500,
+          collectedFees: 10000),
       Profile(),
     ];
 
@@ -625,7 +628,10 @@ class _HomepageState extends State<Homepage> {
                       name: kBatch[0]['name'],
                       subject: kBatch[0]['subject'],
                       paidNum: kBatch[0]['feesPaid'],
-                      link: classes(),
+                      link: classes(
+                          batchName: 'Class 12th(6am)',
+                          pendingFees: 2500,
+                          collectedFees: 10000),
                       studentNum: kBatch[0]['totalStu']),
                 ],
               )),

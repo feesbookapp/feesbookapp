@@ -5,7 +5,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class classes extends StatefulWidget {
-  classes({Key? key}) : super(key: key);
+  final String batchName;
+  final int pendingFees;
+  final int collectedFees;
+  classes(
+      {Key? key,
+      required this.batchName,
+      required this.pendingFees,
+      required this.collectedFees})
+      : super(key: key);
 
   @override
   State<classes> createState() => _classesState();
@@ -62,7 +70,7 @@ class _classesState extends State<classes> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Class 12th (6AM)',
+                        widget.batchName,
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -104,7 +112,7 @@ class _classesState extends State<classes> {
                     //Red box
                     Container(
                       child: FeesInfo(Color(0xffFCEEEE), 'Pending Fees',
-                          '2,244', Color(0xff9D0709)),
+                          widget.pendingFees, Color(0xff9D0709)),
                       height: 84,
                       width: w / 2 - 22,
                     ),
@@ -113,7 +121,7 @@ class _classesState extends State<classes> {
                       height: 84,
                       width: w / 2 - 22,
                       child: FeesInfo(Color(0xffE9EDEC), 'Total collected',
-                          '10,001', Color(0xff006C67)),
+                          widget.collectedFees, Color(0xff006C67)),
                     )
                   ],
                 ),
@@ -260,21 +268,29 @@ class StudentInfo extends StatelessWidget {
                   )),
                 ),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Student()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Student(
+                                stuName: studentName,
+                              )));
                 },
               ),
               const SizedBox(
                 height: 14,
               ),
-              Center(
-                  child: Text(
-                'Send fees reminder',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16),
-              )),
+              GestureDetector(
+                child: Center(
+                    child: Text(
+                  'Send fees reminder',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16),
+                )),
+                onTap: (() => ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Send Reminder')))),
+              ),
               const SizedBox(
                 height: 26,
               ),

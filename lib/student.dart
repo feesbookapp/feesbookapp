@@ -1,13 +1,12 @@
+import 'package:exampleapplication/Widgets/fees_history.dart';
 import 'package:exampleapplication/Widgets/pending_fees.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'bottomsheet/homepage.dart';
 
 class Student extends StatefulWidget {
-  const Student({super.key});
+  final String stuName;
+  const Student({super.key, required this.stuName});
 
   @override
   State<Student> createState() => _StudentState();
@@ -56,7 +55,7 @@ class _StudentState extends State<Student> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Harshit pathak',
+                          widget.stuName,
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -132,51 +131,63 @@ class _StudentState extends State<Student> {
                       'Pending Fees',
                       style: GoogleFonts.inter(
                           textStyle: TextStyle(
-                              color: studentController ==
-                                      studentController.initialPage
-                                  ? Color(0xff006C67)
-                                  : Colors.black,
+                              color: Color(0xff303030),
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      studentController.animateToPage(0,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeInOut);
+                      setState(() {});
+                    },
                   ),
                   GestureDetector(
                     child: Text(
                       'Fees History',
                       style: GoogleFonts.inter(
                           textStyle: TextStyle(
-                              color: Colors.black,
+                              color: studentController == 1
+                                  ? Color(0xff006C67)
+                                  : Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      studentController.animateToPage(1,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeInOut);
+                    },
                   ),
-                  Text(
-                    'Contact',
-                    style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                  ),
+                  GestureDetector(
+                    child: Text(
+                      'Contact',
+                      style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                              color: studentController == 2
+                                  ? Color(0xff006C67)
+                                  : Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                    onTap: () {
+                      studentController.animateToPage(2,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeInOut);
+                    },
+                  )
                 ]),
           )),
           Expanded(
               child: Container(
-            padding: EdgeInsets.only(top: 15),
             color: Colors.white,
             child: PageView(
               allowImplicitScrolling: true,
               controller: studentController,
               children: [
                 pendingFeesPage(),
-                Container(
-                  color: Colors.black,
-                ),
-                Container(
-                  color: Colors.blue,
-                )
+                feesHistoryPage(),
+                contactPage(),
               ],
             ),
           )),
@@ -185,7 +196,59 @@ class _StudentState extends State<Student> {
     );
   }
 
+  Widget contactPage() {
+    return Expanded(
+        child: Padding(
+      padding: EdgeInsets.only(top: 15),
+      child: Column(children: [Text('Contact')]),
+    ));
+  }
+
+  Widget feesHistoryPage() {
+    return Expanded(
+        child: Padding(
+      padding: EdgeInsets.only(top: 15),
+      child: Column(children: [
+        FeesHistory(month: 'Jan', fees: 500),
+        FeesHistory(month: 'Feb', fees: 600),
+        FeesHistory(month: 'Mar', fees: 600),
+        FeesHistory(month: 'April', fees: 800),
+      ]),
+    ));
+  }
+
   Widget pendingFeesPage() {
-    return Container();
+    // List pendingFeesList = [
+    //   {
+    //     'startingMonth': 'March',
+    //     'endingMonth': 'April',
+    //     'Fees': 500
+    //   },
+    //   {
+    //     'startingMonth': 'April',
+    //     'endingMonth': 'May',
+    //     'Fees': 600
+    //   },
+    //   {
+    //     'startingMonth': 'May',
+    //     'endingMonth': 'June',
+    //     'Fees': 800
+    //   },
+    //   {
+    //     'startingMonth': 'June',
+    //     'endingMonth': 'July',
+    //     'Fees': 500
+    //   }
+    // ];
+
+    return Expanded(
+        child: Padding(
+      padding: EdgeInsets.only(top: 15),
+      child: Column(children: [
+        PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
+        PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
+        PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+      ]),
+    ));
   }
 }

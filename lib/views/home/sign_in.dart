@@ -67,7 +67,7 @@ class _SigninState extends State<Signin> {
                   //   content: Text('Get Started'),
                   //   duration: Duration(microseconds: 200),
                   // ));
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
               ),

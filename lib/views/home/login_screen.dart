@@ -196,8 +196,9 @@ class _LoginScreenState extends State<LoginScreen> {
           _loading = false;
         });
 
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Phone number not correct')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? e.code)),
+        );
       },
       codeSent: (String verificationId, int? resendToken) {
         setState(() {

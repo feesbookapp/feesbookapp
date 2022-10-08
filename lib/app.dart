@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampleapplication/env/app_env.dart';
 import 'package:exampleapplication/env/dev_env.dart';
 import 'package:exampleapplication/views/home/sign_in.dart';
@@ -10,9 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'helper/utils.dart';
 
 void main({AppEnvironment? environment}) async {
   final env = environment ?? DevEnvironment();
@@ -51,19 +44,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool doctor = false;
-  final _stream = FirebaseAuth.instance.authStateChanges();
-
-  @override
-  void initState() {
-    super.initState();
-    checkRole();
-  }
-
-  Future<void> checkRole() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    doctor = (pref.getBool('doctorRole') ?? true);
-  }
+  final userLoggedIn = FirebaseAuth.instance.currentUser != null;
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -72,60 +53,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StreamBuilder(
-        stream: _stream,
-        builder: (context, userSnapshot) {
-          if (userSnapshot.connectionState == ConnectionState.waiting) {
-            log('Loading');
-            return Loading();
-          } else if (doctor) {
-            if (userSnapshot.data != null) {
-              log('Logged in');
-              return StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("doctors")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .snapshots(),
-                builder: (context, snapShot) {
-                  if (snapShot.connectionState == ConnectionState.waiting) {
-                    return Loading();
-                  } else {
-                    if (snapShot.hasData) {
-                      return Homepage();
-                    }
-                    log('Has no data');
-                    return Homepage();
-                  }
-                },
-              );
-            }
-          } else if (!doctor) {
-            if (userSnapshot.data != null) {
-              log('Logged in');
-              return StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .snapshots(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  var data = snapshot.data;
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Loading();
-                  } else {
-                    if (snapshot.hasData) {
-                      return Homepage();
-                    }
-                    log('Has no data');
-                    return Homepage();
-                  }
-                },
-              );
-            }
-          }
-          log('UserSnapshot = null');
-          return Signin();
-        },
-      ),
+      home: userLoggedIn ? Homepage() : Signin(),
     );
   }
 }

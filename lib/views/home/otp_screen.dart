@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exampleapplication/data/firestore_collection_path.dart';
 import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -168,12 +170,34 @@ class _OTPScreenState extends State<OTPScreen> {
                     try {
                       await _auth.signInWithCredential(credential);
 
+                      final currentUser = _auth.currentUser!;
+
+                      final userDoc = await FirestoreCollectionPath.users
+                          .doc(currentUser.uid);
+
+                      final firebaseUser = await userDoc.get();
+
+                      if (!firebaseUser.exists) {
+                        final userMap = {
+                          'id': currentUser.uid,
+                          'phone': currentUser.phoneNumber,
+                          'name': currentUser.displayName,
+                          'profilePicture': currentUser.photoURL,
+                          'updatedAt': FieldValue.serverTimestamp().toString(),
+                          'createdAt': FieldValue.serverTimestamp().toString(),
+                        };
+
+                        await userDoc.set(userMap);
+                      }
+
                       setState(() {
                         _loading = false;
                       });
 
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Homepage()));
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Homepage()),
+                        (Route<dynamic> route) => false,
+                      );
                     } catch (e) {
                       setState(() {
                         _loading = false;
@@ -185,7 +209,8 @@ class _OTPScreenState extends State<OTPScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                    'OTP is wrong. Please enter the correct OTP.'),
+                                  'OTP is wrong. Please enter the correct OTP.',
+                                ),
                               ),
                             );
                             break;

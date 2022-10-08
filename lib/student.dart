@@ -1,11 +1,12 @@
 import 'package:exampleapplication/Widgets/fees_history.dart';
 import 'package:exampleapplication/Widgets/pending_fees.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'bottomsheet/homepage.dart';
 
 class Student extends StatefulWidget {
   final String stuName;
+
   const Student({super.key, required this.stuName});
 
   @override

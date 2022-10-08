@@ -1,4 +1,4 @@
-import 'package:exampleapplication/home.dart/login_screen.dart';
+import 'package:exampleapplication/views/home/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,7 +65,7 @@ class _SigninState extends State<Signin> {
                   //   content: Text('Get Started'),
                   //   duration: Duration(microseconds: 200),
                   // ));
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
               ),

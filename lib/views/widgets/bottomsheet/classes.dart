@@ -1,5 +1,5 @@
-import 'package:exampleapplication/bottomsheet/homepage.dart';
 import 'package:exampleapplication/student.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +8,7 @@ class classes extends StatefulWidget {
   final String batchName;
   final int pendingFees;
   final int collectedFees;
+
   classes(
       {Key? key,
       required this.batchName,

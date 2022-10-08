@@ -1,4 +1,4 @@
-import 'package:exampleapplication/bottomsheet/homepage.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

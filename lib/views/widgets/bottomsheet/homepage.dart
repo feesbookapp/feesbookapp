@@ -1,6 +1,6 @@
 import 'package:exampleapplication/Widgets/batches.dart';
-import 'package:exampleapplication/bottomsheet/classes.dart';
-import 'package:exampleapplication/bottomsheet/profile.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/classes.dart';
+import 'package:exampleapplication/views/widgets/bottomsheet/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,6 +15,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   var currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     List screens = [
@@ -244,6 +245,11 @@ class _HomepageState extends State<Homepage> {
                             ),
                           ),
                           onTap: () {
+                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //   content: Text('Add a batch'),
+                            //   duration: Duration(microseconds: 200),
+                            // ));
+
                             showModalBottomSheet(
                                 isScrollControlled: true,
                                 shape: RoundedRectangleBorder(
@@ -647,6 +653,7 @@ class FeesInfo extends StatelessWidget {
   final Color backgroundColor, textColor;
   final title;
   final amount;
+
   FeesInfo(this.backgroundColor, this.title, this.amount, this.textColor);
 
   @override

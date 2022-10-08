@@ -1,4 +1,4 @@
-import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
+import 'package:exampleapplication/views/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -152,8 +152,10 @@ class SuccessfulPopup extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Homepage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
                     },
                     child: Text('Home'),
                     style: ButtonStyle(

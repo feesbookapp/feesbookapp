@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:exampleapplication/data/firestore_collection_path.dart';
-import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
+import 'package:exampleapplication/view_model/providers.dart';
+import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
@@ -150,97 +150,83 @@ class _OTPScreenState extends State<OTPScreen> {
           width: w,
           height: 60,
           margin: EdgeInsets.fromLTRB(25, 25, 25, 10),
-          child: ElevatedButton(
-            onPressed: _loading
-                ? null
-                : () async {
-                    if (otpCode?.length != 6) {
-                      return;
-                    }
-
-                    setState(() {
-                      _loading = true;
-                    });
-
-                    final credential = PhoneAuthProvider.credential(
-                      verificationId: widget.verificationId,
-                      smsCode: otpCode!,
-                    );
-
-                    try {
-                      await _auth.signInWithCredential(credential);
-
-                      final currentUser = _auth.currentUser!;
-
-                      final userDoc = await FirestoreCollectionPath.users
-                          .doc(currentUser.uid);
-
-                      final firebaseUser = await userDoc.get();
-
-                      if (!firebaseUser.exists) {
-                        final userMap = {
-                          'id': currentUser.uid,
-                          'phone': currentUser.phoneNumber,
-                          'name': currentUser.displayName,
-                          'profilePicture': currentUser.photoURL,
-                          'updatedAt': FieldValue.serverTimestamp().toString(),
-                          'createdAt': FieldValue.serverTimestamp().toString(),
-                        };
-
-                        await userDoc.set(userMap);
+          child: Consumer(builder: (context, ref, _) {
+            return ElevatedButton(
+              onPressed: _loading
+                  ? null
+                  : () async {
+                      if (otpCode?.length != 6) {
+                        return;
                       }
 
                       setState(() {
-                        _loading = false;
+                        _loading = true;
                       });
 
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => Homepage()),
-                        (Route<dynamic> route) => false,
+                      final credential = PhoneAuthProvider.credential(
+                        verificationId: widget.verificationId,
+                        smsCode: otpCode!,
                       );
-                    } catch (e) {
-                      setState(() {
-                        _loading = false;
-                      });
 
-                      if (e is FirebaseAuthException) {
-                        switch (e.code) {
-                          case 'invalid-verification-code':
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'OTP is wrong. Please enter the correct OTP.',
-                                ),
-                              ),
-                            );
-                            break;
+                      try {
+                        await _auth.signInWithCredential(credential);
 
-                          default:
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(e.message ?? e.code)),
-                            );
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                'Something went wrong. Please try again later.'),
-                          ),
+                        await ref
+                            .read(appStateViewModelProvider.notifier)
+                            .createUserInFirebase({});
+
+                        setState(() {
+                          _loading = false;
+                        });
+
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (Route<dynamic> route) => false,
                         );
+                      } catch (e) {
+                        setState(() {
+                          _loading = false;
+                        });
+
+                        if (e is FirebaseAuthException) {
+                          switch (e.code) {
+                            case 'invalid-verification-code':
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'OTP is wrong. Please enter the correct OTP.',
+                                  ),
+                                ),
+                              );
+                              break;
+
+                            default:
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.message ?? e.code)),
+                              );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Something went wrong. Please try again later.'),
+                            ),
+                          );
+                        }
                       }
-                    }
-                  },
-            child: _loading
-                ? CircularProgressIndicator()
-                : Text(
-                    'Submit',
-                    style: TextStyle(color: Colors.white),
-                  ),
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll<Color>(Color(0xff006C67)),
-            ),
-          ),
+                    },
+              child: _loading
+                  ? CircularProgressIndicator()
+                  : Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color>(Color(0xff006C67)),
+              ),
+            );
+          }),
         ),
 
         //Didn’t receive the code? Resend

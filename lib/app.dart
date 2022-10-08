@@ -1,11 +1,12 @@
 import 'package:exampleapplication/env/app_env.dart';
 import 'package:exampleapplication/env/dev_env.dart';
 import 'package:exampleapplication/views/home/sign_in.dart';
-import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
+import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main({AppEnvironment? environment}) async {
   final env = environment ?? DevEnvironment();
@@ -33,7 +34,7 @@ void main({AppEnvironment? environment}) async {
     );
   }
 
-  runApp(app);
+  runApp(ProviderScope(child: app));
 }
 
 class MyApp extends StatefulWidget {
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: userLoggedIn ? Homepage() : Signin(),
+      home: userLoggedIn ? HomeScreen() : Signin(),
     );
   }
 }

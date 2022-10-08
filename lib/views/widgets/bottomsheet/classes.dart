@@ -1,15 +1,16 @@
-import 'package:exampleapplication/student.dart';
-import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
+import 'package:exampleapplication/views/dashboard_screen.dart';
+import 'package:exampleapplication/views/home_screen.dart';
+import 'package:exampleapplication/views/student.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class classes extends StatefulWidget {
+class ClassTile extends StatefulWidget {
   final String batchName;
   final int pendingFees;
   final int collectedFees;
 
-  classes(
+  ClassTile(
       {Key? key,
       required this.batchName,
       required this.pendingFees,
@@ -17,10 +18,10 @@ class classes extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<classes> createState() => _classesState();
+  State<ClassTile> createState() => _ClassTileState();
 }
 
-class _classesState extends State<classes> {
+class _ClassTileState extends State<ClassTile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,9 +59,10 @@ class _classesState extends State<classes> {
                         child: Center(child: Icon(Icons.arrow_back)),
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Homepage()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
+                          );
                         },
                       )),
                   SizedBox(

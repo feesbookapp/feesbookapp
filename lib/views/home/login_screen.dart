@@ -1,5 +1,5 @@
 import 'package:exampleapplication/views/home/otp_screen.dart';
-import 'package:exampleapplication/views/widgets/bottomsheet/homepage.dart';
+import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -172,7 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
           });
 
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Homepage()));
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
         } catch (e) {
           setState(() {
             _loading = false;
@@ -217,10 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        setState(() {
-          _loading = false;
-        });
-
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Your network connect is slow. Please try again.')));
       },

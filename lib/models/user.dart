@@ -1,45 +1,80 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class UserModel {
-  String? uid;
-  String? mobile;
-  String? username;
+  final String id;
+  final String phone;
+  final String name;
+  final String profilePicture;
+  final DateTime updatedAt;
+  final DateTime createdAt;
 
   UserModel({
-    this.uid,
-    this.mobile,
-    this.username,
+    required this.id,
+    required this.phone,
+    required this.name,
+    required this.profilePicture,
+    required this.updatedAt,
+    required this.createdAt,
   });
-//recive data to firestore
-  factory UserModel.fromMap(map) {
+
+  factory UserModel.fromMap(Map<String, dynamic> data) {
     return UserModel(
-      uid: map['uid'],
-      mobile: map['mobile'],
-      username: map['username'],
+      id: data['id'],
+      phone: data['phone'],
+      name: data['name'],
+      profilePicture: data['profilePicture'],
+      updatedAt: data['updatedAt'],
+      createdAt: data['createdAt'],
     );
   }
-//send data to firestore
-  Map<String, dynamic> toMap() {
-    return {
-      'uid': uid,
-      'mobile': mobile,
-      'username': username,
-    };
+
+  @override
+  String toString() {
+    return 'UserModel(id: $id, phone: $phone, name: $name, profilePicture: $profilePicture, updatedAt: $updatedAt, createdAt: $createdAt)';
   }
 }
 
-class Firebasehelper {
-  static void updatemsg(appointid, status) async {
-    CollectionReference appointmentdatbase =
-        FirebaseFirestore.instance.collection("Users");
-    var result =
-        await appointmentdatbase.doc(appointid).update({"firstname": status});
+class Class {
+  final String institute;
+  final String name;
+
+  Class({required this.institute, required this.name});
+
+  factory Class.fromJson(Map<String, dynamic> json) {
+    return Class(
+      institute: json['institute'],
+      name: json['name'],
+    );
   }
 
-  static void updatepic(appointid, status) async {
-    CollectionReference appointmentdatbase =
-        FirebaseFirestore.instance.collection("Users");
-    var result =
-        await appointmentdatbase.doc(appointid).update({"profilepic": status});
+  @override
+  String toString() {
+    return 'Class{institute: $institute, name: $name}';
+  }
+}
+
+class Institute {
+  final String name;
+  final String description;
+  final String id;
+  final String owner;
+
+  Institute({
+    required this.name,
+    required this.description,
+    required this.id,
+    required this.owner,
+  });
+
+  factory Institute.fromJson(Map<String, dynamic> json) {
+    return Institute(
+      name: json['name'],
+      description: json['description'],
+      id: json['id'],
+      owner: json['owner'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Institute{name: $name, description: $description, id: $id, owner: $owner}';
   }
 }

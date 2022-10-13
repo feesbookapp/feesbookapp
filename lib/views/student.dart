@@ -62,28 +62,6 @@ class _StudentState extends State<Student> {
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
                         ),
-                        GestureDetector(
-                          child: Row(
-                            children: [
-                              Text(
-                                'View profile',
-                                style: GoogleFonts.inter(
-                                    textStyle: TextStyle(
-                                        color: Color(0xff006C67),
-                                        fontSize: 14)),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(0xff006C67),
-                                size: 14,
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('View full report')));
-                          },
-                        )
                       ],
                     )
                   ],

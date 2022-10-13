@@ -2,6 +2,7 @@ import 'package:exampleapplication/Widgets/fees_history.dart';
 import 'package:exampleapplication/Widgets/pending_fees.dart';
 import 'package:exampleapplication/views/dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Student extends StatefulWidget {
@@ -220,14 +221,75 @@ class _StudentState extends State<Student> {
     //   }
     // ];
 
-    return Expanded(
-        child: Padding(
-      padding: EdgeInsets.only(top: 15),
-      child: Column(children: [
-        PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
-        PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
-        PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
-      ]),
-    ));
+    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery.of(context).size.height;
+
+    return Stack(
+      children: [
+        Expanded(
+            child: Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
+                    PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                  ]),
+                ))),
+        Padding(
+          padding: EdgeInsets.fromLTRB(15, 0, 15, 40),
+          child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      alignment: Alignment.center,
+                      height: 60,
+                      width: w / 2 - 25,
+                      decoration: BoxDecoration(
+                          color: Color(0xffFCEEEE),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/send_reminder.svg',
+                            height: 18,
+                          ),
+                          Text(
+                            ' Send Reminder',
+                            style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500)),
+                          )
+                        ],
+                      )),
+                  Container(
+                      alignment: Alignment.center,
+                      height: 60,
+                      width: w / 2 - 25,
+                      decoration: BoxDecoration(
+                          color: Color(0xff006C67),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Text(
+                        ' Fees collected',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white)),
+                      )),
+                ],
+              )),
+        ),
+      ],
+    );
   }
 }

@@ -24,11 +24,7 @@ abstract class UserModel implements Built<UserModel, UserModelBuilder> {
 
   String get phone;
 
-  String get name;
+  String? get name;
 
-  String get profilePicture;
-
-  DateTime get updatedAt;
-
-  DateTime get createdAt;
+  String? get profilePicture;
 }

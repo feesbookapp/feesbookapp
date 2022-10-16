@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:exampleapplication/view_model/providers.dart';
 import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -168,12 +170,12 @@ class _OTPScreenState extends State<OTPScreen> {
                         smsCode: otpCode!,
                       );
 
-                      try { 
+                      try {
                         await _auth.signInWithCredential(credential);
 
                         await ref
                             .read(appStateViewModelProvider.notifier)
-                            .createUserInFirebase({});
+                            .createUserInFirebase();
 
                         setState(() {
                           _loading = false;
@@ -183,7 +185,12 @@ class _OTPScreenState extends State<OTPScreen> {
                           MaterialPageRoute(builder: (context) => HomeScreen()),
                           (Route<dynamic> route) => false,
                         );
-                      } catch (e) {
+                      } catch (e, s) {
+                        if (kDebugMode) {
+                          log(e.toString());
+                          log(s.toString());
+                        }
+
                         setState(() {
                           _loading = false;
                         });

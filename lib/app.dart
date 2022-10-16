@@ -1,5 +1,6 @@
 import 'package:exampleapplication/env/app_env.dart';
 import 'package:exampleapplication/env/dev_env.dart';
+import 'package:exampleapplication/view_model/providers.dart';
 import 'package:exampleapplication/views/home/sign_in.dart';
 import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,15 +38,36 @@ void main({AppEnvironment? environment}) async {
   runApp(ProviderScope(child: app));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   final userLoggedIn = FirebaseAuth.instance.currentUser != null;
+
+  bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (userLoggedIn) {
+      setState(() {
+        _loading = true;
+      });
+      _getUser().then((value) {
+        setState(() {
+          _loading = false;
+        });
+      });
+    }
+  }
+
+  Future<void> _getUser() async {
+    await ref.read(appStateViewModelProvider.notifier).getUserFromFirebase();
+  }
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,7 +76,11 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: userLoggedIn ? HomeScreen() : Signin(),
+      home: _loading
+          ? SizedBox.shrink()
+          : userLoggedIn
+              ? HomeScreen()
+              : Signin(),
     );
   }
 }

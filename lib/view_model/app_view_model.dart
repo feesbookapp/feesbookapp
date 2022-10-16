@@ -16,7 +16,7 @@ class AppViewModel implements AppBaseViewModel {
 class AppStateViewModel extends StateNotifier<AppState> {
   AppStateViewModel(super.state);
 
-  Future<void> createUserInFirebase(Map<String, dynamic> userData) async {
+  Future<void> createUserInFirebase() async {
     final currentUser = FirebaseAuth.instance.currentUser!;
 
     final userDoc = await FirebaseCollectionPath.users.doc(currentUser.uid);
@@ -36,7 +36,14 @@ class AppStateViewModel extends StateNotifier<AppState> {
       await userDoc.set(userMap);
     }
 
-    state =
-        state.rebuild((b) => b.user = UserModel.fromJson(userData).toBuilder());
+    await getUserFromFirebase();
+  }
+
+  Future<void> getUserFromFirebase() async {
+    final currentUser = FirebaseAuth.instance.currentUser!;
+    final userDoc = await FirebaseCollectionPath.users.doc(currentUser.uid);
+    final firebaseUser = await userDoc.get();
+    state = state.rebuild(
+        (b) => b.user = UserModel.fromJson(firebaseUser.data()!).toBuilder());
   }
 }

@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:exampleapplication/views/home/otp_screen.dart';
 import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
@@ -69,10 +71,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text(
             'Enter your phone number',
             style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.black)),
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.black,
+              ),
+            ),
           ),
         ),
 
@@ -85,9 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextStyle(color: Colors.grey, fontSize: 16, wordSpacing: 1),
             )),
 
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
 
         //Phone number
         Container(
@@ -175,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
           );
-        } catch (e) {
+        } catch (e, s) {
           setState(() {
             _loading = false;
           });
@@ -185,6 +187,10 @@ class _LoginScreenState extends State<LoginScreen> {
               SnackBar(content: Text(e.message ?? e.code)),
             );
           } else {
+            if (kDebugMode) {
+              log(e.toString());
+              log(s.toString());
+            }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Something went wrong. Please try again later.'),

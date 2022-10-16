@@ -23,19 +23,22 @@ class _$UserModelSerializer implements StructuredSerializer<UserModel> {
       'phone',
       serializers.serialize(object.phone,
           specifiedType: const FullType(String)),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
-      'profilePicture',
-      serializers.serialize(object.profilePicture,
-          specifiedType: const FullType(String)),
-      'updatedAt',
-      serializers.serialize(object.updatedAt,
-          specifiedType: const FullType(DateTime)),
-      'createdAt',
-      serializers.serialize(object.createdAt,
-          specifiedType: const FullType(DateTime)),
     ];
-
+    Object? value;
+    value = object.name;
+    if (value != null) {
+      result
+        ..add('name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.profilePicture;
+    if (value != null) {
+      result
+        ..add('profilePicture')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -60,19 +63,11 @@ class _$UserModelSerializer implements StructuredSerializer<UserModel> {
           break;
         case 'name':
           result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'profilePicture':
           result.profilePicture = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'updatedAt':
-          result.updatedAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
-          break;
-        case 'createdAt':
-          result.createdAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -87,32 +82,18 @@ class _$UserModel extends UserModel {
   @override
   final String phone;
   @override
-  final String name;
+  final String? name;
   @override
-  final String profilePicture;
-  @override
-  final DateTime updatedAt;
-  @override
-  final DateTime createdAt;
+  final String? profilePicture;
 
   factory _$UserModel([void Function(UserModelBuilder)? updates]) =>
       (new UserModelBuilder()..update(updates))._build();
 
   _$UserModel._(
-      {required this.id,
-      required this.phone,
-      required this.name,
-      required this.profilePicture,
-      required this.updatedAt,
-      required this.createdAt})
+      {required this.id, required this.phone, this.name, this.profilePicture})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'UserModel', 'id');
     BuiltValueNullFieldError.checkNotNull(phone, r'UserModel', 'phone');
-    BuiltValueNullFieldError.checkNotNull(name, r'UserModel', 'name');
-    BuiltValueNullFieldError.checkNotNull(
-        profilePicture, r'UserModel', 'profilePicture');
-    BuiltValueNullFieldError.checkNotNull(updatedAt, r'UserModel', 'updatedAt');
-    BuiltValueNullFieldError.checkNotNull(createdAt, r'UserModel', 'createdAt');
   }
 
   @override
@@ -129,19 +110,13 @@ class _$UserModel extends UserModel {
         id == other.id &&
         phone == other.phone &&
         name == other.name &&
-        profilePicture == other.profilePicture &&
-        updatedAt == other.updatedAt &&
-        createdAt == other.createdAt;
+        profilePicture == other.profilePicture;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc($jc($jc($jc(0, id.hashCode), phone.hashCode), name.hashCode),
-                profilePicture.hashCode),
-            updatedAt.hashCode),
-        createdAt.hashCode));
+    return $jf($jc($jc($jc($jc(0, id.hashCode), phone.hashCode), name.hashCode),
+        profilePicture.hashCode));
   }
 
   @override
@@ -150,9 +125,7 @@ class _$UserModel extends UserModel {
           ..add('id', id)
           ..add('phone', phone)
           ..add('name', name)
-          ..add('profilePicture', profilePicture)
-          ..add('updatedAt', updatedAt)
-          ..add('createdAt', createdAt))
+          ..add('profilePicture', profilePicture))
         .toString();
   }
 }
@@ -177,14 +150,6 @@ class UserModelBuilder implements Builder<UserModel, UserModelBuilder> {
   set profilePicture(String? profilePicture) =>
       _$this._profilePicture = profilePicture;
 
-  DateTime? _updatedAt;
-  DateTime? get updatedAt => _$this._updatedAt;
-  set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
-
-  DateTime? _createdAt;
-  DateTime? get createdAt => _$this._createdAt;
-  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
-
   UserModelBuilder();
 
   UserModelBuilder get _$this {
@@ -194,8 +159,6 @@ class UserModelBuilder implements Builder<UserModel, UserModelBuilder> {
       _phone = $v.phone;
       _name = $v.name;
       _profilePicture = $v.profilePicture;
-      _updatedAt = $v.updatedAt;
-      _createdAt = $v.createdAt;
       _$v = null;
     }
     return this;
@@ -221,14 +184,8 @@ class UserModelBuilder implements Builder<UserModel, UserModelBuilder> {
             id: BuiltValueNullFieldError.checkNotNull(id, r'UserModel', 'id'),
             phone: BuiltValueNullFieldError.checkNotNull(
                 phone, r'UserModel', 'phone'),
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'UserModel', 'name'),
-            profilePicture: BuiltValueNullFieldError.checkNotNull(
-                profilePicture, r'UserModel', 'profilePicture'),
-            updatedAt: BuiltValueNullFieldError.checkNotNull(
-                updatedAt, r'UserModel', 'updatedAt'),
-            createdAt: BuiltValueNullFieldError.checkNotNull(
-                createdAt, r'UserModel', 'createdAt'));
+            name: name,
+            profilePicture: profilePicture);
     replace(_$result);
     return _$result;
   }

@@ -61,20 +61,13 @@ class _SigninState extends State<Signin> {
                   ),
                 ),
                 onTap: () {
-                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //   content: Text('Get Started'),
-                  //   duration: Duration(microseconds: 200),
-                  // ));
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
               ),
 
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
 
-              //WhatsApp need help?
               GestureDetector(
                 child: Container(
                   height: 65,

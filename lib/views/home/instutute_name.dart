@@ -1,16 +1,16 @@
-import 'package:exampleapplication/views/onboardingscreens.dart';
+import 'package:exampleapplication/views/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class InstututeName extends StatefulWidget {
-  const InstututeName({Key? key}) : super(key: key);
+class InstituteName extends StatefulWidget {
+  const InstituteName({Key? key}) : super(key: key);
 
   @override
-  State<InstututeName> createState() => _InstututeNameState();
+  State<InstituteName> createState() => _InstituteNameState();
 }
 
-class _InstututeNameState extends State<InstututeName> {
-  TextEditingController phoneNumber = new TextEditingController();
+class _InstituteNameState extends State<InstituteName> {
+  TextEditingController _instituteName = new TextEditingController();
   bool _loading = false;
 
   @override
@@ -86,26 +86,21 @@ class _InstututeNameState extends State<InstututeName> {
         //Phone number
         Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+          padding: EdgeInsets.fromLTRB(20, 10, 10, 5),
           margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: gre),
           ),
           child: TextField(
-            maxLength: 10,
-            controller: phoneNumber,
+            controller: _instituteName,
             decoration: InputDecoration(
               alignLabelWithHint: false,
               counterText: '',
               border: InputBorder.none,
-              prefixIcon: Icon(
-                Icons.person_outline,
-                color: Color(0xff006C67),
-              ),
               hintText: 'Ex. Baba Tutorials',
             ),
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.text,
           ),
         ),
 
@@ -116,8 +111,84 @@ class _InstututeNameState extends State<InstututeName> {
           margin: EdgeInsets.all(25),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SuccessfulPopup()));
+              if (_instituteName.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please enter your name')));
+              } else {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Color(0xfff3f3f3),
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(12))),
+                  context: context,
+                  builder: (context) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 5,
+                        width: 40,
+                        margin: EdgeInsets.only(top: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Color(0xff6d6d6d),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 100),
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          'Registered Successfully',
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(30, 20, 30, 25),
+                        child: Text(
+                          'Your account has been created, Start managing and collecting your fees digitally',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(color: Colors.grey)),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: (() {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        }),
+                        child: Container(
+                          margin:
+                              EdgeInsets.only(left: 24, right: 24, bottom: 60),
+                          width: w,
+                          height: 55,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xff006C67)),
+                          child: Center(
+                            child: Text(
+                              'Take me to home',
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }
             },
             child: _loading
                 ? const CircularProgressIndicator()

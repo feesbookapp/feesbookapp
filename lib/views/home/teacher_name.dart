@@ -1,5 +1,4 @@
 import 'package:exampleapplication/views/home/instutute_name.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,10 +10,8 @@ class TeacherName extends StatefulWidget {
 }
 
 class _TeacherNameState extends State<TeacherName> {
-  TextEditingController phoneNumber = new TextEditingController();
+  TextEditingController _teacherName = new TextEditingController();
   bool _loading = false;
-
-  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +93,7 @@ class _TeacherNameState extends State<TeacherName> {
             border: Border.all(color: gre),
           ),
           child: TextField(
-            maxLength: 10,
-            controller: phoneNumber,
+            controller: _teacherName,
             decoration: InputDecoration(
               alignLabelWithHint: false,
               counterText: '',
@@ -108,7 +104,7 @@ class _TeacherNameState extends State<TeacherName> {
               ),
               hintText: 'Full name',
             ),
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.name,
           ),
         ),
 
@@ -119,8 +115,13 @@ class _TeacherNameState extends State<TeacherName> {
           margin: EdgeInsets.all(25),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => InstututeName()));
+              if (_teacherName.text.isEmpty) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Enter your name')));
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => InstituteName()));
+              }
             },
             child: _loading
                 ? const CircularProgressIndicator()

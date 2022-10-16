@@ -22,7 +22,7 @@ abstract class Institute implements Built<Institute, InstituteBuilder> {
 
   String get name;
 
-  String get description;
+  String? get description;
 
   String get id;
 

@@ -1,5 +1,7 @@
-import 'package:exampleapplication/views/home_screen.dart';
+import 'package:exampleapplication/view_model/providers.dart';
+import 'package:exampleapplication/views/registration_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class InstituteName extends StatefulWidget {
@@ -24,11 +26,11 @@ class _InstituteNameState extends State<InstituteName> {
   Widget instututeBody() {
     //Controllers
 
-    var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
 
     //Theme
-    var gre = Colors.grey;
+    final gre = Colors.grey;
 
     return SafeArea(
         child: Column(
@@ -109,12 +111,27 @@ class _InstituteNameState extends State<InstituteName> {
           width: w,
           height: 60,
           margin: EdgeInsets.all(25),
-          child: ElevatedButton(
-            onPressed: () {
-              if (_instituteName.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please enter your name')));
-              } else {
+          child: Consumer(builder: (context, ref, _) {
+            return ElevatedButton(
+              onPressed: () async {
+                if (_instituteName.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Please enter your name')));
+                  return;
+                }
+
+                setState(() {
+                  _loading = true;
+                });
+
+                await ref
+                    .read(appStateViewModelProvider.notifier)
+                    .createInstitute(name: _instituteName.text);
+
+                setState(() {
+                  _loading = false;
+                });
+
                 showModalBottomSheet(
                   isScrollControlled: true,
                   backgroundColor: Color(0xfff3f3f3),
@@ -122,85 +139,21 @@ class _InstituteNameState extends State<InstituteName> {
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(12))),
                   context: context,
-                  builder: (context) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 5,
-                        width: 40,
-                        margin: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Color(0xff6d6d6d),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 100),
-                        alignment: Alignment.bottomCenter,
-                        child: Text(
-                          'Registered Successfully',
-                          style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(30, 20, 30, 25),
-                        child: Text(
-                          'Your account has been created, Start managing and collecting your fees digitally',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.inter(
-                              textStyle: TextStyle(color: Colors.grey)),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: (() {
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
-                        }),
-                        child: Container(
-                          margin:
-                              EdgeInsets.only(left: 24, right: 24, bottom: 60),
-                          width: w,
-                          height: 55,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Color(0xff006C67)),
-                          child: Center(
-                            child: Text(
-                              'Take me to home',
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  builder: (context) => RegistrationScreen(),
                 );
-              }
-            },
-            child: _loading
-                ? const CircularProgressIndicator()
-                : Text(
-                    'Get started',
-                    style: TextStyle(color: Colors.white),
-                  ),
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll<Color>(Color(0xff006C67)),
-            ),
-          ),
+              },
+              child: _loading
+                  ? const CircularProgressIndicator()
+                  : Text(
+                      'Get started',
+                      style: TextStyle(color: Colors.white),
+                    ),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color>(Color(0xff006C67)),
+              ),
+            );
+          }),
         ),
       ],
     ));

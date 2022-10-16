@@ -1,5 +1,8 @@
+import 'package:exampleapplication/view_model/providers.dart';
 import 'package:exampleapplication/views/home/instutute_name.dart';
+import 'package:exampleapplication/views/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TeacherName extends StatefulWidget {
@@ -33,9 +36,7 @@ class _TeacherNameState extends State<TeacherName> {
     return SafeArea(
         child: Column(
       children: [
-        SizedBox(
-          height: h * 0.1,
-        ),
+        SizedBox(height: h * 0.1),
 
         //illustration
         Container(
@@ -113,27 +114,54 @@ class _TeacherNameState extends State<TeacherName> {
           width: w,
           height: 60,
           margin: EdgeInsets.all(25),
-          child: ElevatedButton(
-            onPressed: () {
-              if (_teacherName.text.isEmpty) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('Enter your name')));
-              } else {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => InstituteName()));
-              }
-            },
-            child: _loading
-                ? const CircularProgressIndicator()
-                : Text(
-                    'Get started',
-                    style: TextStyle(color: Colors.white),
-                  ),
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll<Color>(Color(0xff006C67)),
-            ),
-          ),
+          child: Consumer(builder: (context, ref, _) {
+            return ElevatedButton(
+              onPressed: () async {
+                if (_teacherName.text.isEmpty) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Enter your name')));
+                } else {
+                  setState(() {
+                    _loading = true;
+                  });
+
+                  await ref
+                      .read(appStateViewModelProvider.notifier)
+                      .updateUserName(_teacherName.text);
+
+                  await ref
+                      .read(appStateViewModelProvider.notifier)
+                      .getUserInstitute();
+
+                  setState(() {
+                    _loading = false;
+                  });
+
+                  if (ref.read(appStateViewModelProvider).institute == null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => InstituteName()),
+                    );
+                  } else {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    );
+                  }
+                }
+              },
+              child: _loading
+                  ? const CircularProgressIndicator()
+                  : Text(
+                      'Get started',
+                      style: TextStyle(color: Colors.white),
+                    ),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color>(Color(0xff006C67)),
+              ),
+            );
+          }),
         ),
       ],
     ));

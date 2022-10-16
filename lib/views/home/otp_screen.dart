@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:exampleapplication/view_model/providers.dart';
-import 'package:exampleapplication/views/home_screen.dart';
+import 'package:exampleapplication/views/home/teacher_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -182,7 +182,8 @@ class _OTPScreenState extends State<OTPScreen> {
                         });
 
                         Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => TeacherName()),
                           (Route<dynamic> route) => false,
                         );
                       } catch (e, s) {

@@ -20,16 +20,20 @@ class _$InstituteSerializer implements StructuredSerializer<Institute> {
     final result = <Object?>[
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
-      'description',
-      serializers.serialize(object.description,
-          specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'owner',
       serializers.serialize(object.owner,
           specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.description;
+    if (value != null) {
+      result
+        ..add('description')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -50,7 +54,7 @@ class _$InstituteSerializer implements StructuredSerializer<Institute> {
           break;
         case 'description':
           result.description = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -71,7 +75,7 @@ class _$Institute extends Institute {
   @override
   final String name;
   @override
-  final String description;
+  final String? description;
   @override
   final String id;
   @override
@@ -82,13 +86,11 @@ class _$Institute extends Institute {
 
   _$Institute._(
       {required this.name,
-      required this.description,
+      this.description,
       required this.id,
       required this.owner})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(name, r'Institute', 'name');
-    BuiltValueNullFieldError.checkNotNull(
-        description, r'Institute', 'description');
     BuiltValueNullFieldError.checkNotNull(id, r'Institute', 'id');
     BuiltValueNullFieldError.checkNotNull(owner, r'Institute', 'owner');
   }
@@ -180,8 +182,7 @@ class InstituteBuilder implements Builder<Institute, InstituteBuilder> {
         new _$Institute._(
             name: BuiltValueNullFieldError.checkNotNull(
                 name, r'Institute', 'name'),
-            description: BuiltValueNullFieldError.checkNotNull(
-                description, r'Institute', 'description'),
+            description: description,
             id: BuiltValueNullFieldError.checkNotNull(id, r'Institute', 'id'),
             owner: BuiltValueNullFieldError.checkNotNull(
                 owner, r'Institute', 'owner'));

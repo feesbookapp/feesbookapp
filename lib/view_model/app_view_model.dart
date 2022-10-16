@@ -36,6 +36,7 @@ class AppStateViewModel extends StateNotifier<AppState> {
       await userDoc.set(userMap);
     }
 
-    state = state.copyWith(user: UserModel.fromMap(userData));
+    state =
+        state.rebuild((b) => b.user = UserModel.fromJson(userData).toBuilder());
   }
 }

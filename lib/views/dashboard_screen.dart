@@ -1,6 +1,7 @@
 import 'package:exampleapplication/Widgets/batches.dart';
 import 'package:exampleapplication/data/firestore_collection_path.dart';
-import 'package:exampleapplication/models/user.dart';
+import 'package:exampleapplication/models/feesbook_class.dart';
+import 'package:exampleapplication/models/institute.dart';
 import 'package:exampleapplication/views/widgets/bottomsheet/classes.dart';
 import 'package:exampleapplication/widgets/app_image.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final city = 'Manglore';
 
   final bool doesClassExists = true;
-  final List<Class> _classes = [];
+  final List<FeesbookClass> _classes = [];
 
   Institute? institute;
 

@@ -1,80 +1,34 @@
-class UserModel {
-  final String id;
-  final String phone;
-  final String name;
-  final String profilePicture;
-  final DateTime updatedAt;
-  final DateTime createdAt;
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:exampleapplication/models/serializers.dart';
 
-  UserModel({
-    required this.id,
-    required this.phone,
-    required this.name,
-    required this.profilePicture,
-    required this.updatedAt,
-    required this.createdAt,
-  });
+part 'user.g.dart';
 
-  factory UserModel.fromMap(Map<String, dynamic> data) {
-    return UserModel(
-      id: data['id'],
-      phone: data['phone'],
-      name: data['name'],
-      profilePicture: data['profilePicture'],
-      updatedAt: data['updatedAt'],
-      createdAt: data['createdAt'],
-    );
+abstract class UserModel implements Built<UserModel, UserModelBuilder> {
+  UserModel._();
+
+  factory UserModel([void Function(UserModelBuilder) updates]) = _$UserModel;
+
+  Map<String, dynamic> toJson() {
+    return serializers.serializeWith(UserModel.serializer, this)
+        as Map<String, dynamic>;
   }
 
-  @override
-  String toString() {
-    return 'UserModel(id: $id, phone: $phone, name: $name, profilePicture: $profilePicture, updatedAt: $updatedAt, createdAt: $createdAt)';
-  }
-}
-
-class Class {
-  final String institute;
-  final String name;
-
-  Class({required this.institute, required this.name});
-
-  factory Class.fromJson(Map<String, dynamic> json) {
-    return Class(
-      institute: json['institute'],
-      name: json['name'],
-    );
+  static UserModel fromJson(Map<String, dynamic> json) {
+    return serializers.deserializeWith(UserModel.serializer, json)!;
   }
 
-  @override
-  String toString() {
-    return 'Class{institute: $institute, name: $name}';
-  }
-}
+  static Serializer<UserModel> get serializer => _$userModelSerializer;
 
-class Institute {
-  final String name;
-  final String description;
-  final String id;
-  final String owner;
+  String get id;
 
-  Institute({
-    required this.name,
-    required this.description,
-    required this.id,
-    required this.owner,
-  });
+  String get phone;
 
-  factory Institute.fromJson(Map<String, dynamic> json) {
-    return Institute(
-      name: json['name'],
-      description: json['description'],
-      id: json['id'],
-      owner: json['owner'],
-    );
-  }
+  String get name;
 
-  @override
-  String toString() {
-    return 'Institute{name: $name, description: $description, id: $id, owner: $owner}';
-  }
+  String get profilePicture;
+
+  DateTime get updatedAt;
+
+  DateTime get createdAt;
 }

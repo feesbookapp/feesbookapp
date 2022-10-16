@@ -141,27 +141,108 @@ class _ClassTileState extends State<ClassTile> {
               ),
 
               //Students + add class
-              Container(
-                  margin: EdgeInsets.only(left: 16, right: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Students',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400),
+              GestureDetector(
+                onTap: () => showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Color(0xfff3f3f3),
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(12))),
+                  context: context,
+                  builder: (context) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 5,
+                        width: 40,
+                        margin: EdgeInsets.only(top: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Color(0xff6d6d6d),
+                        ),
                       ),
-                      Text(
-                        '+ Add student',
-                        style: TextStyle(
-                            color: Color(0xff006C67),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(30, 50, 20, 0),
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          'Share this message with Invite link',
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600)),
+                        ),
                       ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(30, 20, 30, 25),
+                        child: Text(
+                          'Your Teacher Vivek shrivastava is inviting you to Join Class 12th (6AM) Batch',
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.inter(
+                              textStyle: TextStyle(color: Colors.grey)),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin:
+                              EdgeInsets.only(left: 24, right: 24, bottom: 40),
+                          width: w,
+                          height: 55,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xff006C67)),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.whatsapp_rounded,
+                                size: 25,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                '  Send on whasapp',
+                                style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ],
+                          )),
+                        ),
+                      )
                     ],
-                  )),
+                  ),
+                ),
+                child: Container(
+                    margin: EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          'Students',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Text(
+                          '+ Add student',
+                          style: TextStyle(
+                              color: Color(0xff006C67),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    )),
+              ),
               const SizedBox(
                 height: 24,
               ),

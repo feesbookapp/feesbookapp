@@ -1,4 +1,4 @@
-import 'package:exampleapplication/views/home/teacher_name.dart';
+import 'package:exampleapplication/views/home/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -377,7 +377,7 @@ class _ProfileState extends State<Profile> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TeacherName()));
+                                  builder: (context) => Signin()));
                         },
                       ),
                     ],

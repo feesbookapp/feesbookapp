@@ -1,5 +1,4 @@
 import 'package:exampleapplication/views/dashboard_screen.dart';
-import 'package:exampleapplication/views/home_screen.dart';
 import 'package:exampleapplication/views/student.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,11 +57,7 @@ class _ClassTileState extends State<ClassTile> {
                       child: GestureDetector(
                         child: Center(child: Icon(Icons.arrow_back)),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
-                          );
+                          Navigator.of(context).pop();
                         },
                       )),
                   SizedBox(

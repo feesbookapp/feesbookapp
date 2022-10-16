@@ -2,6 +2,7 @@ import 'package:exampleapplication/Widgets/fees_history.dart';
 import 'package:exampleapplication/Widgets/pending_fees.dart';
 import 'package:exampleapplication/views/dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Student extends StatefulWidget {
@@ -14,6 +15,13 @@ class Student extends StatefulWidget {
 }
 
 class _StudentState extends State<Student> {
+  TextEditingController studentName = TextEditingController();
+  TextEditingController parentsName = TextEditingController();
+  TextEditingController updatePhoneNumber = TextEditingController();
+  TextEditingController updateParentsName = TextEditingController();
+
+  String phoneNumber = '7888456123';
+
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
@@ -62,28 +70,6 @@ class _StudentState extends State<Student> {
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
                         ),
-                        GestureDetector(
-                          child: Row(
-                            children: [
-                              Text(
-                                'View profile',
-                                style: GoogleFonts.inter(
-                                    textStyle: TextStyle(
-                                        color: Color(0xff006C67),
-                                        fontSize: 14)),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(0xff006C67),
-                                size: 14,
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('View full report')));
-                          },
-                        )
                       ],
                     )
                   ],
@@ -198,24 +184,202 @@ class _StudentState extends State<Student> {
   }
 
   Widget contactPage() {
-    return Expanded(
-        child: Padding(
-      padding: EdgeInsets.only(top: 15),
-      child: Column(children: [Text('Contact')]),
-    ));
+    var w = MediaQuery.of(context).size.width;
+    return SingleChildScrollView(
+      child: Expanded(
+          child: Padding(
+        padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 25,
+              ),
+              Text(
+                'Name',
+                style: GoogleFonts.inter(
+                    textStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              ),
+              Container(
+                height: 50,
+                width: w,
+                margin: EdgeInsets.only(right: 10, top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Color(0xffF3F3F3)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.centerLeft,
+                child: TextField(
+                  textAlign: TextAlign.left,
+                  controller: studentName,
+                  decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Color(0xff006C67),
+                      ),
+                      suffix: GestureDetector(
+                        onTap: () {
+                          if (studentName.text.length == 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Please enter your name'),
+                              duration: Duration(milliseconds: 500),
+                              backgroundColor: Colors.red.withOpacity(0.5),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Change name'),
+                                duration: Duration(milliseconds: 200),
+                                backgroundColor: Color(0xff006C67)));
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: Text(
+                            'Change',
+                            style: TextStyle(color: Color(0xff006C67)),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      hintText: widget.stuName),
+                  keyboardType: TextInputType.name,
+                ),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              Text(
+                'Parents name',
+                style: GoogleFonts.inter(
+                    textStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              ),
+              Container(
+                height: 50,
+                width: w,
+                margin: EdgeInsets.only(right: 10, top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Color(0xffF3F3F3)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.centerLeft,
+                child: TextField(
+                  controller: updateParentsName,
+                  decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Color(0xff006C67),
+                      ),
+                      suffix: GestureDetector(
+                        onTap: () {
+                          if (parentsName.text.length == 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Please enter your name'),
+                              duration: Duration(milliseconds: 500),
+                              backgroundColor: Colors.red.withOpacity(0.5),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Change name'),
+                                duration: Duration(milliseconds: 200),
+                                backgroundColor: Color(0xff006C67)));
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: Text(
+                            'Change',
+                            style: TextStyle(color: Color(0xff006C67)),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      hintText: 'Parent\'s name'),
+                  keyboardType: TextInputType.name,
+                ),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              Text(
+                'Phone number',
+                style: GoogleFonts.inter(
+                    textStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              ),
+              Container(
+                height: 50,
+                width: w,
+                margin: EdgeInsets.only(right: 10, top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Color(0xffF3F3F3)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.centerLeft,
+                child: TextField(
+                  controller: updatePhoneNumber,
+                  decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(
+                        Icons.phone_outlined,
+                        color: Color(0xff006C67),
+                      ),
+                      suffix: GestureDetector(
+                        onTap: () {
+                          if (parentsName.text.length == 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Please enter phone number'),
+                              duration: Duration(milliseconds: 500),
+                              backgroundColor: Colors.red.withOpacity(0.5),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Changed phone number'),
+                                duration: Duration(milliseconds: 200),
+                                backgroundColor: Color(0xff006C67)));
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: Text(
+                            'Change',
+                            style: TextStyle(color: Color(0xff006C67)),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      hintText: phoneNumber),
+                  keyboardType: TextInputType.name,
+                ),
+              ),
+            ]),
+      )),
+    );
   }
 
   Widget feesHistoryPage() {
-    return Expanded(
-        child: Padding(
-      padding: EdgeInsets.only(top: 15),
-      child: Column(children: [
-        FeesHistory(month: 'Jan', fees: 500),
-        FeesHistory(month: 'Feb', fees: 600),
-        FeesHistory(month: 'Mar', fees: 600),
-        FeesHistory(month: 'April', fees: 800),
-      ]),
-    ));
+    return SingleChildScrollView(
+      child: Expanded(
+          child: Padding(
+        padding: EdgeInsets.only(top: 15),
+        child: Column(children: [
+          FeesHistory(month: 'Jan', fees: 500),
+          FeesHistory(month: 'Feb', fees: 600),
+          FeesHistory(month: 'Mar', fees: 600),
+          FeesHistory(month: 'April', fees: 800),
+        ]),
+      )),
+    );
   }
 
   Widget pendingFeesPage() {
@@ -242,14 +406,80 @@ class _StudentState extends State<Student> {
     //   }
     // ];
 
-    return Expanded(
-        child: Padding(
-      padding: EdgeInsets.only(top: 15),
-      child: Column(children: [
-        PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
-        PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
-        PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
-      ]),
-    ));
+    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery.of(context).size.height;
+
+    return Stack(
+      children: [
+        Expanded(
+            child: Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
+                    PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
+                  ]),
+                ))),
+        Padding(
+          padding: EdgeInsets.fromLTRB(15, 0, 15, 40),
+          child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    child: Container(
+                        alignment: Alignment.center,
+                        height: 60,
+                        width: w / 2 - 25,
+                        decoration: BoxDecoration(
+                            color: Color(0xffFCEEEE),
+                            border:
+                                Border.all(color: Colors.grey.withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/send_reminder.svg',
+                              height: 18,
+                            ),
+                            Text(
+                              ' Send Reminder',
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500)),
+                            )
+                          ],
+                        )),
+                  ),
+                  Container(
+                      alignment: Alignment.center,
+                      height: 60,
+                      width: w / 2 - 25,
+                      decoration: BoxDecoration(
+                          color: Color(0xff006C67),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Text(
+                        ' Fees collected',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white)),
+                      )),
+                ],
+              )),
+        ),
+      ],
+    );
   }
 }

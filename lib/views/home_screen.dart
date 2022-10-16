@@ -5,7 +5,7 @@ import 'package:exampleapplication/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key,}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -30,43 +30,49 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-          controller.animateToPage(index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeIn);
-        },
-        selectedItemColor: const Color(0xff0D5F5A),
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 16,
-        unselectedFontSize: 14,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgAssetImage(
-              imagePath: 'assets/dashboard_default.svg',
-              color: currentIndex == 0 ? const Color(0xff0D5F5A) : Colors.grey,
+      bottomNavigationBar: Container(
+        height: 70,
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+            controller.animateToPage(index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn);
+          },
+          selectedItemColor: const Color(0xff0D5F5A),
+          unselectedItemColor: Colors.grey,
+          selectedFontSize: 16,
+          unselectedFontSize: 14,
+          items: [
+            BottomNavigationBarItem(
+              icon: SvgAssetImage(
+                imagePath: 'assets/dashboard_default.svg',
+                color:
+                    currentIndex == 0 ? const Color(0xff0D5F5A) : Colors.grey,
+              ),
+              label: 'Dashboard',
             ),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgAssetImage(
-              imagePath: 'assets/classes_default.svg',
-              color: currentIndex == 1 ? const Color(0xff0D5F5A) : Colors.grey,
+            BottomNavigationBarItem(
+              icon: SvgAssetImage(
+                imagePath: 'assets/classes_default.svg',
+                color:
+                    currentIndex == 1 ? const Color(0xff0D5F5A) : Colors.grey,
+              ),
+              label: 'Classes',
             ),
-            label: 'Classes',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgAssetImage(
-              imagePath: 'assets/profile_default.svg',
-              color: currentIndex == 2 ? const Color(0xff0D5F5A) : Colors.grey,
+            BottomNavigationBarItem(
+              icon: SvgAssetImage(
+                imagePath: 'assets/profile_default.svg',
+                color:
+                    currentIndex == 2 ? const Color(0xff0D5F5A) : Colors.grey,
+              ),
+              label: 'Profile',
             ),
-            label: 'Profile',
-          ),
-        ],
+          ],
+        ),
       ),
       body: PageView(
         controller: controller,

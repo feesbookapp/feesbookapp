@@ -168,7 +168,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         smsCode: otpCode!,
                       );
 
-                      try {
+                      try { 
                         await _auth.signInWithCredential(credential);
 
                         await ref

@@ -1,6 +1,8 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampleapplication/core/view_model/view_model.dart';
 import 'package:exampleapplication/data/firestore_collection_path.dart';
+import 'package:exampleapplication/models/feesbook_class.dart';
 import 'package:exampleapplication/models/institute.dart';
 import 'package:exampleapplication/models/user.dart';
 import 'package:exampleapplication/view_model/app_state.dart';
@@ -91,5 +93,18 @@ class AppStateViewModel extends StateNotifier<AppState> {
     await institutionDoc.doc(id).set(institutionMap);
 
     await getUserInstitute();
+  }
+
+  Future<void> getInstituteClasses() async {
+    if (state.institute == null) return;
+
+    final classesDoc = await FirebaseCollectionPath.classes
+        .where('owner', isEqualTo: 'Institutes/${state.institute!.id}')
+        .get();
+
+    final classes = classesDoc.docs
+        .map((e) => FeesbookClass.fromJson(e.data()).toBuilder());
+
+    state = state.rebuild((b) => b.classes = ListBuilder(classes));
   }
 }

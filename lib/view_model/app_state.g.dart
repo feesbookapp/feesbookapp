@@ -31,7 +31,8 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       result
         ..add('classes')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(FeesbookClass)));
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(FeesbookClass)])));
     }
     value = object.institute;
     if (value != null) {
@@ -60,7 +61,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           break;
         case 'classes':
           result.classes.replace(serializers.deserialize(value,
-              specifiedType: const FullType(FeesbookClass))! as FeesbookClass);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(FeesbookClass)]))!
+              as BuiltList<Object?>);
           break;
         case 'institute':
           result.institute.replace(serializers.deserialize(value,
@@ -77,7 +80,7 @@ class _$AppState extends AppState {
   @override
   final UserModel? user;
   @override
-  final FeesbookClass? classes;
+  final BuiltList<FeesbookClass>? classes;
   @override
   final Institute? institute;
 
@@ -125,10 +128,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   UserModelBuilder get user => _$this._user ??= new UserModelBuilder();
   set user(UserModelBuilder? user) => _$this._user = user;
 
-  FeesbookClassBuilder? _classes;
-  FeesbookClassBuilder get classes =>
-      _$this._classes ??= new FeesbookClassBuilder();
-  set classes(FeesbookClassBuilder? classes) => _$this._classes = classes;
+  ListBuilder<FeesbookClass>? _classes;
+  ListBuilder<FeesbookClass> get classes =>
+      _$this._classes ??= new ListBuilder<FeesbookClass>();
+  set classes(ListBuilder<FeesbookClass>? classes) => _$this._classes = classes;
 
   InstituteBuilder? _institute;
   InstituteBuilder get institute =>

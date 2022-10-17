@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:exampleapplication/models/feesbook_class.dart';
@@ -25,7 +26,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   UserModel? get user;
 
-  FeesbookClass? get classes;
+  BuiltList<FeesbookClass>? get classes;
 
   Institute? get institute;
 }

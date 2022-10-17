@@ -77,7 +77,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: _loading
-          ? SizedBox.shrink()
+          ? const Scaffold(body: Center(child: CircularProgressIndicator()))
           : userLoggedIn
               ? HomeScreen()
               : Signin(),

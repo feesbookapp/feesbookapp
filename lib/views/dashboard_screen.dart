@@ -78,6 +78,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       pendingFees: pendingFees,
                       collectedFees: collectedFees,
                     ),
+                    SizedBox(height: 16),
+                    Batches(
+                      name: classes[0]['name'],
+                      subject: classes[0]['subject'],
+                      paidNum: classes[0]['feesPaid'],
+                      link: ClassTile(
+                          batchName: 'Class 12th(6am)',
+                          pendingFees: 2500,
+                          collectedFees: 10000),
+                      studentNum: classes[0]['totalStu'],
+                    ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    _DashboardHeader(
+                      institutionName: tuitionName,
+                      city: city,
+                      pendingFees: pendingFees,
+                      collectedFees: collectedFees,
+                    ),
                     Spacer(),
                     SvgAssetImage(imagePath: 'assets/no_batch.svg'),
                     Spacer(),
@@ -155,16 +176,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                     )
                   ],
-                )
-              : Batches(
-                  name: classes[0]['name'],
-                  subject: classes[0]['subject'],
-                  paidNum: classes[0]['feesPaid'],
-                  link: ClassTile(
-                      batchName: 'Class 12th(6am)',
-                      pendingFees: 2500,
-                      collectedFees: 10000),
-                  studentNum: classes[0]['totalStu'],
                 ),
         ),
       ),

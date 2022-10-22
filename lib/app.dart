@@ -1,9 +1,6 @@
 import 'package:exampleapplication/env/app_env.dart';
 import 'package:exampleapplication/env/dev_env.dart';
-import 'package:exampleapplication/view_model/providers.dart';
-import 'package:exampleapplication/views/home/sign_in.dart';
-import 'package:exampleapplication/views/home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:exampleapplication/views/home/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,36 +35,8 @@ void main({AppEnvironment? environment}) async {
   runApp(ProviderScope(child: app));
 }
 
-class MyApp extends ConsumerStatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends ConsumerState<MyApp> {
-  final userLoggedIn = FirebaseAuth.instance.currentUser != null;
-
-  bool _loading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    if (userLoggedIn) {
-      setState(() {
-        _loading = true;
-      });
-      _getUser().then((value) {
-        setState(() {
-          _loading = false;
-        });
-      });
-    }
-  }
-
-  Future<void> _getUser() async {
-    await ref.read(appStateViewModelProvider.notifier).getUserFromFirebase();
-  }
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -76,11 +45,13 @@ class _MyAppState extends ConsumerState<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: _loading
-          ? const Scaffold(body: Center(child: CircularProgressIndicator()))
-          : userLoggedIn
-              ? HomeScreen()
-              : Signin(),
+      home: SplashScreen(),
+
+      // _loading
+      //     ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+      //     : userLoggedIn
+      //         ? HomeScreen()
+      //         : Signin(),
     );
   }
 }

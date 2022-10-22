@@ -1,65 +1,29 @@
 import 'package:exampleapplication/Widgets/batches.dart';
-import 'package:exampleapplication/data/firestore_collection_path.dart';
-import 'package:exampleapplication/models/feesbook_class.dart';
-import 'package:exampleapplication/models/institute.dart';
+import 'package:exampleapplication/view_model/providers.dart';
 import 'package:exampleapplication/views/widgets/bottomsheet/classes.dart';
 import 'package:exampleapplication/widgets/app_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final institute = ref.watch(appStateViewModelProvider).institute!;
 
-class _DashboardScreenState extends State<DashboardScreen> {
-  final pendingFees = '2,500';
-  final collectedFees = '10,000';
-  final tuitionName = 'Balaji tutorials';
-  final city = 'Manglore';
+    final classes = ref.watch(appStateViewModelProvider).classes;
+    final bool doesClassExists = classes != null && classes.isNotEmpty;
 
-  final bool doesClassExists = true;
-  final List<FeesbookClass> _classes = [];
+    final dashboardHeader = _DashboardHeader(
+      institutionName: institute.name,
+      city: '',
+      pendingFees: '2500',
+      collectedFees: '2500',
+    );
 
-  Institute? institute;
-
-  List classes = [
-    {
-      'name': 'Class 12th(6AM)',
-      'subject': 'Physics',
-      'totalStu': '10',
-      'feesPaid': '6'
-    },
-    {
-      'name': 'Class 11th(6AM)',
-      'subject': 'Chemistry',
-      'totalStu': '12',
-      'feesPaid': '3'
-    }
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<void> getInstitute() async {
-    final userId = '47NSr25XTqgTGCdrIVGe';
-    final institutionDoc = await FirebaseCollectionPath.institutes
-        .where('owner', isEqualTo: '/Users/$userId')
-        .limit(1)
-        .get();
-  }
-
-  Future<void> getClasses() async {
-    // await
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -67,38 +31,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
             top: 16,
             left: 16,
             right: 16,
-            bottom: doesClassExists ? 24 : 0,
+            bottom: doesClassExists ? 0 : 24,
           ),
           child: doesClassExists
               ? Column(
                   children: [
-                    _DashboardHeader(
-                      institutionName: tuitionName,
-                      city: city,
-                      pendingFees: pendingFees,
-                      collectedFees: collectedFees,
-                    ),
+                    dashboardHeader,
                     SizedBox(height: 16),
                     Batches(
-                      name: classes[0]['name'],
-                      subject: classes[0]['subject'],
-                      paidNum: classes[0]['feesPaid'],
+                      name: classes[0].name,
+                      subject: ' ',
+                      paidNum: ' ',
                       link: ClassTile(
-                          batchName: 'Class 12th(6am)',
-                          pendingFees: 2500,
-                          collectedFees: 10000),
-                      studentNum: classes[0]['totalStu'],
+                        batchName: classes[0].name,
+                        pendingFees: 2500,
+                        collectedFees: 10000,
+                      ),
+                      studentNum: '',
                     ),
                   ],
                 )
               : Column(
                   children: [
-                    _DashboardHeader(
-                      institutionName: tuitionName,
-                      city: city,
-                      pendingFees: pendingFees,
-                      collectedFees: collectedFees,
-                    ),
+                    dashboardHeader,
                     Spacer(),
                     SvgAssetImage(imagePath: 'assets/no_batch.svg'),
                     Spacer(),
@@ -137,6 +92,311 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   fontWeight: FontWeight.w500)),
                         ),
                       ),
+                      onTap: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(8))),
+                            context: context,
+                            builder: (context) {
+                              var h = MediaQuery.of(context).size.height;
+                              var w = MediaQuery.of(context).size.width;
+
+                              var btmPageController =
+                                  PageController(initialPage: 0);
+                              return Container(
+                                height: h * 0.5,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 15,
+                                    right: 15,
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Center(
+                                        child: Container(
+                                          margin: EdgeInsets.all(10),
+                                          height: 5,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: PageView(
+                                          controller: btmPageController,
+                                          children: [
+                                            //Bottom sheet page 1
+                                            Column(
+                                              children: [
+                                                //Enter class name
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 50, left: 15),
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    'Enter Class name',
+                                                    style: GoogleFonts.inter(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                  ),
+                                                ),
+
+                                                //subtitle
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 15, left: 15),
+                                                  child: Text(
+                                                    'You can also name your batches according to time. Ex- Class 12th (6AM)',
+                                                    style: GoogleFonts.inter(
+                                                        textStyle: TextStyle(
+                                                            color: Color(
+                                                                0xffA7A9B7))),
+                                                  ),
+                                                ),
+
+                                                //Class name TextField
+                                                Container(
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      15, 10, 10, 10),
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      10, 36, 10, 0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    border: Border.all(
+                                                        color: Colors.grey
+                                                            .withOpacity(0.5)),
+                                                  ),
+                                                  child: TextField(
+                                                    maxLength: 10,
+                                                    decoration: InputDecoration(
+                                                      alignLabelWithHint: false,
+                                                      counterText: '',
+                                                      border: InputBorder.none,
+                                                      icon: SvgAssetImage(
+                                                        imagePath:
+                                                            'assets/two_people.svg',
+                                                        height: 25,
+                                                        width: 25,
+                                                      ),
+                                                      hintText: 'Batch name',
+                                                    ),
+                                                    style: GoogleFonts.outfit(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16)),
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                  ),
+                                                ),
+
+                                                //Next button
+                                                GestureDetector(
+                                                    child: Container(
+                                                      width: w,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      padding:
+                                                          EdgeInsets.all(18),
+                                                      margin:
+                                                          EdgeInsets.fromLTRB(
+                                                              10, 25, 10, 50),
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Color(0xff006C67),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      child: Text(
+                                                        'Next',
+                                                        style: GoogleFonts.inter(
+                                                            textStyle: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500)),
+                                                      ),
+                                                    ),
+                                                    onTap: () {
+                                                      btmPageController.nextPage(
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  600),
+                                                          curve:
+                                                              Curves.easeOut);
+                                                    })
+                                              ],
+                                            ),
+                                            //Bottom sheet page 2
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                GestureDetector(
+                                                  child: Container(
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              15, 35, 0, 0),
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_back_ios,
+                                                            size: 16,
+                                                            color: Color(
+                                                                0xff006C67),
+                                                          ),
+                                                          Text(
+                                                            'Class 12th (6AM)',
+                                                            style: GoogleFonts.inter(
+                                                                textStyle: TextStyle(
+                                                                    color: Color(
+                                                                        0xff006C67),
+                                                                    fontSize:
+                                                                        15)),
+                                                          )
+                                                        ],
+                                                      )),
+                                                  onTap: () {
+                                                    btmPageController
+                                                        .previousPage(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    600),
+                                                            curve:
+                                                                Curves.easeOut);
+                                                  },
+                                                ),
+                                                //Enter class name
+                                                Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 15),
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    'Enter Monthly Fees',
+                                                    style: GoogleFonts.inter(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                  ),
+                                                ),
+
+                                                //subtitle
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 15, left: 15),
+                                                  child: Text(
+                                                    'Monthly fees to be collected from the students . Ex - 500 per month',
+                                                    style: GoogleFonts.inter(
+                                                        textStyle: TextStyle(
+                                                            color: Color(
+                                                                0xffA7A9B7))),
+                                                  ),
+                                                ),
+
+                                                //Class name TextField
+                                                Container(
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      15, 10, 10, 10),
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      10, 36, 10, 0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    border: Border.all(
+                                                        color: Colors.grey
+                                                            .withOpacity(0.5)),
+                                                  ),
+                                                  child: TextField(
+                                                    maxLength: 10,
+                                                    decoration: InputDecoration(
+                                                      alignLabelWithHint: false,
+                                                      counterText: '',
+                                                      border: InputBorder.none,
+                                                      icon: SvgAssetImage(
+                                                        imagePath:
+                                                            'assets/inr_round.svg',
+                                                        height: 25,
+                                                        width: 25,
+                                                      ),
+                                                      hintText: '500',
+                                                    ),
+                                                    style: GoogleFonts.outfit(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16)),
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                  ),
+                                                ),
+
+                                                //Next button
+                                                GestureDetector(
+                                                  child: Container(
+                                                    width: w,
+                                                    alignment: Alignment.center,
+                                                    padding: EdgeInsets.all(18),
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        10, 25, 10, 50),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0xff006C67),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8)),
+                                                    child: Text(
+                                                      'Finish adding class',
+                                                      style: GoogleFonts.inter(
+                                                          textStyle: TextStyle(
+                                                              fontSize: 16,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)),
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      },
                     ),
                     GestureDetector(
                       child: Container(
@@ -199,12 +459,14 @@ class _DashboardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _heading = institutionName + (city.isNotEmpty ? (', ' + city) : '');
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${institutionName}, ${city}',
+          _heading,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

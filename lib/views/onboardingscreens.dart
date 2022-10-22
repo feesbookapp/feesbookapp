@@ -19,8 +19,6 @@ class _onBoardingScreenState extends State<onBoardingScreen> {
 
   Widget onBoardingBody() {
     //Variables
-    var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
 
     final pageController = PageController(initialPage: 1);
 

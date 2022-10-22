@@ -456,7 +456,6 @@ class _StudentState extends State<Student> {
     // ];
 
     var w = MediaQuery.of(context).size.width;
-    var h = MediaQuery.of(context).size.height;
 
     return Stack(
       children: [

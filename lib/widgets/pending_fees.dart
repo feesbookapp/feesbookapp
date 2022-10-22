@@ -52,14 +52,14 @@ class _PendingFeesState extends State<PendingFees> {
                 ),
                 child: Center(
                     child: selected
-                        ? SvgAssetImage(
+                        ? Icon(Icons.nightlife)
+                        : SvgAssetImage(
                             imagePath: 'assets/tick_mark.svg',
                           )
-                        : Icon(Icons.circle)
                     // ? null
                     // : SvgAssetImage(
                     //     imagePath: 'assets/tick_mark.svg',
-                    //   )
+                    //   )  
                     ),
               ),
             ),

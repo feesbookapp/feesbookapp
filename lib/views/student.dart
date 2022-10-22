@@ -418,12 +418,6 @@ class _StudentState extends State<Student> {
                   child: Column(children: [
                     PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
                     PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
-                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
-                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
-                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
-                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
-                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
-                    PendingFees(startMonth: 'Nov', endMonth: 'Dec', fees: 600),
                   ]),
                 ))),
         Padding(

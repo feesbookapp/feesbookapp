@@ -1,6 +1,4 @@
-import 'package:exampleapplication/views/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class onBoardingScreen extends StatefulWidget {
   const onBoardingScreen({Key? key}) : super(key: key);

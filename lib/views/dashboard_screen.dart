@@ -21,7 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final city = 'Manglore';
 
   final bool doesClassExists = true;
-  final List<Class> _classes = [];
+  // final List<Class> _classes = [];
 
   Institute? institute;
 

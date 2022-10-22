@@ -18,36 +18,34 @@ class Batches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
-    // var h = MediaQuery.of(context).size.height;
     return Container(
-      width: w,
-      margin: EdgeInsets.fromLTRB(15, 10, 15, 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.4),
-              spreadRadius: 1,
-              blurRadius: 10)
-        ],
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Container(
-        margin: const EdgeInsets.only(left: 16, right: 16, top: 20),
+        width: w,
+        margin: EdgeInsets.fromLTRB(15, 10, 15, 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.4),
+                spreadRadius: 1,
+                blurRadius: 10)
+          ],
+          borderRadius: BorderRadius.circular(6),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               name,
               style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             Row(
               children: [
                 Text(
@@ -57,9 +55,7 @@ class Batches extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
-                  width: 30,
-                ),
+                SizedBox(width: 30),
                 Icon(
                   Icons.person,
                   size: 22,
@@ -68,9 +64,7 @@ class Batches extends StatelessWidget {
                 Text('$studentNum students')
               ],
             ),
-            const SizedBox(
-              height: 12,
-            ),
+            const SizedBox(height: 12),
             Text(
               '$paidNum paid',
               style: TextStyle(
@@ -89,53 +83,43 @@ class Batches extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Center(
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
+                    child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
                           text: "View ",
                           style: TextStyle(
                             color: Color(0xff09635E),
                             fontSize: 16,
-                          ),
+                          )),
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.arrow_forward,
+                          size: 16,
+                          color: Color(0xff09635E),
                         ),
-                        WidgetSpan(
-                          child: Icon(
-                            Icons.arrow_forward,
-                            size: 16,
-                            color: Color(0xff09635E),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
+                )),
               ),
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => link),
-                );
+                    context, MaterialPageRoute(builder: (context) => link));
               },
             ),
             const SizedBox(
               height: 14,
             ),
             Center(
-              child: Text(
-                'Add Student',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16),
-              ),
-            ),
-            const SizedBox(
-              height: 26,
-            ),
+                child: Text(
+              'Add Student',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
+            )),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -17,123 +17,103 @@ class _SigninState extends State<Signin> {
     var h = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
+          child: Column(
+        children: [
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: h * 0.7,
+            width: w,
+            child: PageView(
+              controller: PageController(keepPage: false),
+              clipBehavior: Clip.hardEdge,
+              allowImplicitScrolling: true,
+              padEnds: false,
+              children: <Widget>[
+                Swipe1(),
+                Swipe2(),
+                Swipe3(),
+              ],
             ),
-            Container(
-              height: h * 0.7,
-              width: w,
-              child: PageView(
-                controller: PageController(keepPage: false),
-                clipBehavior: Clip.hardEdge,
-                allowImplicitScrolling: true,
-                padEnds: false,
-                children: <Widget>[
-                  Swipe1(),
-                  Swipe2(),
-                  Swipe3(),
-                ],
-              ),
-            ),
-            Expanded(
+          ),
+          Expanded(
               child: Column(
-                children: [
-                  //GetStarted
-                  GestureDetector(
-                    child: Container(
-                      height: 65,
-                      width: w,
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xff006C67),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Get started',
-                          style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //   content: Text('Get Started'),
-                      //   duration: Duration(microseconds: 200),
-                      // ),);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
-                    },
-                  ),
-
-                  SizedBox(
-                    height: 10,
-                  ),
-
-                  //WhatsApp need help?
-                  GestureDetector(
-                    child: Container(
-                      height: 65,
-                      width: w,
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      decoration: BoxDecoration(
+            children: [
+              //GetStarted
+              GestureDetector(
+                child: Container(
+                  height: 65,
+                  width: w,
+                  margin: EdgeInsets.only(left: 20, right: 20),
+                  decoration: BoxDecoration(
+                      color: Color(0xff006C67),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Center(
+                    child: Text(
+                      'Get started',
+                      style: GoogleFonts.inter(
+                          textStyle: TextStyle(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.whatsapp_outlined,
-                              color: Color(0xff006C67),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'Need help?',
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                        fontSize: 16,
+                      )),
                     ),
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Need help?'),
-                          duration: Duration(microseconds: 200),
-                        ),
-                      );
-                      launch('https://wa.me/+918303823055');
-                    },
                   ),
-                ],
+                ),
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
               ),
-            )
-          ],
-        ),
-      ),
+
+              SizedBox(
+                height: 10,
+              ),
+
+              GestureDetector(
+                child: Container(
+                  height: 65,
+                  width: w,
+                  margin: EdgeInsets.only(left: 20, right: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey)),
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.whatsapp_outlined,
+                        color: Color(0xff006C67),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Need help?',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        )),
+                      ),
+                    ],
+                  )),
+                ),
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Need help?'),
+                    duration: Duration(microseconds: 200),
+                  ));
+                  launch('https://wa.me/+918303823055');
+                },
+              ),
+            ],
+          ))
+        ],
+      )),
     );
   }
 }

@@ -1,64 +1,30 @@
 import 'package:exampleapplication/Widgets/batches.dart';
-import 'package:exampleapplication/data/firestore_collection_path.dart';
-import 'package:exampleapplication/models/user.dart';
+import 'package:exampleapplication/view_model/providers.dart';
+import 'package:exampleapplication/views/add_class_screen.dart';
 import 'package:exampleapplication/views/widgets/bottomsheet/classes.dart';
 import 'package:exampleapplication/widgets/app_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final institute = ref.watch(appStateViewModelProvider).institute!;
 
-class _DashboardScreenState extends State<DashboardScreen> {
-  final pendingFees = '2,500';
-  final collectedFees = '10,000';
-  final tuitionName = 'Balaji tutorials';
-  final city = 'Manglore';
+    final classes = ref.watch(appStateViewModelProvider).classes;
+    final bool doesClassExists = classes != null && classes.isNotEmpty;
 
-  final bool doesClassExists = true;
-  // final List<Class> _classes = [];
+    final dashboardHeader = _DashboardHeader(
+      institutionName: institute.name,
+      city: '',
+      pendingFees: '2500',
+      collectedFees: '2500',
+    );
 
-  Institute? institute;
-
-  List classes = [
-    {
-      'name': 'Class 12th(6AM)',
-      'subject': 'Physics',
-      'totalStu': '10',
-      'feesPaid': '6'
-    },
-    {
-      'name': 'Class 11th(6AM)',
-      'subject': 'Chemistry',
-      'totalStu': '12',
-      'feesPaid': '3'
-    }
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<void> getInstitute() async {
-    final userId = '47NSr25XTqgTGCdrIVGe';
-    final institutionDoc = await FirebaseCollectionPath.institutes
-        .where('owner', isEqualTo: '/Users/$userId')
-        .limit(1)
-        .get();
-  }
-
-  Future<void> getClasses() async {
-    // await
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -66,17 +32,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
             top: 16,
             left: 16,
             right: 16,
-            bottom: doesClassExists ? 24 : 0,
+            bottom: doesClassExists ? 0 : 24,
           ),
           child: doesClassExists
               ? Column(
                   children: [
-                    _DashboardHeader(
-                      institutionName: tuitionName,
-                      city: city,
-                      pendingFees: pendingFees,
-                      collectedFees: collectedFees,
+                    dashboardHeader,
+                    SizedBox(height: 16),
+                    Batches(
+                      name: classes[0].name,
+                      subject: ' ',
+                      paidNum: ' ',
+                      link: ClassTile(
+                        batchName: classes[0].name,
+                        pendingFees: 2500,
+                        collectedFees: 10000,
+                      ),
+                      studentNum: '',
                     ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    dashboardHeader,
                     Spacer(),
                     SvgAssetImage(imagePath: 'assets/no_batch.svg'),
                     Spacer(),
@@ -108,7 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          'Add a batch >>>',
+                          'Add a class >>>',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
                                 fontSize: 16,
@@ -117,6 +95,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                       ),
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(8),
+                            ),
+                          ),
+                          context: context,
+                          builder: (context) {
+                            return AddClassScreen();
+                          },
+                        );
+                      },
                     ),
                     GestureDetector(
                       child: Container(
@@ -161,16 +153,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                     )
                   ],
-                )
-              : Batches(
-                  name: classes[0]['name'],
-                  subject: classes[0]['subject'],
-                  paidNum: classes[0]['feesPaid'],
-                  link: ClassTile(
-                      batchName: 'Class 12th(6am)',
-                      pendingFees: 2500,
-                      collectedFees: 10000),
-                  studentNum: classes[0]['totalStu'],
                 ),
         ),
       ),
@@ -194,12 +176,14 @@ class _DashboardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _heading = institutionName + (city.isNotEmpty ? (', ' + city) : '');
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${institutionName}, ${city}',
+          _heading,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

@@ -1,17 +1,32 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:exampleapplication/models/feesbook_class.dart';
+import 'package:exampleapplication/models/institute.dart';
+import 'package:exampleapplication/models/serializers.dart';
 import 'package:exampleapplication/models/user.dart';
 
-class AppState {
-  final UserModel? user;
-  final Class? classes;
-  final Institute? institute;
+part 'app_state.g.dart';
 
-  AppState({this.user, this.classes, this.institute});
+abstract class AppState implements Built<AppState, AppStateBuilder> {
+  AppState._();
 
-  AppState copyWith({UserModel? user, Class? classes, Institute? institute}) {
-    return AppState(
-      user: user ?? this.user,
-      classes: classes ?? this.classes,
-      institute: institute ?? this.institute,
-    );
+  factory AppState([void Function(AppStateBuilder) updates]) = _$AppState;
+
+  Map<String, dynamic> toJson() {
+    return serializers.serializeWith(AppState.serializer, this)
+        as Map<String, dynamic>;
   }
+
+  static AppState fromJson(Map<String, dynamic> json) {
+    return serializers.deserializeWith(AppState.serializer, json)!;
+  }
+
+  static Serializer<AppState> get serializer => _$appStateSerializer;
+
+  UserModel? get user;
+
+  BuiltList<FeesbookClass>? get classes;
+
+  Institute? get institute;
 }

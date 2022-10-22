@@ -1,8 +1,6 @@
 import 'package:exampleapplication/env/app_env.dart';
 import 'package:exampleapplication/env/dev_env.dart';
-import 'package:exampleapplication/views/home/sign_in.dart';
-import 'package:exampleapplication/views/home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:exampleapplication/views/home/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,15 +37,8 @@ void main({AppEnvironment? environment}) async {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final userLoggedIn = FirebaseAuth.instance.currentUser != null;
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,7 +47,13 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: userLoggedIn ? HomeScreen() : Signin(),
+      home: SplashScreen(),
+
+      // _loading
+      //     ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+      //     : userLoggedIn
+      //         ? HomeScreen()
+      //         : Signin(),
     );
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:exampleapplication/views/home/otp_screen.dart';
-import 'package:exampleapplication/views/home_screen.dart';
+import 'package:exampleapplication/views/home/teacher_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
@@ -189,13 +192,16 @@ class _LoginScreenState extends State<LoginScreen> {
             _loading = false;
           });
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ),
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => TeacherName()),
+            (Route<dynamic> route) => false,
           );
-        } catch (e) {
+        } catch (e, s) {
+          if (kDebugMode) {
+            log(e.toString());
+            log(s.toString());
+          }
+
           setState(() {
             _loading = false;
           });

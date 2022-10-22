@@ -104,15 +104,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         padding: EdgeInsets.all(18),
                         margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
                         decoration: BoxDecoration(
-                            color: Color(0xff006C67),
-                            borderRadius: BorderRadius.circular(8)),
+                          color: Color(0xff006C67),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Text(
                           'Add a batch >>>',
                           style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500)),
+                            textStyle: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                     ),
@@ -121,36 +123,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         padding: EdgeInsets.all(18),
                         margin: EdgeInsets.fromLTRB(30, 15, 30, 0),
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey)),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey),
+                        ),
                         child: Center(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.whatsapp_outlined,
-                              color: Color(0xff006C67),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Need help setting up?',
-                              style: GoogleFonts.inter(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.whatsapp_outlined,
+                                color: Color(0xff006C67),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Need help setting up?',
+                                style: GoogleFonts.inter(
                                   textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              )),
-                            ),
-                          ],
-                        )),
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       onTap: () {
                         launch('https://wa.me/+918303823055');
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Need help?'),
-                          duration: Duration(microseconds: 200),
-                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Need help?'),
+                            duration: Duration(microseconds: 200),
+                          ),
+                        );
                       },
                     )
                   ],

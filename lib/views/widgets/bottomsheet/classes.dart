@@ -49,17 +49,25 @@ class _ClassTileState extends State<ClassTile> {
                     width: 16,
                   ),
                   Container(
-                      width: 46,
-                      height: 46,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(200)),
-                      child: GestureDetector(
-                        child: Center(child: Icon(Icons.arrow_back)),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      )),
+                    width: 46,
+                    height: 46,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(
+                        200,
+                      ),
+                    ),
+                    child: GestureDetector(
+                      child: Center(
+                        child: Icon(
+                          Icons.arrow_back,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
                   SizedBox(
                     width: 12,
                   ),
@@ -80,8 +88,11 @@ class _ClassTileState extends State<ClassTile> {
                             Text(
                               'View full report',
                               style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: Color(0xff006C67), fontSize: 14)),
+                                textStyle: TextStyle(
+                                  color: Color(0xff006C67),
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
@@ -92,7 +103,12 @@ class _ClassTileState extends State<ClassTile> {
                         ),
                         onTap: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('View full report')));
+                            SnackBar(
+                              content: Text(
+                                'View full report',
+                              ),
+                            ),
+                          );
                         },
                       )
                     ],
@@ -109,8 +125,14 @@ class _ClassTileState extends State<ClassTile> {
                   children: [
                     //Red box
                     Container(
-                      child: FeesInfo(Color(0xffFCEEEE), 'Pending Fees',
-                          widget.pendingFees, Color(0xff9D0709)),
+                      child: FeesInfo(
+                        Color(0xffFCEEEE),
+                        'Pending Fees',
+                        widget.pendingFees,
+                        Color(
+                          0xff9D0709,
+                        ),
+                      ),
                       height: 84,
                       width: w / 2 - 22,
                     ),
@@ -118,8 +140,14 @@ class _ClassTileState extends State<ClassTile> {
                     Container(
                       height: 84,
                       width: w / 2 - 22,
-                      child: FeesInfo(Color(0xffE9EDEC), 'Total collected',
-                          widget.collectedFees, Color(0xff006C67)),
+                      child: FeesInfo(
+                        Color(0xffE9EDEC),
+                        'Total collected',
+                        widget.collectedFees,
+                        Color(
+                          0xff006C67,
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -146,8 +174,10 @@ class _ClassTileState extends State<ClassTile> {
                   isScrollControlled: true,
                   backgroundColor: Color(0xfff3f3f3),
                   shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(12))),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                  ),
                   context: context,
                   builder: (context) => Column(
                     mainAxisSize: MainAxisSize.min,
@@ -169,10 +199,12 @@ class _ClassTileState extends State<ClassTile> {
                         child: Text(
                           'Share this message with Invite link',
                           style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600)),
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                       Container(
@@ -181,7 +213,10 @@ class _ClassTileState extends State<ClassTile> {
                           'Your Teacher Vivek shrivastava is inviting you to Join Class 12th (6AM) Batch',
                           textAlign: TextAlign.start,
                           style: GoogleFonts.inter(
-                              textStyle: TextStyle(color: Colors.grey)),
+                            textStyle: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
                       GestureDetector(
@@ -194,54 +229,61 @@ class _ClassTileState extends State<ClassTile> {
                           width: w,
                           height: 55,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Color(0xff006C67)),
+                            borderRadius: BorderRadius.circular(8),
+                            color: Color(
+                              0xff006C67,
+                            ),
+                          ),
                           child: Center(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.whatsapp_rounded,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                              Text(
-                                '  Send on whasapp',
-                                style: GoogleFonts.inter(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.whatsapp_rounded,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  '  Send on whasapp',
+                                  style: GoogleFonts.inter(
                                     textStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500)),
-                              ),
-                            ],
-                          )),
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       )
                     ],
                   ),
                 ),
                 child: Container(
-                    margin: EdgeInsets.only(left: 16, right: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          'Students',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        Text(
-                          '+ Add student',
-                          style: TextStyle(
-                              color: Color(0xff006C67),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    )),
+                  margin: EdgeInsets.only(left: 16, right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Students',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Text(
+                        '+ Add student',
+                        style: TextStyle(
+                            color: Color(0xff006C67),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 24,
@@ -276,65 +318,68 @@ class StudentInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     return Container(
-        width: w,
-        margin: EdgeInsets.only(left: 16, right: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.25),
-                spreadRadius: 1,
-                blurRadius: 6)
-          ],
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Container(
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                studentName,
-                style: TextStyle(
+      width: w,
+      margin: EdgeInsets.only(left: 16, right: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.25),
+              spreadRadius: 1,
+              blurRadius: 6)
+        ],
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Container(
+        margin: const EdgeInsets.only(left: 16, right: 16, top: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              studentName,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Text(
+              '$paidMonths/10 months paid',
+              style: GoogleFonts.inter(
+                textStyle: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              Text('$paidMonths/10 months paid',
-                  style: GoogleFonts.inter(
-                    textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                  )),
-              const SizedBox(
-                height: 8,
-              ),
-              SvgPicture.asset('img/progress.svg'),
-              const SizedBox(
-                height: 26,
-              ),
-              GestureDetector(
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffE6F0F0),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Center(
-                      child: RichText(
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            SvgPicture.asset('img/progress.svg'),
+            const SizedBox(
+              height: 26,
+            ),
+            GestureDetector(
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xffE6F0F0),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Center(
+                  child: RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
-                            text: "View ",
-                            style: TextStyle(
-                              color: Color(0xff09635E),
-                              fontSize: 16,
-                            )),
+                          text: "View ",
+                          style: TextStyle(
+                            color: Color(0xff09635E),
+                            fontSize: 16,
+                          ),
+                        ),
                         WidgetSpan(
                           child: Icon(
                             Icons.arrow_forward,
@@ -344,37 +389,47 @@ class StudentInfo extends StatelessWidget {
                         ),
                       ],
                     ),
-                  )),
+                  ),
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Student(
-                                stuName: studentName,
-                              )));
-                },
               ),
-              const SizedBox(
-                height: 14,
-              ),
-              GestureDetector(
-                child: Center(
-                    child: Text(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Student(
+                      stuName: studentName,
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 14,
+            ),
+            GestureDetector(
+              child: Center(
+                child: Text(
                   'Send fees reminder',
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
                       fontSize: 16),
-                )),
-                onTap: (() => ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('Send Reminder')))),
+                ),
               ),
-              const SizedBox(
-                height: 26,
+              onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Send Reminder',
+                  ),
+                ),
               ),
-            ],
-          ),
-        ));
+            ),
+            const SizedBox(
+              height: 26,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

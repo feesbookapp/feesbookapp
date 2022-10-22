@@ -45,17 +45,21 @@ class _StudentState extends State<Student> {
                       width: 16,
                     ),
                     Container(
-                        width: 46,
-                        height: 46,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(200)),
-                        child: GestureDetector(
-                          child: Center(child: Icon(Icons.arrow_back)),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        )),
+                      width: 46,
+                      height: 46,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(200),
+                      ),
+                      child: GestureDetector(
+                        child: Center(
+                          child: Icon(Icons.arrow_back),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
                     SizedBox(
                       width: 12,
                     ),
@@ -84,8 +88,12 @@ class _StudentState extends State<Student> {
                     children: [
                       //Red box
                       Container(
-                        child: FeesInfo(Color(0xffFCEEEE), 'Pending Fees', '0',
-                            Color(0xff9D0709)),
+                        child: FeesInfo(
+                          Color(0xffFCEEEE),
+                          'Pending Fees',
+                          '0',
+                          Color(0xff9D0709),
+                        ),
                         height: 84,
                         width: w / 2 - 22,
                       ),
@@ -93,8 +101,12 @@ class _StudentState extends State<Student> {
                       Container(
                         height: 84,
                         width: w / 2 - 22,
-                        child: FeesInfo(Color(0xffE9EDEC), 'Total collected',
-                            '0', Color(0xff006C67)),
+                        child: FeesInfo(
+                          Color(0xffE9EDEC),
+                          'Total collected',
+                          '0',
+                          Color(0xff006C67),
+                        ),
                       )
                     ],
                   ),
@@ -107,77 +119,82 @@ class _StudentState extends State<Student> {
             ),
           ),
           SingleChildScrollView(
-              child: Padding(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    child: Text(
-                      'Pending Fees',
-                      style: GoogleFonts.inter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      child: Text(
+                        'Pending Fees',
+                        style: GoogleFonts.inter(
                           textStyle: TextStyle(
                               color: Color(0xff303030),
                               fontSize: 16,
-                              fontWeight: FontWeight.w500)),
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      onTap: () {
+                        studentController.animateToPage(0,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut);
+                        setState(() {});
+                      },
                     ),
-                    onTap: () {
-                      studentController.animateToPage(0,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeInOut);
-                      setState(() {});
-                    },
-                  ),
-                  GestureDetector(
-                    child: Text(
-                      'Fees History',
-                      style: GoogleFonts.inter(
+                    GestureDetector(
+                      child: Text(
+                        'Fees History',
+                        style: GoogleFonts.inter(
                           textStyle: TextStyle(
                               color: studentController == 1
                                   ? Color(0xff006C67)
                                   : Colors.black,
                               fontSize: 16,
-                              fontWeight: FontWeight.w500)),
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      onTap: () {
+                        studentController.animateToPage(1,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut);
+                      },
                     ),
-                    onTap: () {
-                      studentController.animateToPage(1,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeInOut);
-                    },
-                  ),
-                  GestureDetector(
-                    child: Text(
-                      'Contact',
-                      style: GoogleFonts.inter(
+                    GestureDetector(
+                      child: Text(
+                        'Contact',
+                        style: GoogleFonts.inter(
                           textStyle: TextStyle(
                               color: studentController == 2
                                   ? Color(0xff006C67)
                                   : Colors.black,
                               fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ),
-                    onTap: () {
-                      studentController.animateToPage(2,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeInOut);
-                    },
-                  )
-                ]),
-          )),
-          Expanded(
-              child: Container(
-            color: Colors.white,
-            child: PageView(
-              allowImplicitScrolling: true,
-              controller: studentController,
-              children: [
-                pendingFeesPage(),
-                feesHistoryPage(),
-                contactPage(),
-              ],
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      onTap: () {
+                        studentController.animateToPage(2,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut);
+                      },
+                    )
+                  ]),
             ),
-          )),
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: PageView(
+                allowImplicitScrolling: true,
+                controller: studentController,
+                children: [
+                  pendingFeesPage(),
+                  feesHistoryPage(),
+                  contactPage(),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -187,198 +204,230 @@ class _StudentState extends State<Student> {
     var w = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Expanded(
-          child: Padding(
-        padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Name',
-                style: GoogleFonts.inter(
-                    textStyle:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-              ),
-              Container(
-                height: 50,
-                width: w,
-                margin: EdgeInsets.only(right: 10, top: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xffF3F3F3)),
-                  borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 25,
                 ),
-                alignment: Alignment.centerLeft,
-                child: TextField(
-                  textAlign: TextAlign.left,
-                  controller: studentName,
-                  decoration: InputDecoration(
-                      counterText: '',
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Color(0xff006C67),
-                      ),
-                      suffix: GestureDetector(
-                        onTap: () {
-                          if (studentName.text.length == 0) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Please enter your name'),
-                              duration: Duration(milliseconds: 500),
-                              backgroundColor: Colors.red.withOpacity(0.5),
-                            ));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Change name'),
-                                duration: Duration(milliseconds: 200),
-                                backgroundColor: Color(0xff006C67)));
-                          }
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: Text(
-                            'Change',
-                            style: TextStyle(color: Color(0xff006C67)),
-                            textAlign: TextAlign.center,
+                Text(
+                  'Name',
+                  style: GoogleFonts.inter(
+                    textStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: w,
+                  margin: EdgeInsets.only(right: 10, top: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Color(0xffF3F3F3),
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: TextField(
+                    textAlign: TextAlign.left,
+                    controller: studentName,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color(0xff006C67),
+                        ),
+                        suffix: GestureDetector(
+                          onTap: () {
+                            if (studentName.text.length == 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Please enter your name'),
+                                  duration: Duration(milliseconds: 500),
+                                  backgroundColor: Colors.red.withOpacity(0.5),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Change name'),
+                                  duration: Duration(milliseconds: 200),
+                                  backgroundColor: Color(0xff006C67),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: Text(
+                              'Change',
+                              style: TextStyle(
+                                color: Color(0xff006C67),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      hintText: widget.stuName),
-                  keyboardType: TextInputType.name,
+                        hintText: widget.stuName),
+                    keyboardType: TextInputType.name,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Parents name',
-                style: GoogleFonts.inter(
+                const SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  'Parents name',
+                  style: GoogleFonts.inter(
                     textStyle:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-              ),
-              Container(
-                height: 50,
-                width: w,
-                margin: EdgeInsets.only(right: 10, top: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xffF3F3F3)),
-                  borderRadius: BorderRadius.circular(8),
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
                 ),
-                alignment: Alignment.centerLeft,
-                child: TextField(
-                  controller: updateParentsName,
-                  decoration: InputDecoration(
-                      counterText: '',
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Color(0xff006C67),
-                      ),
-                      suffix: GestureDetector(
-                        onTap: () {
-                          if (parentsName.text.length == 0) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Please enter your name'),
-                              duration: Duration(milliseconds: 500),
-                              backgroundColor: Colors.red.withOpacity(0.5),
-                            ));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Change name'),
-                                duration: Duration(milliseconds: 200),
-                                backgroundColor: Color(0xff006C67)));
-                          }
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: Text(
-                            'Change',
-                            style: TextStyle(color: Color(0xff006C67)),
-                            textAlign: TextAlign.center,
+                Container(
+                  height: 50,
+                  width: w,
+                  margin: EdgeInsets.only(right: 10, top: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Color(0xffF3F3F3),
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: TextField(
+                    controller: updateParentsName,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color(0xff006C67),
+                        ),
+                        suffix: GestureDetector(
+                          onTap: () {
+                            if (parentsName.text.length == 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Please enter your name'),
+                                  duration: Duration(milliseconds: 500),
+                                  backgroundColor: Colors.red.withOpacity(0.5),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Change name'),
+                                  duration: Duration(milliseconds: 200),
+                                  backgroundColor: Color(0xff006C67),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: Text(
+                              'Change',
+                              style: TextStyle(
+                                color: Color(0xff006C67),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      hintText: 'Parent\'s name'),
-                  keyboardType: TextInputType.name,
+                        hintText: 'Parent\'s name'),
+                    keyboardType: TextInputType.name,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Phone number',
-                style: GoogleFonts.inter(
+                const SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  'Phone number',
+                  style: GoogleFonts.inter(
                     textStyle:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-              ),
-              Container(
-                height: 50,
-                width: w,
-                margin: EdgeInsets.only(right: 10, top: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xffF3F3F3)),
-                  borderRadius: BorderRadius.circular(8),
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
                 ),
-                alignment: Alignment.centerLeft,
-                child: TextField(
-                  controller: updatePhoneNumber,
-                  decoration: InputDecoration(
-                      counterText: '',
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.phone_outlined,
-                        color: Color(0xff006C67),
-                      ),
-                      suffix: GestureDetector(
-                        onTap: () {
-                          if (parentsName.text.length == 0) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Please enter phone number'),
-                              duration: Duration(milliseconds: 500),
-                              backgroundColor: Colors.red.withOpacity(0.5),
-                            ));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Changed phone number'),
-                                duration: Duration(milliseconds: 200),
-                                backgroundColor: Color(0xff006C67)));
-                          }
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: Text(
-                            'Change',
-                            style: TextStyle(color: Color(0xff006C67)),
-                            textAlign: TextAlign.center,
+                Container(
+                  height: 50,
+                  width: w,
+                  margin: EdgeInsets.only(right: 10, top: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Color(0xffF3F3F3),
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: TextField(
+                    controller: updatePhoneNumber,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.phone_outlined,
+                          color: Color(0xff006C67),
+                        ),
+                        suffix: GestureDetector(
+                          onTap: () {
+                            if (parentsName.text.length == 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Please enter phone number'),
+                                  duration: Duration(milliseconds: 500),
+                                  backgroundColor: Colors.red.withOpacity(0.5),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Changed phone number'),
+                                  duration: Duration(milliseconds: 200),
+                                  backgroundColor: Color(0xff006C67),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: Text(
+                              'Change',
+                              style: TextStyle(
+                                color: Color(0xff006C67),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      hintText: phoneNumber),
-                  keyboardType: TextInputType.name,
+                        hintText: phoneNumber),
+                    keyboardType: TextInputType.name,
+                  ),
                 ),
-              ),
-            ]),
-      )),
+              ]),
+        ),
+      ),
     );
   }
 
   Widget feesHistoryPage() {
     return SingleChildScrollView(
       child: Expanded(
-          child: Padding(
-        padding: EdgeInsets.only(top: 15),
-        child: Column(children: [
-          FeesHistory(month: 'Jan', fees: 500),
-          FeesHistory(month: 'Feb', fees: 600),
-          FeesHistory(month: 'Mar', fees: 600),
-          FeesHistory(month: 'April', fees: 800),
-        ]),
-      )),
+        child: Padding(
+          padding: EdgeInsets.only(top: 15),
+          child: Column(children: [
+            FeesHistory(month: 'Jan', fees: 500),
+            FeesHistory(month: 'Feb', fees: 600),
+            FeesHistory(month: 'Mar', fees: 600),
+            FeesHistory(month: 'April', fees: 800),
+          ]),
+        ),
+      ),
     );
   }
 
@@ -412,78 +461,85 @@ class _StudentState extends State<Student> {
     return Stack(
       children: [
         Expanded(
-            child: Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                    PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
-                    PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
-                  ]),
-                ))),
+          child: Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: SingleChildScrollView(
+              child: Column(children: [
+                PendingFees(startMonth: 'Jun', endMonth: 'July', fees: 600),
+                PendingFees(startMonth: 'Jan', endMonth: 'Feb', fees: 500),
+              ]),
+            ),
+          ),
+        ),
         Padding(
           padding: EdgeInsets.fromLTRB(15, 0, 15, 40),
           child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () => showModalBottomSheet(
-                      isScrollControlled: true,
-                      backgroundColor: Color(0xfff3f3f3),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(12))),
-                      context: context,
-                      builder: (context) => Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 5,
-                            width: 40,
-                            margin: EdgeInsets.only(top: 10),
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Color(0xfff3f3f3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(12),
+                      ),
+                    ),
+                    context: context,
+                    builder: (context) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 5,
+                          width: 40,
+                          margin: EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Color(0xff6d6d6d),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(30, 50, 20, 0),
+                          alignment: Alignment.bottomCenter,
+                          child: Text(
+                            'Send fees reminder to collect fees on time',
+                            style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(30, 20, 30, 25),
+                          child: Text(
+                            'Send reminder to students to pay the fees! We automatically send this reminder at the end of every month!',
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.inter(
+                              textStyle: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                left: 24, right: 24, bottom: 40),
+                            width: w,
+                            height: 55,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Color(0xff6d6d6d),
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xff006C67),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(30, 50, 20, 0),
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              'Send fees reminder to collect fees on time',
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(30, 20, 30, 25),
-                            child: Text(
-                              'Send reminder to students to pay the fees! We automatically send this reminder at the end of every month!',
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(color: Colors.grey)),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                  left: 24, right: 24, bottom: 40),
-                              width: w,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Color(0xff006C67)),
-                              child: Center(
-                                  child: Row(
+                            child: Center(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -495,65 +551,74 @@ class _StudentState extends State<Student> {
                                   Text(
                                     '  Send on whasapp',
                                     style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500)),
+                                      textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                 ],
-                              )),
+                              ),
                             ),
-                          )
-                        ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 60,
+                    width: w / 2 - 25,
+                    decoration: BoxDecoration(
+                      color: Color(0xffFCEEEE),
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.3),
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/send_reminder.svg',
+                          height: 18,
+                        ),
+                        Text(
+                          ' Send Reminder',
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 60,
+                    width: w / 2 - 25,
+                    decoration: BoxDecoration(
+                      color: Color(0xff006C67),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      ' Fees collected',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
                       ),
                     ),
-                    child: Container(
-                        alignment: Alignment.center,
-                        height: 60,
-                        width: w / 2 - 25,
-                        decoration: BoxDecoration(
-                            color: Color(0xffFCEEEE),
-                            border:
-                                Border.all(color: Colors.grey.withOpacity(0.3)),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/send_reminder.svg',
-                              height: 18,
-                            ),
-                            Text(
-                              ' Send Reminder',
-                              style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500)),
-                            )
-                          ],
-                        )),
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                        alignment: Alignment.center,
-                        height: 60,
-                        width: w / 2 - 25,
-                        decoration: BoxDecoration(
-                            color: Color(0xff006C67),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Text(
-                          ' Fees collected',
-                          style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white)),
-                        )),
-                  )
-                ],
-              )),
+                )
+              ],
+            ),
+          ),
         ),
       ],
     );

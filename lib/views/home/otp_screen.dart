@@ -1,7 +1,6 @@
 import 'package:exampleapplication/view_model/providers.dart';
 import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,9 +30,10 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: OTPBody(),
-    ));
+      body: SingleChildScrollView(
+        child: OTPBody(),
+      ),
+    );
   }
 
   Widget OTPBody() {
@@ -44,46 +44,51 @@ class _OTPScreenState extends State<OTPScreen> {
     //Theme
 
     return SafeArea(
-        child: Column(
-      children: [
-        SizedBox(height: h * 0.1),
+      child: Column(
+        children: [
+          SizedBox(height: h * 0.1),
 
-        //illustration
-        Container(
-          width: w,
-          child: Center(
-            child: Container(
-              width: w * 0.8,
-              height: w * 0.8,
-              decoration: BoxDecoration(
-                image:
-                    DecorationImage(image: AssetImage('assets/onboarding.png')),
+          //illustration
+          Container(
+            width: w,
+            child: Center(
+              child: Container(
+                width: w * 0.8,
+                height: w * 0.8,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      'assets/onboarding.png',
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-        ),
 
-        SizedBox(
-          height: h * 0.1,
-        ),
-
-        //Title
-        Container(
-          margin: EdgeInsets.only(left: 24, right: 24),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Enter OTP',
-            style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Color.fromARGB(255, 0, 59, 56))),
+          SizedBox(
+            height: h * 0.1,
           ),
-        ),
 
-        //SubTitle
-        GestureDetector(
-          child: Container(
+          //Title
+          Container(
+            margin: EdgeInsets.only(left: 24, right: 24),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Enter OTP',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Color.fromARGB(255, 0, 59, 56),
+                ),
+              ),
+            ),
+          ),
+
+          //SubTitle
+          GestureDetector(
+            child: Container(
               margin: EdgeInsets.only(left: 24, right: 24, top: 10),
               child: RichText(
                 text: TextSpan(
@@ -100,161 +105,189 @@ class _OTPScreenState extends State<OTPScreen> {
                           fontSize: 16),
                     ),
                     TextSpan(
-                        text: '. Edit',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff006C67),
-                            fontSize: 16)),
+                      text: '. Edit',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff006C67),
+                        fontSize: 16,
+                      ),
+                    ),
                   ],
                 ),
-              )),
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-        ),
-
-        const SizedBox(
-          height: 20,
-        ),
-
-        //OTP
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Pinput(
-            onChanged: (value) {
-              otpCode = value;
-            },
-            length: 6,
-            defaultPinTheme: PinTheme(
-                height: 58,
-                width: 52,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xffF8F9FB),
-                    // color: Colors.black,
-                    border:
-                        Border.all(color: Color(0xff006C67).withOpacity(0.3)))),
-            focusedPinTheme: PinTheme(
-                height: 58,
-                width: 52,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xffF8F9FB),
-                    // color: Colors.black,
-                    border: Border.all(color: Color(0xff006C67)))),
-          ),
-        ),
-
-        //Button
-        Container(
-          width: w,
-          height: 60,
-          margin: EdgeInsets.fromLTRB(25, 25, 25, 10),
-          child: Consumer(builder: (context, ref, _) {
-            return ElevatedButton(
-              onPressed: _loading
-                  ? null
-                  : () async {
-                      if (otpCode?.length != 6) {
-                        return;
-                      }
-
-                      setState(() {
-                        _loading = true;
-                      });
-
-                      final credential = PhoneAuthProvider.credential(
-                        verificationId: widget.verificationId,
-                        smsCode: otpCode!,
-                      );
-
-                      try { 
-                        await _auth.signInWithCredential(credential);
-
-                        await ref
-                            .read(appStateViewModelProvider.notifier)
-                            .createUserInFirebase({});
-
-                        setState(() {
-                          _loading = false;
-                        });
-
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      } catch (e) {
-                        setState(() {
-                          _loading = false;
-                        });
-
-                        if (e is FirebaseAuthException) {
-                          switch (e.code) {
-                            case 'invalid-verification-code':
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'OTP is wrong. Please enter the correct OTP.',
-                                  ),
-                                ),
-                              );
-                              break;
-
-                            default:
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.message ?? e.code)),
-                              );
-                          }
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Something went wrong. Please try again later.'),
-                            ),
-                          );
-                        }
-                      }
-                    },
-              child: _loading
-                  ? CircularProgressIndicator()
-                  : Text(
-                      'Submit',
-                      style: TextStyle(color: Colors.white),
-                    ),
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStatePropertyAll<Color>(Color(0xff006C67)),
               ),
-            );
-          }),
-        ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          ),
 
-        //Didn’t receive the code? Resend
-        Padding(
+          const SizedBox(
+            height: 20,
+          ),
+
+          //OTP
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Pinput(
+              onChanged: (value) {
+                otpCode = value;
+              },
+              length: 6,
+              defaultPinTheme: PinTheme(
+                height: 58,
+                width: 52,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xffF8F9FB),
+                  // color: Colors.black,
+                  border: Border.all(
+                    color: Color(0xff006C67).withOpacity(0.3),
+                  ),
+                ),
+              ),
+              focusedPinTheme: PinTheme(
+                height: 58,
+                width: 52,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xffF8F9FB),
+                  // color: Colors.black,
+                  border: Border.all(
+                    color: Color(0xff006C67),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          //Button
+          Container(
+            width: w,
+            height: 60,
+            margin: EdgeInsets.fromLTRB(25, 25, 25, 10),
+            child: Consumer(builder: (context, ref, _) {
+              return ElevatedButton(
+                onPressed: _loading
+                    ? null
+                    : () async {
+                        if (otpCode?.length != 6) {
+                          return;
+                        }
+
+                        setState(() {
+                          _loading = true;
+                        });
+
+                        final credential = PhoneAuthProvider.credential(
+                          verificationId: widget.verificationId,
+                          smsCode: otpCode!,
+                        );
+
+                        try {
+                          await _auth.signInWithCredential(credential);
+
+                          await ref
+                              .read(appStateViewModelProvider.notifier)
+                              .createUserInFirebase({});
+
+                          setState(() {
+                            _loading = false;
+                          });
+
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => HomeScreen(),
+                            ),
+                            (Route<dynamic> route) => false,
+                          );
+                        } catch (e) {
+                          setState(() {
+                            _loading = false;
+                          });
+
+                          if (e is FirebaseAuthException) {
+                            switch (e.code) {
+                              case 'invalid-verification-code':
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'OTP is wrong. Please enter the correct OTP.',
+                                    ),
+                                  ),
+                                );
+                                break;
+
+                              default:
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      e.message ?? e.code,
+                                    ),
+                                  ),
+                                );
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Something went wrong. Please try again later.'),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                child: _loading
+                    ? CircularProgressIndicator()
+                    : Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(
+                    Color(
+                      0xff006C67,
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+
+          //Didn’t receive the code? Resend
+          Padding(
             padding: EdgeInsets.all(2),
             child: GestureDetector(
               child: RichText(
                 text: TextSpan(
                     text: 'Didn’t receive the code?',
-                    style: TextStyle(color: Color(0xffA7A9B7)),
+                    style: TextStyle(
+                      color: Color(
+                        0xffA7A9B7,
+                      ),
+                    ),
                     children: <TextSpan>[
                       TextSpan(
-                          text: ' Resend.',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ))
+                        text: ' Resend.',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      )
                     ]),
               ),
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    'Resending code',
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Resending code',
+                    ),
+                    duration: Duration(microseconds: 500),
                   ),
-                  duration: Duration(microseconds: 500),
-                ));
+                );
               },
-            ))
-      ],
-    ));
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

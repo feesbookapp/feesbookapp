@@ -17,8 +17,11 @@ class FeesHistory extends StatelessWidget {
       width: w,
       height: 75,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.withOpacity(0.25))),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.25),
+        ),
+      ),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,10 +30,12 @@ class FeesHistory extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                  color: Color(0xffF2F4F9),
-                  borderRadius: BorderRadius.circular(10)),
+                color: Color(0xffF2F4F9),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Center(
-                  child: SvgPicture.asset('assets/arrow_bottom_left.svg')),
+                child: SvgPicture.asset('assets/arrow_bottom_left.svg'),
+              ),
             ),
             Spacer(
               flex: 1,
@@ -42,12 +47,14 @@ class FeesHistory extends StatelessWidget {
                 Text(
                   'Paid',
                   style: GoogleFonts.inter(
-                      textStyle: TextStyle(color: Colors.black, fontSize: 16)),
+                    textStyle: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
                 ),
                 Text(
                   '$month',
                   style: GoogleFonts.inter(
-                      textStyle: TextStyle(color: Colors.grey, fontSize: 12)),
+                    textStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
                 )
               ],
             ),
@@ -57,10 +64,11 @@ class FeesHistory extends StatelessWidget {
             Text(
               '₹$fees',
               style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold)),
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
             )
           ]),
     );

@@ -34,7 +34,9 @@ void main({AppEnvironment? environment}) async {
     );
   }
 
-  runApp(ProviderScope(child: app));
+  runApp(
+    ProviderScope(child: app),
+  );
 }
 
 class MyApp extends StatefulWidget {

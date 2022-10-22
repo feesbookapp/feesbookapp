@@ -1,7 +1,6 @@
 import 'package:exampleapplication/views/home/otp_screen.dart';
 import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
@@ -22,9 +21,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: getBody(),
-    ));
+      body: SingleChildScrollView(
+        child: getBody(),
+      ),
+    );
   }
 
   Widget getBody() {
@@ -37,123 +37,138 @@ class _LoginScreenState extends State<LoginScreen> {
     var gre = Colors.grey;
 
     return SafeArea(
-        child: Column(
-      children: [
-        SizedBox(
-          height: h * 0.1,
-        ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: h * 0.1,
+          ),
 
-        //illustration
-        Container(
-          width: w,
-          child: Center(
-            child: Container(
-              width: w * 0.8,
-              height: w * 0.8,
-              decoration: BoxDecoration(
-                image:
-                    DecorationImage(image: AssetImage('assets/onboarding.png')),
+          //illustration
+          Container(
+            width: w,
+            child: Center(
+              child: Container(
+                width: w * 0.8,
+                height: w * 0.8,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      'assets/onboarding.png',
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-        ),
 
-        SizedBox(
-          height: h * 0.1,
-        ),
-
-        //Title
-        Container(
-          margin: EdgeInsets.only(left: 24, right: 24),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Enter your phone number',
-            style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.black)),
+          SizedBox(
+            height: h * 0.1,
           ),
-        ),
 
-        //SubTitle
-        Container(
+          //Title
+          Container(
+            margin: EdgeInsets.only(left: 24, right: 24),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Enter your phone number',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+
+          //SubTitle
+          Container(
             margin: EdgeInsets.only(left: 24, right: 24, top: 10),
             child: Text(
               'We will verify your phone number to keep your data secure',
               style:
                   TextStyle(color: Colors.grey, fontSize: 16, wordSpacing: 1),
-            )),
-
-        const SizedBox(
-          height: 20,
-        ),
-
-        //Phone number
-        Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
-          margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: gre),
+            ),
           ),
-          child: TextField(
-            maxLength: 10,
-            controller: phoneNumber,
-            decoration: InputDecoration(
-              alignLabelWithHint: false,
-              counterText: '',
-              border: InputBorder.none,
-              prefixIcon: Icon(
-                Icons.phone,
-                color: Color(0xff006C67),
+
+          const SizedBox(
+            height: 20,
+          ),
+
+          //Phone number
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+            margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: gre),
+            ),
+            child: TextField(
+              maxLength: 10,
+              controller: phoneNumber,
+              decoration: InputDecoration(
+                alignLabelWithHint: false,
+                counterText: '',
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.phone,
+                  color: Color(0xff006C67),
+                ),
+                hintText: 'Phone number',
               ),
-              hintText: 'Phone number',
+              keyboardType: TextInputType.phone,
             ),
-            keyboardType: TextInputType.phone,
           ),
-        ),
 
-        //Button
-        Container(
-          width: w,
-          height: 60,
-          margin: EdgeInsets.all(25),
-          child: ElevatedButton(
-            onPressed: _loading
-                ? null
-                : () async {
-                    //if less than 10 digits
-                    if (phoneNumber.length < 10) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Phone number not correct')));
+          //Button
+          Container(
+            width: w,
+            height: 60,
+            margin: EdgeInsets.all(25),
+            child: ElevatedButton(
+              onPressed: _loading
+                  ? null
+                  : () async {
+                      //if less than 10 digits
+                      if (phoneNumber.length < 10) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Phone number not correct',
+                            ),
+                          ),
+                        );
+                        setState(() {
+                          gre = Colors.red;
+                        });
+                        return;
+                      }
+
                       setState(() {
-                        gre = Colors.red;
+                        _loading = true;
                       });
-                      return;
-                    }
 
-                    setState(() {
-                      _loading = true;
-                    });
-
-                    await sendOneTimeCode();
-                  },
-            child: _loading
-                ? const CircularProgressIndicator()
-                : Text(
-                    'Submit',
-                    style: TextStyle(color: Colors.white),
+                      await sendOneTimeCode();
+                    },
+              child: _loading
+                  ? const CircularProgressIndicator()
+                  : Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll<Color>(
+                  Color(
+                    0xff006C67,
                   ),
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll<Color>(Color(0xff006C67)),
+                ),
+              ),
             ),
           ),
-        ),
-      ],
-    ));
+        ],
+      ),
+    );
   }
 
   Future<void> sendOneTimeCode() async {
@@ -161,8 +176,11 @@ class _LoginScreenState extends State<LoginScreen> {
       timeout: const Duration(seconds: 60),
       phoneNumber: '+91${phoneNumber.text}',
       verificationCompleted: (PhoneAuthCredential credential) async {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Sign in successful')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign in successful'),
+          ),
+        );
 
         try {
           await _auth.signInWithCredential(credential);
@@ -173,7 +191,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
           );
         } catch (e) {
           setState(() {
@@ -182,7 +202,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
           if (e is FirebaseAuthException) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(e.message ?? e.code)),
+              SnackBar(
+                content: Text(e.message ?? e.code),
+              ),
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -199,7 +221,9 @@ class _LoginScreenState extends State<LoginScreen> {
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? e.code)),
+          SnackBar(
+            content: Text(e.message ?? e.code),
+          ),
         );
       },
       codeSent: (String verificationId, int? resendToken) {
@@ -219,8 +243,11 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Your network connect is slow. Please try again.')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Your network connect is slow. Please try again.'),
+          ),
+        );
       },
     );
   }

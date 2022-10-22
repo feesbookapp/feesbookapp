@@ -28,8 +28,11 @@ class _PendingFeesState extends State<PendingFees> {
       width: w,
       height: 75,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.withOpacity(0.25))),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.25),
+        ),
+      ),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,8 +47,9 @@ class _PendingFeesState extends State<PendingFees> {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                    color: Color(0xffF2F4F9),
-                    borderRadius: BorderRadius.circular(10)),
+                  color: Color(0xffF2F4F9),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Center(
                     child: selected
                         ? SvgAssetImage(
@@ -69,12 +73,14 @@ class _PendingFeesState extends State<PendingFees> {
                 Text(
                   'Monthly fees',
                   style: GoogleFonts.inter(
-                      textStyle: TextStyle(color: Colors.black, fontSize: 16)),
+                    textStyle: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
                 ),
                 Text(
                   '${widget.startMonth} - ${widget.endMonth}',
                   style: GoogleFonts.inter(
-                      textStyle: TextStyle(color: Colors.grey, fontSize: 12)),
+                    textStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
                 )
               ],
             ),
@@ -84,10 +90,11 @@ class _PendingFeesState extends State<PendingFees> {
             Text(
               '₹${widget.fees}',
               style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold)),
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
             )
           ]),
     );

@@ -1,6 +1,4 @@
-import 'package:exampleapplication/views/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class onBoardingScreen extends StatefulWidget {
   const onBoardingScreen({Key? key}) : super(key: key);
@@ -13,9 +11,10 @@ class _onBoardingScreenState extends State<onBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: onBoardingBody(),
-    ));
+      body: SingleChildScrollView(
+        child: onBoardingBody(),
+      ),
+    );
   }
 
   Widget onBoardingBody() {

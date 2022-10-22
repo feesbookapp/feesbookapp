@@ -16,9 +16,10 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      body: getProfile(),
-    ));
+      child: Scaffold(
+        body: getProfile(),
+      ),
+    );
   }
 
   Widget getProfile() {
@@ -63,11 +64,12 @@ class _ProfileState extends State<Profile> {
                       Text(
                         name.toString(),
                         style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 22,
-                          color: Color(0xff303030),
-                        )),
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 22,
+                            color: Color(0xff303030),
+                          ),
+                        ),
                       ),
                       GestureDetector(
                         child: Row(
@@ -75,8 +77,10 @@ class _ProfileState extends State<Profile> {
                             Text(
                               'Change Profile picture',
                               style: GoogleFonts.inter(
-                                  textStyle:
-                                      TextStyle(color: Color(0xff006C67))),
+                                textStyle: TextStyle(
+                                  color: Color(0xff006C67),
+                                ),
+                              ),
                             ),
                             SizedBox(
                               width: 5,
@@ -90,7 +94,10 @@ class _ProfileState extends State<Profile> {
                         ),
                         onTap: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Change Profile photo')));
+                            SnackBar(
+                              content: Text('Change Profile photo'),
+                            ),
+                          );
                         },
                       )
                     ],
@@ -106,150 +113,164 @@ class _ProfileState extends State<Profile> {
 
           //Name of Institute
           Container(
-              padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Name of institute',
-                    style: GoogleFonts.inter(
-                        textStyle: TextStyle(
+            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Name of institute',
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                    )),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 50,
-                    width: w,
-                    margin: EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: nameClr),
-                      borderRadius: BorderRadius.circular(8),
                     ),
-                    alignment: Alignment.centerLeft,
-                    child: TextField(
-                      controller: updateName,
-                      maxLength: 10,
-                      decoration: InputDecoration(
-                          counterText: '',
-                          border: InputBorder.none,
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Color(0xff006C67),
-                          ),
-                          suffix: GestureDetector(
-                            onTap: () {
-                              if (updateName.length == 0) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 50,
+                  width: w,
+                  margin: EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: nameClr),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: TextField(
+                    controller: updateName,
+                    maxLength: 10,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color(0xff006C67),
+                        ),
+                        suffix: GestureDetector(
+                          onTap: () {
+                            if (updateName.length == 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
                                   content: Text('Please enter your name'),
                                   duration: Duration(milliseconds: 500),
                                   backgroundColor: Colors.red.withOpacity(0.5),
-                                ));
-                                nameClr = Colors.red;
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('Change name'),
-                                        duration: Duration(milliseconds: 200),
-                                        backgroundColor: Color(0xff006C67)));
-                              }
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(right: 10),
-                              child: Text(
-                                'Change',
-                                style: TextStyle(color: Color(0xff006C67)),
-                                textAlign: TextAlign.center,
+                                ),
+                              );
+                              nameClr = Colors.red;
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Change name'),
+                                  duration: Duration(milliseconds: 200),
+                                  backgroundColor: Color(0xff006C67),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: Text(
+                              'Change',
+                              style: TextStyle(
+                                color: Color(0xff006C67),
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                          hintText: name),
-                      keyboardType: TextInputType.name,
-                    ),
+                        ),
+                        hintText: name),
+                    keyboardType: TextInputType.name,
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
 
           //Phone number
           Container(
-              padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Phone number',
-                    style: GoogleFonts.inter(
-                        textStyle: TextStyle(
+            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Phone number',
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                    )),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 50,
-                    width: w,
-                    margin: EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
                     ),
-                    alignment: Alignment.centerLeft,
-                    child: TextField(
-                      controller: updatePh,
-                      maxLength: 10,
-                      decoration: InputDecoration(
-                          counterText: '',
-                          border: InputBorder.none,
-                          prefixIcon: Icon(
-                            Icons.phone,
-                            color: Color(0xff006C67),
-                          ),
-                          suffix: GestureDetector(
-                            onTap: () {
-                              if (updatePh.length == 0) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content:
-                                      Text('Please enter your phone number'),
-                                  duration: Duration(milliseconds: 500),
-                                  backgroundColor: Colors.red.withOpacity(0.5),
-                                ));
-                                // phoneClr = Colors.red;
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('Changed phone number'),
-                                        duration: Duration(milliseconds: 200),
-                                        backgroundColor: Color(0xff006C67)));
-                              }
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(right: 10),
-                              child: Text(
-                                'Change',
-                                style: TextStyle(color: Color(0xff006C67)),
-                                textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 50,
+                  width: w,
+                  margin: EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: TextField(
+                    controller: updatePh,
+                    maxLength: 10,
+                    decoration: InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(
+                        Icons.phone,
+                        color: Color(0xff006C67),
+                      ),
+                      suffix: GestureDetector(
+                        onTap: () {
+                          if (updatePh.length == 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Please enter your phone number'),
+                                duration: Duration(milliseconds: 500),
+                                backgroundColor: Colors.red.withOpacity(0.5),
                               ),
+                            );
+                            // phoneClr = Colors.red;
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Changed phone number'),
+                                duration: Duration(milliseconds: 200),
+                                backgroundColor: Color(0xff006C67),
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: Text(
+                            'Change',
+                            style: TextStyle(
+                              color: Color(0xff006C67),
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                          hintText: phoneNo.toString()),
-                      keyboardType: TextInputType.phone,
+                        ),
+                      ),
+                      hintText: phoneNo.toString(),
                     ),
+                    keyboardType: TextInputType.phone,
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
           Center(
             child: Container(
               width: w * 0.9,
@@ -269,8 +290,9 @@ class _ProfileState extends State<Profile> {
                   'About us',
                   textAlign: TextAlign.start,
                   style: GoogleFonts.inter(
-                      textStyle:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+                    textStyle:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -301,11 +323,12 @@ class _ProfileState extends State<Profile> {
                             )
                           ],
                         ),
-                        onTap: () =>
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('FAQ'),
-                          duration: Duration(microseconds: 200),
-                        )),
+                        onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('FAQ'),
+                            duration: Duration(microseconds: 200),
+                          ),
+                        ),
                       ),
 
                       //Privacy Policy
@@ -327,9 +350,11 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                         onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Privacy Policy'),
-                                duration: Duration(microseconds: 200))),
+                          SnackBar(
+                            content: Text('Privacy Policy'),
+                            duration: Duration(microseconds: 200),
+                          ),
+                        ),
                       ),
 
                       //Contact us
@@ -347,9 +372,11 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                         onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Contact us'),
-                                duration: Duration(microseconds: 200))),
+                          SnackBar(
+                            content: Text('Contact us'),
+                            duration: Duration(microseconds: 200),
+                          ),
+                        ),
                       ),
                       GestureDetector(
                         child: Row(
@@ -371,13 +398,15 @@ class _ProfileState extends State<Profile> {
                         onTap: () async {
                           // await FirebaseAuth.instance.signOut();
                           // Navigator.of(context).pushAndRemoveUntil(
-                          //   MaterialPageRoute(builder: (context) => Signin()),
+                          //   MaterialPageRoute(builder: (context) => Signin(),),
                           //   (route) => false,
                           // );
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Signin()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Signin(),
+                            ),
+                          );
                         },
                       ),
                     ],

@@ -134,7 +134,7 @@ class _InstituteNameState extends State<InstituteName> {
                   _loading = false;
                 });
 
-                showModalBottomSheet(
+                await showModalBottomSheet(
                   isScrollControlled: true,
                   backgroundColor: Color(0xfff3f3f3),
                   shape: RoundedRectangleBorder(

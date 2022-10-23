@@ -1,5 +1,7 @@
 import 'package:exampleapplication/view_model/providers.dart';
+import 'package:exampleapplication/views/home/instutute_name.dart';
 import 'package:exampleapplication/views/home/sign_in.dart';
+import 'package:exampleapplication/views/home/teacher_name.dart';
 import 'package:exampleapplication/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     await ref.read(appStateViewModelProvider.notifier).getUserInstitute();
     await ref.read(appStateViewModelProvider.notifier).getInstituteClasses();
+
+    if (ref.read(appStateViewModelProvider).user?.name == null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const TeacherName(),
+        ),
+      );
+      return;
+    }
+
+    if (ref.read(appStateViewModelProvider).institute == null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const InstituteName(),
+        ),
+      );
+      return;
+    }
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(

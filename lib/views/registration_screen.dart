@@ -45,9 +45,10 @@ class RegistrationScreen extends StatelessWidget {
         ),
         GestureDetector(
           onTap: (() {
-            Navigator.pop(context);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+              (Route<dynamic> route) => false,
+            );
           }),
           child: Container(
             margin: EdgeInsets.only(left: 24, right: 24, bottom: 60),

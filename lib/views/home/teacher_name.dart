@@ -146,7 +146,7 @@ class _TeacherNameState extends State<TeacherName> {
                   });
 
                   if (ref.read(appStateViewModelProvider).institute == null) {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => InstituteName()),
                     );

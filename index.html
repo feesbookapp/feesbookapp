@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background: #006c67;
+        padding: 80px 0 0;
+        display: flex;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+      }
+
+      @media screen and (max-width: 750px) {
+        body {
+          align-items: flex-end;
+        }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div id="app" class="bg-white py-8 md:mx-8 rounded-2xl">
+      <div class="container mx-auto px-8">
+        <div class="flex md:w-96 mx-auto w-full flex-col space-y-8">
+          <div class="flex flex-col space-y-2">
+            <h1 class="md:text-4xl text-2xl font-bold">
+              Hello! Add your details in the form below
+            </h1>
+            <p class="text-sm font-medium text-[#9A9AA1]">
+              This data will be used to share information and updates regularly
+            </p>
+          </div>
+          <form @submit="register" class="flex flex-col space-y-2">
+            <div v-for="(input,index) in inputs" :key="index">
+              <label :for="input.id" class="block mb-2 text-sm text-gray-500"
+                >{{ input.label }}</label
+              >
+              <input
+                :type="input.type"
+                :id="input.id"
+                v-model="input.value"
+                class="bg-gray-100 text-sm outline-none rounded-lg focus:ring-[#006C66] focus:ring-2 block w-full p-4"
+                :placeholder="input.placeholder"
+                required
+              />
+            </div>
+            <input
+              class="bg-[#006C66] !mt-8 py-3 text-lg text-white font-medium rounded-lg"
+              type="submit"
+              value="Submit details"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+      import {
+        getDoc,
+        doc,
+        getFirestore,
+        addDoc,
+        updateDoc,
+        collection,
+      } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyC50mO8PPCln7VgpPb-6TqTE6iOczJYOog",
+        authDomain: "feesbook-dev.firebaseapp.com",
+        databaseURL: "https://feesbook-dev-default-rtdb.firebaseio.com",
+        projectId: "feesbook-dev",
+        storageBucket: "feesbook-dev.appspot.com",
+        messagingSenderId: "512460666951",
+        appId: "1:512460666951:web:0cfd45df4c15841dd69962",
+        measurementId: "G-TWDFBFN01Z",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const query = (function (a) {
+        if (a === "") return {};
+        const b = {};
+        for (let i = 0; i < a.length; ++i) {
+          const p = a[i].split("=", 2);
+          if (p.length === 1) b[p[0]] = "";
+          else b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+        return b;
+      })(window.location.search.substr(1).split("&"));
+
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            batchDetails: {},
+            inputs: [
+              {
+                label: "Student Name",
+                placeholder: "Harshit Pathak",
+                name: "name",
+                value: "",
+                type: "text",
+              },
+              {
+                name: "email",
+                value: "",
+                type: "email",
+                label: "Student Email",
+                placeholder: "Ex. hello@hey.com",
+              },
+              {
+                label: "Guardian Name",
+                placeholder: "Harsh Vardhan",
+                value: "",
+                name: "guardianName",
+                type: "text",
+              },
+              {
+                label: "Your Whatsapp number",
+                placeholder: "+919582142914",
+                value: "",
+                name: "phone",
+                type: "tel",
+              },
+            ],
+          };
+        },
+        async mounted() {
+          if (!query["id"]) {
+            alert("Sorry but you have opened a invalid link");
+          } else {
+            const docSnap = await getDoc(doc(db, "Batches", query["id"]));
+            if (docSnap.exists()) {
+              this.batchDetails = docSnap.data();
+            } else {
+              alert("Sorry but you have opened a invalid link");
+            }
+          }
+        },
+        methods: {
+          async register(event) {
+            const that = this;
+            if (that.progress) {
+              alert("Registration already in progress");
+              return null;
+            }
+            that.registered = false;
+            that.progress = true;
+            event.preventDefault();
+            const getKey = (name) =>
+              this.inputs.find((e) => e.name === name).value;
+            await addDoc(collection(db, "Students"), {
+              name: getKey("name"),
+              guardianName: getKey("guardianName"),
+              phone: getKey("phone"),
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              email: getKey("email"),
+              instituteId: doc(db, this.batchDetails.instituteId.path),
+              classId: doc(db, this.batchDetails.class.path),
+              batchId: doc(db, "Batches/" + this.batchDetails.id),
+            })
+              .then(async (e) => {
+                await updateDoc(doc(db, "Students", e.id), {
+                  id: e.id,
+                  updatedAt: new Date(),
+                });
+                that.registered = true;
+                that.progress = false;
+                that.inputs = that.inputs.map((e) => ({
+                  ...e,
+                  value: "",
+                }));
+                alert("Registration completed successfully");
+              })
+              .catch(() => {
+                that.registered = false;
+                alert("Oops! Something went wrong");
+                that.progress = false;
+              });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

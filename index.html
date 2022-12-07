@@ -136,7 +136,7 @@
           if (!query["id"]) {
             alert("Sorry but you have opened a invalid link");
           } else {
-            const docSnap = await getDoc(doc(db, "Batches", query["id"]));
+            const docSnap = await getDoc(doc(db, "Classes", query["id"]));
             if (docSnap.exists()) {
               this.batchDetails = docSnap.data();
             } else {
@@ -164,8 +164,7 @@
               updatedAt: new Date(),
               email: getKey("email"),
               instituteId: doc(db, this.batchDetails.instituteId.path),
-              classId: doc(db, this.batchDetails.class.path),
-              batchId: doc(db, "Batches/" + this.batchDetails.id),
+              classId: doc(db, this.batchDetails.id),
             })
               .then(async (e) => {
                 await updateDoc(doc(db, "Students", e.id), {

@@ -50,7 +50,7 @@
               />
             </div>
             <input
-              class="bg-[#006C66] !mt-8 py-3 text-lg text-white font-medium rounded-lg"
+              class="bg-[#006C66] hover:bg-[#006C66] cursor-pointer !mt-8 py-3 text-lg text-white font-medium rounded-lg"
               type="submit"
               value="Submit details"
             />
@@ -103,7 +103,7 @@
             inputs: [
               {
                 label: "Student Name",
-                placeholder: "Harshit Pathak",
+                placeholder: "Harshit Pathrak",
                 name: "name",
                 value: "",
                 type: "text",
@@ -163,7 +163,7 @@
               createdAt: new Date(),
               updatedAt: new Date(),
               email: getKey("email"),
-              instituteId: doc(db, this.batchDetails.instituteId.path),
+              instituteId: doc(db, this.batchDetails.institute),
               classId: doc(db, this.batchDetails.id),
             })
               .then(async (e) => {

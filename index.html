@@ -163,7 +163,7 @@
               createdAt: new Date(),
               updatedAt: new Date(),
               email: getKey("email"),
-              instituteId: doc(db, this.batchDetails.institute),
+              instituteId: doc(db, this.batchDetails.institute.path),
               classId: doc(db, this.batchDetails.id),
             })
               .then(async (e) => {

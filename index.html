@@ -139,7 +139,6 @@
             const docSnap = await getDoc(doc(db, "Classes", query["id"]));
             if (docSnap.exists()) {
               this.batchDetails = docSnap.data();
-              console.log("this.batchDetails.institute", this.batchDetails.institute)
             } else {
               alert("Sorry but you have opened a invalid link");
             }
@@ -172,13 +171,16 @@
                   id: e.id,
                   updatedAt: new Date(),
                 });
+                await updateDoc(doc(db, "Classes", that.batchDetails.id), {
+                  studentsCount: (that.batchDetails.studentsCount ||0) + 1,
+                  updatedAt: new Date(),
+                });
                 that.registered = true;
                 that.progress = false;
                 that.inputs = that.inputs.map((e) => ({
                   ...e,
                   value: "",
                 }));
-                alert("Registration completed successfully");
               })
               .catch(() => {
                 that.registered = false;

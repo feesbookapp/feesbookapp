@@ -109,13 +109,6 @@
                 type: "text",
               },
               {
-                name: "email",
-                value: "",
-                type: "email",
-                label: "Student Email",
-                placeholder: "Ex. hello@hey.com",
-              },
-              {
                 label: "Guardian Name",
                 placeholder: "Harsh Vardhan",
                 value: "",
@@ -162,7 +155,6 @@
               phone: getKey("phone"),
               createdAt: new Date(),
               updatedAt: new Date(),
-              email: getKey("email"),
               instituteId: this.batchDetails.institute,
               classId: `/Classes/${this.batchDetails.id}`,
             })

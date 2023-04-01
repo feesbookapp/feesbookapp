@@ -22,6 +22,7 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
   </head>
 
   <body>
@@ -53,8 +54,12 @@
             <input
               class="bg-[#006C66] hover:bg-[#006C66] cursor-pointer !mt-8 py-3 text-lg text-white font-medium rounded-lg"
               type="submit"
+              v-if="!progress"
               value="Submit details"
             />
+            <button class="bg-[#006C66] flex items-center justify-center text-white hover:bg-[#006C66] cursor-pointer !mt-8 py-3 text-lg text-white font-medium rounded-lg" v-else>
+              <i class="ph animate-spin ph-circle-notch"></i>
+            </button>
           </form>
         </div>
       </div>
@@ -101,6 +106,7 @@
         data() {
           return {
             batchDetails: {},
+            progress: false,
             inputs: [
               {
                 label: "Student Name",
@@ -134,16 +140,17 @@
             if (docSnap.exists()) {
               this.batchDetails = docSnap.data();
               const institute = this.batchDetails.institute;
-              const instituteId = insitute.substring(
-                insitute.lastIndexOf("/") + 1
+              const instituteId = institute.substring(
+                      institute.lastIndexOf("/") + 1
               );
-              const insituteDoc = await getDoc(
+              const instituteDoc = await getDoc(
                 doc(db, "Institutes", instituteId)
               );
-              if (insituteDoc.exists()) {
-                this.insituteDetails = insituteDoc.data();
+              if (instituteDoc.exists()) {
+                this.insituteDetails = instituteDoc.data();
               }
             } else {
+              console.log("No such document!", docSnap);
               alert("Sorry but you have opened a invalid link");
             }
           }
@@ -156,7 +163,7 @@
             return this.insituteDetails.endMonth;
           },
           months() {
-            var months = [
+            return [
               "January",
               "February",
               "March",
@@ -171,11 +178,10 @@
               "December",
               " ",
             ];
-            return months;
           },
           getMonthsList() {
             const year = new Date().getFullYear();
-            var ls = [];
+            const ls = [];
             for (let i = 1; i <= 12; i++) {
               if (i >= this.getStartMonth) {
                 ls.push(i);

@@ -57,7 +57,10 @@
               v-if="!progress"
               value="Submit details"
             />
-            <button class="bg-[#006C66] flex items-center justify-center text-white hover:bg-[#006C66] cursor-pointer !mt-8 py-3 text-lg text-white font-medium rounded-lg" v-else>
+            <button
+              class="bg-[#006C66] flex items-center justify-center text-white hover:bg-[#006C66] cursor-pointer !mt-8 py-3 text-lg text-white font-medium rounded-lg"
+              v-else
+            >
               <i class="ph animate-spin ph-circle-notch"></i>
             </button>
           </form>
@@ -141,7 +144,7 @@
               this.batchDetails = docSnap.data();
               const institute = this.batchDetails.institute;
               const instituteId = institute.substring(
-                      institute.lastIndexOf("/") + 1
+                institute.lastIndexOf("/") + 1
               );
               const instituteDoc = await getDoc(
                 doc(db, "Institutes", instituteId)
@@ -156,46 +159,46 @@
           }
         },
         computed: {
-          getStartMonth() {
-            return this.insituteDetails.startMonth;
-          },
-          getEndMonth() {
-            return this.insituteDetails.endMonth;
-          },
-          months() {
-            return [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-              " ",
-            ];
-          },
-          getMonthsList() {
-            const year = new Date().getFullYear();
-            const ls = [];
-            for (let i = 1; i <= 12; i++) {
-              if (i >= this.getStartMonth) {
-                ls.push(i);
-              }
-            }
-            for (let i = 1; i <= this.getEndMonth; i++) {
-              ls.push(i);
-            }
+          // getStartMonth() {
+          //   return this.batchDetails.start;
+          // },
+          // getEndMonth() {
+          //   return this.insituteDetails.endMonth;
+          // },
+          // months() {
+          //   return [
+          //     "January",
+          //     "February",
+          //     "March",
+          //     "April",
+          //     "May",
+          //     "June",
+          //     "July",
+          //     "August",
+          //     "September",
+          //     "October",
+          //     "November",
+          //     "December",
+          //     " ",
+          //   ];
+          // },
+          // getMonthsList() {
+          //   const year = new Date().getFullYear();
+          //   const ls = [];
+          //   for (let i = 1; i <= 12; i++) {
+          //     if (i >= this.getStartMonth) {
+          //       ls.push(i);
+          //     }
+          //   }
+          //   for (let i = 1; i <= this.getEndMonth; i++) {
+          //     ls.push(i);
+          //   }
 
-            return {
-              months: [...new Set(ls)].sort((a, b) => a - b),
-              year,
-            };
-          },
+          //   return {
+          //     months: [...new Set(ls)].sort((a, b) => a - b),
+          //     year,
+          //   };
+          // },
         },
         methods: {
           async register(event) {
@@ -218,8 +221,8 @@
               collection: 0,
               pending: 0,
               instituteId: this.batchDetails.institute,
-              month: this.getMonthsList.months,
-              history: [],
+              startMonth: new Date().toISOString(),
+              endMonth: this.batchDetails.endMonth,
               classId: `/Classes/${this.batchDetails.id}`,
             })
               .then(async (e) => {

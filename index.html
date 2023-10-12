@@ -256,6 +256,8 @@
               endMonth: this.batchDetails.endMonth,
               classId: `/Classes/${this.batchDetails.id}`,
               amount: this.batchDetails.fees,
+              monthsPaidList: [],
+              monthsUnpaidList: [],
             })
               .then(async (e) => {
                 await updateDoc(doc(db, "Students", e.id), {

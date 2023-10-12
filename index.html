@@ -23,6 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   </head>
 
   <body>
@@ -201,17 +202,13 @@
         },
         methods: {
           generateMonths(startDate, endDate) {
-              const start = new Date(startDate);
-              const end = new Date(endDate);
+              const start = moment(startDate);
+              const end = moment(endDate);
               const months = [];
             
-              while (start < end) {
-                const year = start.getFullYear();
-                const month = start.getMonth() + 1; // Months are zero-indexed, so add 1.
-                const formattedMonth = month < 10 ? `0${month}` : `${month}`;
-                const formattedDate = new Date(new Date(`${year}/${formattedMonth}/${start.getDate()}`).setUTCHours(0,0,0,0));
-                months.push(formattedDate);
-                start.setMonth(start.getMonth() + 1);
+              while (start.isBefore(end) || start.isSame(end, 'month')) {
+                months.push(new Date(start.format('YYYY/MM/DD')));
+                start.add(1, 'months');
               }
             
               return months;

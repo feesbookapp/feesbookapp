@@ -240,6 +240,7 @@
               collected: 0,
               history: [],
               months,
+              isDeleted: false,
               instituteId: this.batchDetails.institute,
               startMonth: new Date().toISOString(),
               endMonth: this.batchDetails.endMonth,
@@ -263,6 +264,7 @@
                   ...e,
                   value: "",
                 }));
+                alert("Hurray! Student has been successfully added.");
               })
               .catch(() => {
                 that.registered = false;

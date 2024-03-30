@@ -456,7 +456,7 @@
                 new Date(this.batchDetails.endMonth)
               ).map((e) => e.toISOString());
               try {
-                await addDoc(collection(db, "Students"), {
+                const student = await addDoc(collection(db, "Students"), {
                   name: data.name,
                   guardianName: data["guardianName"],
                   phone: data["phone"],
@@ -476,6 +476,9 @@
                   monthsPaidList: [],
                   monthsUnpaidList: months,
                   updatedAt: new Date(),
+                });
+                await addDoc(collection(db, "Students", student.id), {
+                  id: student.id,
                 });
                 resolve(true);
               } catch (error) {

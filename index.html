@@ -478,7 +478,7 @@
                   updatedAt: new Date(),
                 });
                 console.log("Document written with ", student);
-                await addDoc(doc(db, "Students", student.id), {
+                await updateDoc(doc(db, "Students", student.id), {
                   id: student.id,
                 });
                 resolve(true);

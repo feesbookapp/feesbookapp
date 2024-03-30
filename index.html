@@ -221,7 +221,7 @@
             const docSnap = await getDoc(doc(db, "Classes", query["id"]));
             if (docSnap.exists()) {
               this.batchDetails = docSnap.data();
-              if (this.batchDetails.isDeleted) {
+              if (this.batchDetails.isDeleted === true) {
                 this.error = true;
                 this.showModal = true;
                 this.message = {
@@ -477,7 +477,8 @@
                   monthsUnpaidList: months,
                   updatedAt: new Date(),
                 });
-                await addDoc(collection(db, "Students", student.id), {
+                console.log("Document written with ", student);
+                await addDoc(doc(db, "Students", student.id), {
                   id: student.id,
                 });
                 resolve(true);

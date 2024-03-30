@@ -6,12 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
-        background: #006c67;
-        padding: 80px 0 0;
-        display: flex;
         height: 100vh;
-        align-items: center;
-        justify-content: center;
       }
 
       @media screen and (max-width: 750px) {
@@ -19,56 +14,124 @@
           align-items: flex-end;
         }
       }
+      .bg-green {
+        background: #006c67 !important;
+      }
+      .max-w-full {
+        max-width: 100% !important;
+      }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@braid/vue-formulate@2.5.3/dist/snow.min.css"
+    />
   </head>
 
   <body>
-    <div id="app" class="bg-white py-8 md:mx-8 rounded-2xl">
-      <div class="container mx-auto px-8">
-        <div class="flex md:w-96 mx-auto w-full flex-col space-y-8">
-          <div class="flex flex-col space-y-2">
-            <h1 class="md:text-4xl text-2xl font-bold">
-              Hello! Add your details in the form below
-            </h1>
-            <p class="text-sm font-medium text-[#9A9AA1]">
-              This data will be used to share information and updates regularly
-            </p>
-          </div>
-          <form @submit="register" class="flex flex-col space-y-2">
-            <div v-for="(input,index) in inputs" :key="index">
-              <label :for="input.id" class="block mb-2 text-sm text-gray-500"
-                >{{ input.label }}</label
-              >
-              <input
-                :type="input.type"
-                :id="input.id"
-                v-model="input.value"
-                class="bg-gray-100 text-sm outline-none rounded-lg focus:ring-[#006C66] focus:ring-2 block w-full p-4"
-                :placeholder="input.placeholder"
-                required
-              />
-            </div>
-            <input
-              class="bg-[#006C66] hover:bg-[#006C66] cursor-pointer !mt-8 py-3 text-lg text-white font-medium rounded-lg"
-              type="submit"
-              v-if="!progress"
-              value="Submit details"
-            />
-            <button
-              class="bg-[#006C66] flex items-center justify-center text-white hover:bg-[#006C66] cursor-pointer !mt-8 py-3 text-lg text-white font-medium rounded-lg"
-              v-else
+    <div id="app" class="h-screen">
+      <div
+        class="flex flex-col md:grid grid-cols-1 h-full md:grid-cols-[600px,1fr] w-full gap-0 md:gap-8"
+      >
+        <div
+          class="flex bg-green m-2 md:m-4 rounded-lg md:rounded-xl text-white justify-start md:justify-center p-2 md:p-8 h-max md:h-auto flex-col space-y-2"
+        >
+          <img
+            class="w-32 md:w-44 bg-white relative p-0.5 md:p-2 rounded-md md:rounded-lg md:absolute top-0 md:top-10 object-cover"
+            src="https://assets-global.website-files.com/62c867cb246176c5aa1f507a/6314445a482ba714c7770c51_Group%2048095732%201-p-500.png"
+            alt=""
+          />
+          <h1 class="md:text-4xl text-xl font-semibold">
+            Hello there 👋, <br />
+            Add {{allowAddingMultiple ? "student": 'your'}} details to join
+            {{batchDetails.name}}
+          </h1>
+          <p vif="!allowAddingMultiple" class="text-sm">
+            This information will be used for record purposes. Your details are
+            safe.
+          </p>
+          <p v-else class="text-sm">
+            You can add multiple students to the class at a time
+          </p>
+        </div>
+        <!-- use schema to generate form -->
+        <div class="flex max-h-screen overflow-auto flex-col pb-56">
+          <formulate-form
+            name="registerForm"
+            :schema="schema"
+            @submit="saveStudents"
+          ></formulate-form>
+        </div>
+      </div>
+      <div
+        v-if="showModal"
+        class="relative z-50"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          @click="showModal = false"
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        ></div>
+
+        <div class="fixed inset-0 z-50 w-screen overflow-y-auto">
+          <div
+            class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+          >
+            <div
+              class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
             >
-              <i class="ph animate-spin ph-circle-notch"></i>
-            </button>
-          </form>
+              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                  <div
+                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10"
+                    :class="{
+                        'bg-red-100': error,
+                         'bg-green-100': !error
+                      }"
+                  >
+                    <i
+                      v-if="error"
+                      class="ph ph-warning text-base text-red-600"
+                    ></i>
+                    <i
+                      v-else
+                      class="ph-fill ph-check-circle text-base text-green-600"
+                    ></i>
+                  </div>
+                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <h3
+                      class="text-base font-semibold leading-6 text-gray-900"
+                      id="modal-title"
+                    >
+                      {{ message.heading }}
+                    </h3>
+                    <div class="mt-2">
+                      <p class="text-sm text-gray-500">
+                        {{ message.subheading }}
+                      </p>
+                    </div>
+                    <button
+                      @click="showModal = false"
+                      class="px-4 mt-3 border border-red-600 py-1.5 bg-red-50 text-sm text-red-600 rounded-lg"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <script type="module">
+      import braidvueFormulate from "https://cdn.jsdelivr.net/npm/@braid/vue-formulate@2.5/+esm";
+
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
       import {
@@ -79,15 +142,16 @@
         updateDoc,
         collection,
       } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
+
       const firebaseConfig = {
-          apiKey: "AIzaSyCfMUMfEifa8v7vU86sDPS5cycv1KDs03s",
-          authDomain: "feesbook-a13db.firebaseapp.com",
-          databaseURL: "https://feesbook-a13db-default-rtdb.firebaseio.com",
-          projectId: "feesbook-a13db",
-          storageBucket: "feesbook-a13db.appspot.com",
-          messagingSenderId: "420008373788",
-          appId: "1:420008373788:web:ca769f18c5f44d61ed79d9",
-          measurementId: "G-FLQVZ9SXCG"
+        apiKey: "AIzaSyCfMUMfEifa8v7vU86sDPS5cycv1KDs03s",
+        authDomain: "feesbook-a13db.firebaseapp.com",
+        databaseURL: "https://feesbook-a13db-default-rtdb.firebaseio.com",
+        projectId: "feesbook-a13db",
+        storageBucket: "feesbook-a13db.appspot.com",
+        messagingSenderId: "420008373788",
+        appId: "1:420008373788:web:ca769f18c5f44d61ed79d9",
+        measurementId: "G-FLQVZ9SXCG",
       };
 
       // Initialize Firebase
@@ -105,12 +169,20 @@
         return b;
       })(window.location.search.substr(1).split("&"));
 
+      Vue.use(braidvueFormulate);
+
       new Vue({
         el: "#app",
         data() {
           return {
             batchDetails: {},
             progress: false,
+            error: false,
+            showModal: false,
+            message: {
+              heading: "",
+              subheading: "",
+            },
             inputs: [
               {
                 label: "Student Name",
@@ -134,15 +206,29 @@
                 type: "tel",
               },
             ],
+            studentCount: 1,
           };
         },
         async mounted() {
           if (!query["id"]) {
-            alert("Sorry but you have opened a invalid link");
+            this.error = true;
+            this.showModal = true;
+            this.message = {
+              heading: "Invalid link",
+              subheading: "Sorry but you have opened a invalid link",
+            };
           } else {
             const docSnap = await getDoc(doc(db, "Classes", query["id"]));
             if (docSnap.exists()) {
               this.batchDetails = docSnap.data();
+              if (this.batchDetails.isDeleted) {
+                this.error = true;
+                this.showModal = true;
+                this.message = {
+                  heading: "Invalid link",
+                  subheading: "Sorry but you have opened a invalid link",
+                };
+              }
               const institute = this.batchDetails.institute;
               const instituteId = institute.substring(
                 institute.lastIndexOf("/") + 1
@@ -154,123 +240,249 @@
                 this.insituteDetails = instituteDoc.data();
               }
             } else {
-              console.log("No such document!", docSnap);
-              alert("Sorry but you have opened a invalid link");
+              this.error = true;
+              this.showModal = true;
+              this.message = {
+                heading: "Invalid link",
+                subheading: "Sorry but you have opened a invalid link",
+              };
             }
           }
         },
         computed: {
-          // getStartMonth() {
-          //   return this.batchDetails.start;
-          // },
-          // getEndMonth() {
-          //   return this.insituteDetails.endMonth;
-          // },
-          // months() {
-          //   return [
-          //     "January",
-          //     "February",
-          //     "March",
-          //     "April",
-          //     "May",
-          //     "June",
-          //     "July",
-          //     "August",
-          //     "September",
-          //     "October",
-          //     "November",
-          //     "December",
-          //     " ",
-          //   ];
-          // },
-          // getMonthsList() {
-          //   const year = new Date().getFullYear();
-          //   const ls = [];
-          //   for (let i = 1; i <= 12; i++) {
-          //     if (i >= this.getStartMonth) {
-          //       ls.push(i);
-          //     }
-          //   }
-          //   for (let i = 1; i <= this.getEndMonth; i++) {
-          //     ls.push(i);
-          //   }
-          //   return {
-          //     months: [...new Set(ls)].sort((a, b) => a - b),
-          //     year,
-          //   };
-          // },
+          allowAddingMultiple() {
+            return JSON.parse(query["app"] ?? false);
+          },
+          addStudentsFormulateSchema() {
+            return [
+              {
+                type: "text",
+                label: "Student Name",
+                name: "name",
+                placeholder: "ex. Harshit Pathrak",
+                outerClass: ["mb-2 w-full"],
+                wrapperClass: ["w-full"],
+                elementClass: ["max-w-full"],
+                validation: "required",
+                validationMessages: {
+                  required: "Student Name is required",
+                },
+              },
+              {
+                type: "text",
+                label: "Guardian Name",
+                outerClass: ["mb-2 w-full"],
+                wrapperClass: ["w-full"],
+                elementClass: ["max-w-full"],
+                placeholder: "ex. Harsh Vardhan",
+                inputClass: ["w-full"],
+                name: "guardianName",
+                validation: "required",
+                validationMessages: {
+                  required: "Guardian Name is required",
+                },
+              },
+              {
+                type: "tel",
+                label: "Your Whatsapp number",
+                outerClass: ["mb-2 w-full"],
+                wrapperClass: ["w-full"],
+                elementClass: ["max-w-full"],
+                inputClass: ["w-full"],
+                placeholder: "ex. +919582142914",
+                name: "phone",
+                validation: "required",
+                validationMessages: {
+                  required: "Whatsapp number is required",
+                },
+              },
+            ];
+          },
+          schema() {
+            return [
+              {
+                component: "div",
+                class:
+                  "flex border-b bg-white px-3 w-full justify-between items-center py-3 z-50 sticky top-0",
+                children: [
+                  {
+                    component: "span",
+                    class: "text-xl",
+                    children: `${this.batchDetails.name}`,
+                  },
+                  {
+                    component: "div",
+                    class: "flex space-x-3 items-center",
+                    children: [
+                      this.allowAddingMultiple
+                        ? {
+                            type: "button",
+                            "@click": () => this.studentCount++,
+                            value: "Add more students",
+                            outerClass: "w-full",
+                            inputClass:
+                              "bg-green-50 w-max cursor-pointer px-5 py-2 text-lg rounded-lg text-[#006C66]",
+                          }
+                        : null,
+                      {
+                        type: this.progress ? "button" : "submit",
+                        outerClass: "w-full md:static fixed bottom-0 right-0",
+                        value: !this.progress
+                          ? `Save Student${this.allowAddingMultiple ? "s" : ""}`
+                          : "Saving...",
+                        inputClass:
+                          "bg-green w-full px-4 cursor-pointer rounded-0 md:rounded-lg text-white py-4 md:py-2 text-lg border-0",
+                      },
+                    ].filter((item) => item),
+                  },
+                ],
+              },
+              {
+                component: "div",
+                class:
+                  "grid grid-cols-1 py-8 pr-0 md:pr-8 md:grid-cols-2 gap-3",
+                children: [
+                  ...Array.from({ length: this.studentCount || 1 }, (_, i) => ({
+                    component: "div",
+                    class:
+                      "flex bg-white border relative p-3 flex-col rounded-lg",
+                    children: [
+                      {
+                        component: "div",
+                        class: "flex items-center justify-between",
+                        children: [
+                          {
+                            component: "span",
+                            class:
+                              "w-max mb-2 rounded-full bg-green text-white px-2 py-1 text-xs",
+                            children: `Student ${i + 1}`,
+                          },
+                          i > 0
+                            ? {
+                                component: "i",
+                                class:
+                                  "ph ph-trash cursor-pointer text-red-700",
+                                "@click": () => this.studentCount--,
+                              }
+                            : null,
+                        ].filter((e) => e),
+                      },
+                      ...this.addStudentsFormulateSchema.map((e) => ({
+                        ...e,
+                        name: `${e.name}_${i + 1}`,
+                      })),
+                    ],
+                  })),
+                ],
+              },
+            ];
+          },
+          isAdmin() {
+            return JSON.parse(query["app"] ?? false);
+          },
         },
         methods: {
-          generateMonths(startDate, endDate) {
-              const start = moment(startDate);
-              const end = moment(endDate);
-              const months = [];
-            
-              while (start.isBefore(end) || start.isSame(end, 'month')) {
-                months.push(new Date(start.format('YYYY/MM/DD')));
-                start.add(1, 'months');
-              }
-            
-              return months;
+          getOutput(data) {
+            const output = [];
+            for (let i = 1; data.hasOwnProperty(`name_${i}`); i++) {
+              const name = data[`name_${i}`];
+              const guardianName = data[`guardianName_${i}`];
+              const phone = data[`phone_${i}`];
+              output.push({ name, guardianName, phone });
+            }
+            return output;
           },
-          async register(event) {
+          generateMonths(startDate, endDate) {
+            const start = moment(startDate);
+            const end = moment(endDate);
+            const months = [];
+
+            while (start.isBefore(end) || start.isSame(end, "month")) {
+              months.push(new Date(start.format("YYYY/MM/DD")));
+              start.add(1, "months");
+            }
+
+            return months;
+          },
+          saveStudents(data) {
             const that = this;
-            if (that.progress) {
-              alert("Registration already in progress");
+            if (this.progress) {
+              this.error = true;
+              this.showModal = true;
+              this.message = {
+                heading: "Invalid action",
+                subheading: "Registration already in progress",
+              };
               return null;
             }
-            that.registered = false;
-            that.progress = true;
-            event.preventDefault();
-            const getKey = (name) =>
-              this.inputs.find((e) => e.name === name).value;
-
-            const months = this.generateMonths(
-                new Date(),
+            this.registered = false;
+            this.progress = true;
+            const students = this.getOutput(data);
+            Promise.all(students.map((student) => this.register(student)))
+              .then(async (e) => {
+                that.error = false;
+                that.progress = false;
+                that.registered = true;
+                await updateDoc(doc(db, "Classes", that.batchDetails.id), {
+                  studentsCount:
+                    (that.batchDetails.studentsCount || 0) + students.length,
+                  updatedAt: new Date(),
+                });
+                that.showModal = true;
+                that.$formulate.reset("registerForm");
+                that.message = {
+                  heading: "Hurray! Students added successfully",
+                  subheading: "All the students have been added to the class",
+                };
+              })
+              .catch((e) => {
+                that.error = true;
+                that.showModal = true;
+                console.error("Error while registering student line 368", e);
+                that.progress = false;
+                that.registered = false;
+                that.message = {
+                  heading: "Error while registering student",
+                  subheading:
+                    "We have encountered an error while registering the students to the class",
+                };
+              });
+          },
+          async register(data) {
+            const that = this;
+            return await new Promise(async (resolve, reject) => {
+              const months = this.generateMonths(
+                new Date(this.batchDetails.startMonth),
                 new Date(this.batchDetails.endMonth)
               ).map((e) => e.toISOString());
-            await addDoc(collection(db, "Students"), {
-              name: getKey("name"),
-              guardianName: getKey("guardianName"),
-              phone: getKey("phone"),
-              createdAt: new Date(),
-              updatedAt: new Date(),
-              collection: 0,
-              pending: 0,
-              collected: 0,
-              history: [],
-              months,
-              isDeleted: false,
-              instituteId: this.batchDetails.institute,
-              startMonth: new Date().toISOString(),
-              endMonth: this.batchDetails.endMonth,
-              classId: `/Classes/${this.batchDetails.id}`,
-              amount: this.batchDetails.fees,
-              monthsPaidList: [],
-              monthsUnpaidList: months,
-            })
-              .then(async (e) => {
-                await updateDoc(doc(db, "Students", e.id), {
-                  id: e.id,
+              try {
+                await addDoc(collection(db, "Students"), {
+                  name: data.name,
+                  guardianName: data["guardianName"],
+                  phone: data["phone"],
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                  collection: 0,
+                  pending: 0,
+                  collected: 0,
+                  history: [],
+                  months,
+                  isDeleted: false,
+                  instituteId: this.batchDetails.institute,
+                  startMonth: this.batchDetails.startMonth,
+                  endMonth: this.batchDetails.endMonth,
+                  classId: `/Classes/${this.batchDetails.id}`,
+                  amount: this.batchDetails.fees,
+                  monthsPaidList: [],
+                  monthsUnpaidList: months,
                   updatedAt: new Date(),
                 });
-                await updateDoc(doc(db, "Classes", that.batchDetails.id), {
-                  studentsCount: (that.batchDetails.studentsCount || 0) + 1,
-                  updatedAt: new Date(),
-                });
-                that.registered = true;
-                that.progress = false;
-                that.inputs = that.inputs.map((e) => ({
-                  ...e,
-                  value: "",
-                }));
-                alert("Hurray! Student has been successfully added.");
-              })
-              .catch(() => {
-                that.registered = false;
-                alert("Oops! Something went wrong");
-                that.progress = false;
-              });
+                resolve(true);
+              } catch (error) {
+                console.error("Error adding document: ", error);
+                reject(error);
+              }
+            });
           },
         },
       });

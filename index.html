@@ -383,7 +383,7 @@
             const end = moment(endDate);
             const months = [];
 
-            while (start.isBefore(end) || start.isSame(end, "month")) {
+            while (start.isBefore(end, "month") || start.isSame(end, "month")) {
               months.push(new Date(start.format("YYYY/MM/DD")));
               start.add(1, "months");
             }

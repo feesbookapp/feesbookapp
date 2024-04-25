@@ -138,8 +138,7 @@
         getDoc,
         doc,
         getFirestore,
-        addDoc,
-        updateDoc,
+        writeBatch,
         collection,
       } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
 
@@ -229,16 +228,6 @@
                   subheading: "Sorry but you have opened a invalid link",
                 };
               }
-              const institute = this.batchDetails.institute;
-              const instituteId = institute.substring(
-                institute.lastIndexOf("/") + 1
-              );
-              const instituteDoc = await getDoc(
-                doc(db, "Institutes", instituteId)
-              );
-              if (instituteDoc.exists()) {
-                this.insituteDetails = instituteDoc.data();
-              }
             } else {
               this.error = true;
               this.showModal = true;
@@ -251,7 +240,7 @@
         },
         computed: {
           allowAddingMultiple() {
-            return JSON.parse(query["app"] ?? false);
+            return query["app"] && JSON.parse(query["app"] ?? false);
           },
           addStudentsFormulateSchema() {
             return [
@@ -377,9 +366,6 @@
               },
             ];
           },
-          isAdmin() {
-            return JSON.parse(query["app"] ?? false);
-          },
         },
         methods: {
           getOutput(data) {
@@ -415,19 +401,50 @@
               };
               return null;
             }
-            this.registered = false;
             this.progress = true;
+            const batch = writeBatch(db);
+
             const students = this.getOutput(data);
-            Promise.all(students.map((student) => this.register(student)))
-              .then(async (e) => {
+            students.forEach((student) => {
+              const months = this.generateMonths(
+                this.batchDetails.startMonth,
+                this.batchDetails.endMonth
+              ).map((e) => e.toISOString());
+              const studentRef = doc(collection(db, "Students"));
+              batch.set(studentRef, {
+                name: student.name,
+                guardianName: student["guardianName"],
+                phone: student["phone"],
+                createdAt: new Date(),
+                collection: 0,
+                pending: 0,
+                collected: 0,
+                history: [],
+                months,
+                isDeleted: false,
+                instituteId: this.batchDetails.institute,
+                startMonth: this.batchDetails.startMonth,
+                endMonth: this.batchDetails.endMonth,
+                classId: `/Classes/${this.batchDetails.id}`,
+                amount: this.batchDetails.fees,
+                monthsPaidList: [],
+                monthsUnpaidList: months,
+                updatedAt: new Date(),
+                id: studentRef.id,
+              });
+            });
+
+            batch.update(doc(db, "Classes", this.batchDetails.id), {
+              studentCount: this.batchDetails.studentCount + students.length,
+              updatedAt: new Date(),
+            });
+
+            batch
+              .commit()
+              .then(async () => {
                 that.error = false;
                 that.progress = false;
                 that.registered = true;
-                await updateDoc(doc(db, "Classes", that.batchDetails.id), {
-                  studentsCount:
-                    (that.batchDetails.studentsCount || 0) + students.length,
-                  updatedAt: new Date(),
-                });
                 that.showModal = true;
                 that.$formulate.reset("registerForm");
                 that.message = {
@@ -447,46 +464,6 @@
                     "We have encountered an error while registering the students to the class",
                 };
               });
-          },
-          async register(data) {
-            const that = this;
-            return await new Promise(async (resolve, reject) => {
-              const months = this.generateMonths(
-                new Date(this.batchDetails.startMonth),
-                new Date(this.batchDetails.endMonth)
-              ).map((e) => e.toISOString());
-              try {
-                const student = await addDoc(collection(db, "Students"), {
-                  name: data.name,
-                  guardianName: data["guardianName"],
-                  phone: data["phone"],
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                  collection: 0,
-                  pending: 0,
-                  collected: 0,
-                  history: [],
-                  months,
-                  isDeleted: false,
-                  instituteId: this.batchDetails.institute,
-                  startMonth: this.batchDetails.startMonth,
-                  endMonth: this.batchDetails.endMonth,
-                  classId: `/Classes/${this.batchDetails.id}`,
-                  amount: this.batchDetails.fees,
-                  monthsPaidList: [],
-                  monthsUnpaidList: months,
-                  updatedAt: new Date(),
-                });
-                console.log("Document written with ", student);
-                await updateDoc(doc(db, "Students", student.id), {
-                  id: student.id,
-                });
-                resolve(true);
-              } catch (error) {
-                console.error("Error adding document: ", error);
-                reject(error);
-              }
-            });
           },
         },
       });

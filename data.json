@@ -1,4 +1,4 @@
-const feesCollections = [
+[
     {
         "amount": 1500,
         "month": "3",
@@ -12240,5 +12240,3 @@ const feesCollections = [
         }
     }
 ]
-
-export default feesCollections;

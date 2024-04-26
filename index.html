@@ -435,7 +435,7 @@
             });
 
             batch.update(doc(db, "Classes", this.batchDetails.id), {
-              studentCount: this.batchDetails.studentCount + students.length,
+              studentsCount: this.batchDetails.studentsCount + students.length,
               updatedAt: new Date(),
             });
 
